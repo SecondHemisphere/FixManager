@@ -1,0 +1,380 @@
+package vista;
+
+import controlador.EquipoMovilController;
+import java.awt.Color;
+import java.awt.Image;
+import javax.swing.ImageIcon;
+import javax.swing.table.DefaultTableModel;
+import modelo.EquipoMovil;
+import util.DialogUtil;
+import util.ResultadoOperacion;
+
+/**
+ * Panel de gestión CRUD de equipos móviles.
+ *
+ * @author Gelves Jonathan
+ */
+public class EquipoMovilCRUDPanel extends javax.swing.JPanel {
+
+    private final EquipoMovilController controlador = new EquipoMovilController();
+    private int idEquipoMovil = 0;
+
+    /**
+     * Creates new form EquipoMovilCRUDPanel
+     */
+    public EquipoMovilCRUDPanel() {
+        initComponents();
+
+        ImageIcon icon = new ImageIcon(getClass().getResource("/img/buscar.png"));
+        Image img = icon.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH);
+        btnBuscar.setIcon(new ImageIcon(img));
+        cargarTabla();
+    }
+
+    /**
+     * Busca equipos móviles por IMEI o cliente.
+     *
+     * @param texto texto ingresado en el buscador
+     */
+    private void buscar(String texto) {
+
+        if (texto.trim().isEmpty()
+                || texto.equals("Buscar equipo móvil por cliente o IMEI...")) {
+            cargarTabla();
+            return;
+        }
+
+        DefaultTableModel model = (DefaultTableModel) tblEquiposMoviles.getModel();
+        model.setRowCount(0);
+
+        for (EquipoMovil e : controlador.filtrarEquipos(texto)) {
+
+            String clienteNombre = (e.getCliente() != null)
+                    ? e.getCliente().getNombre()
+                    : "Sin cliente";
+
+            model.addRow(new Object[]{
+                e.getId(),
+                e.getMarca(),
+                e.getModelo(),
+                e.getImei(),
+                e.getTipo(),
+                e.getEstado() != null ? e.getEstado().name() : "",
+                clienteNombre
+            });
+        }
+    }
+
+    /**
+     * Captura el registro seleccionado en la tabla.
+     */
+    private void capturarSeleccion() {
+        int fila = tblEquiposMoviles.getSelectedRow();
+
+        if (fila != -1) {
+            idEquipoMovil = (int) tblEquiposMoviles.getValueAt(fila, 0);
+        }
+    }
+
+    /**
+     * Carga todos los registros en la tabla.
+     */
+    private void cargarTabla() {
+
+        DefaultTableModel model = new DefaultTableModel(
+                new String[]{"ID", "Marca", "Modelo", "IMEI", "Tipo", "Estado", "Cliente"}, 0
+        );
+
+        for (EquipoMovil e : controlador.listarEquipos()) {
+            model.addRow(new Object[]{
+                e.getId(),
+                e.getMarca(),
+                e.getModelo(),
+                e.getImei(),
+                e.getTipo(),
+                e.getEstado(),
+                e.getCliente().getNombre()
+            });
+        }
+
+        tblEquiposMoviles.setModel(model);
+        tblEquiposMoviles.setDefaultEditor(Object.class, null);
+        tblEquiposMoviles.setRowSelectionAllowed(true);
+        tblEquiposMoviles.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+    }
+
+    /**
+     * Abre el formulario para editar un equipo móvil seleccionado.
+     */
+    private void editar() {
+        capturarSeleccion();
+
+        if (idEquipoMovil == 0) {
+            DialogUtil.mostrarMensajeAdvertencia(this, "Seleccione un equipo móvil ");
+            return;
+        }
+
+        EquipoMovil e = controlador.obtenerEquipo(idEquipoMovil);
+        EquipoMovilDialog d = new EquipoMovilDialog(null, true, e);
+
+        d.setLocationRelativeTo(this);
+        d.setVisible(true);
+
+        cargarTabla();
+        idEquipoMovil = 0;
+    }
+
+    /**
+     * Elimina un equipo móvil seleccionado previa confirmación.
+     */
+    private void eliminar() {
+        capturarSeleccion();
+
+        if (idEquipoMovil == 0) {
+            DialogUtil.mostrarMensajeAdvertencia(this, "Seleccione un equipo móvil");
+            return;
+        }
+
+        if (!DialogUtil.mostrarDialogoConfirmacion(this, "¿Está seguro de eliminar este equipo móvil?")) {
+            return;
+        }
+
+        ResultadoOperacion resultado = controlador.eliminarEquipo(idEquipoMovil);
+
+        if (!resultado.isExito()) {
+            DialogUtil.mostrarMensajeError(this, resultado.getMensaje());
+            return;
+        }
+
+        DialogUtil.mostrarMensajeInformacion(this, resultado.getMensaje());
+        cargarTabla();
+        idEquipoMovil = 0;
+    }
+
+    /**
+     * Abre el formulario para registrar un nuevo equipo móvil.
+     */
+    private void registrar() {
+        EquipoMovilDialog d = new EquipoMovilDialog(null, true, null);
+
+        d.setLocationRelativeTo(this);
+        d.setVisible(true);
+
+        cargarTabla();
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        pnlListado = new javax.swing.JPanel();
+        pnlScroll = new javax.swing.JScrollPane();
+        tblEquiposMoviles = new javax.swing.JTable();
+        btnEditar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
+        btnNuevo = new javax.swing.JButton();
+        lblTitulo = new javax.swing.JLabel();
+        lblSubtitulo = new javax.swing.JLabel();
+        txtBuscar = new javax.swing.JTextField();
+        btnBuscar = new javax.swing.JButton();
+
+        setBackground(new java.awt.Color(255, 204, 102));
+
+        pnlListado.setBackground(new java.awt.Color(255, 204, 102));
+        pnlListado.setOpaque(false);
+
+        tblEquiposMoviles.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        tblEquiposMoviles.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblEquiposMoviles.setPreferredSize(null);
+        tblEquiposMoviles.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        pnlScroll.setViewportView(tblEquiposMoviles);
+
+        btnEditar.setBackground(new java.awt.Color(51, 204, 0));
+        btnEditar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
+
+        btnEliminar.setBackground(new java.awt.Color(255, 51, 51));
+        btnEliminar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
+
+        btnNuevo.setBackground(new java.awt.Color(255, 153, 51));
+        btnNuevo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnNuevo.setText("+ Nuevo Equipo Móvil");
+        btnNuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoActionPerformed(evt);
+            }
+        });
+
+        lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblTitulo.setText("Listado De Equipos Móviles");
+
+        lblSubtitulo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblSubtitulo.setText("Gestiona la información de tus equipos móviles registrados");
+
+        txtBuscar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtBuscar.setForeground(java.awt.Color.gray);
+        txtBuscar.setText("Buscar equipo móvil por cliente o IMEI...");
+        txtBuscar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
+        txtBuscar.setPreferredSize(new java.awt.Dimension(200, 25));
+        txtBuscar.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtBuscarFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtBuscarFocusLost(evt);
+            }
+        });
+
+        btnBuscar.setBorder(null);
+        btnBuscar.setBorderPainted(false);
+        btnBuscar.setContentAreaFilled(false);
+        btnBuscar.setFocusPainted(false);
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlListadoLayout = new javax.swing.GroupLayout(pnlListado);
+        pnlListado.setLayout(pnlListadoLayout);
+        pnlListadoLayout.setHorizontalGroup(
+            pnlListadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlListadoLayout.createSequentialGroup()
+                .addGap(273, 273, 273)
+                .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(169, 169, 169)
+                .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(pnlListadoLayout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addGroup(pnlListadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlListadoLayout.createSequentialGroup()
+                        .addComponent(lblSubtitulo)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(pnlListadoLayout.createSequentialGroup()
+                        .addComponent(lblTitulo)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(pnlListadoLayout.createSequentialGroup()
+                        .addGroup(pnlListadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(pnlListadoLayout.createSequentialGroup()
+                                .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 407, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(205, 205, 205)
+                                .addComponent(btnNuevo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(pnlScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 829, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(35, Short.MAX_VALUE))))
+        );
+        pnlListadoLayout.setVerticalGroup(
+            pnlListadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlListadoLayout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(lblTitulo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblSubtitulo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlListadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnBuscar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(pnlListadoLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnNuevo)))
+                .addGap(18, 18, 18)
+                .addComponent(pnlScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlListadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnEditar)
+                    .addComponent(btnEliminar))
+                .addGap(16, 16, 16))
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(pnlListado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(pnlListado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        eliminar();
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
+        registrar();
+    }//GEN-LAST:event_btnNuevoActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        editar();
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void txtBuscarFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtBuscarFocusLost
+        if (txtBuscar.getText().isEmpty()) {
+            txtBuscar.setText("Buscar equipo móvil por cliente o IMEI...");
+            txtBuscar.setForeground(Color.GRAY);
+        }
+    }//GEN-LAST:event_txtBuscarFocusLost
+
+    private void txtBuscarFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtBuscarFocusGained
+        if (txtBuscar.getText().equals("Buscar equipo móvil por cliente o IMEI...")) {
+            txtBuscar.setText("");
+            txtBuscar.setForeground(Color.BLACK);
+        }
+    }//GEN-LAST:event_txtBuscarFocusGained
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        buscar(txtBuscar.getText());
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnEditar;
+    private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnNuevo;
+    private javax.swing.JLabel lblSubtitulo;
+    private javax.swing.JLabel lblTitulo;
+    private javax.swing.JPanel pnlListado;
+    public static javax.swing.JScrollPane pnlScroll;
+    public static javax.swing.JTable tblEquiposMoviles;
+    private javax.swing.JTextField txtBuscar;
+    // End of variables declaration//GEN-END:variables
+}
