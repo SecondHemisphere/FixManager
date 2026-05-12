@@ -7,7 +7,6 @@ import modelo.EquipoMovil;
 import modelo.RecepcionEntrega;
 import util.DialogUtil;
 import util.ResultadoOperacion;
-import validator.RecepcionEntregaValidator;
 
 /**
  * Diálogo para crear o editar recepciones.
@@ -66,9 +65,7 @@ public class RecepcionEntregaDialog extends javax.swing.JDialog {
      * Carga combo de estados
      */
     private void cargarEstados() {
-        cbxEstado.setModel(
-                new javax.swing.DefaultComboBoxModel<>(RecepcionEntrega.Estado.values())
-        );
+        cbxEstado.setModel(new DefaultComboBoxModel<>(RecepcionEntrega.Estado.values()));
     }
 
     /**
@@ -96,23 +93,12 @@ public class RecepcionEntregaDialog extends javax.swing.JDialog {
             r.setProblemaReportado(txtaProblema.getText().trim());
             r.setEstado((RecepcionEntrega.Estado) cbxEstado.getSelectedItem());
 
-            String error = RecepcionEntregaValidator.validar(r);
-
-            if (error != null) {
-                DialogUtil.mostrarMensajeAdvertencia(this, error);
-                return;
-            }
-
-            ResultadoOperacion resultado;
-
-            if (recepcion == null) {
-                resultado = controller.guardarRecepcion(r);
-            } else {
-                resultado = controller.actualizarRecepcion(r);
-            }
+            ResultadoOperacion resultado = (recepcion == null)
+                    ? controller.guardarRecepcion(r)
+                    : controller.actualizarRecepcion(r);
 
             if (!resultado.isExito()) {
-                DialogUtil.mostrarMensajeError(this, resultado.getMensaje());
+                DialogUtil.mostrarMensajeAdvertencia(this, resultado.getMensaje());
                 return;
             }
 

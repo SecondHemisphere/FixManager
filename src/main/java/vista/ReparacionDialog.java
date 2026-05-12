@@ -7,7 +7,6 @@ import modelo.Reparacion;
 import modelo.RecepcionEntrega;
 import util.DialogUtil;
 import util.ResultadoOperacion;
-import validator.ReparacionValidator;
 
 /**
  * Diálogo para crear o editar reparaciones.
@@ -33,7 +32,6 @@ public class ReparacionDialog extends javax.swing.JDialog {
 
         controller = new ReparacionController();
         recepcionController = new RecepcionEntregaController();
-
         this.reparacion = reparacion;
 
         cargarRecepciones();
@@ -66,9 +64,7 @@ public class ReparacionDialog extends javax.swing.JDialog {
      * Carga combo de estados
      */
     private void cargarEstados() {
-        cbxEstado.setModel(
-                new javax.swing.DefaultComboBoxModel<>(Reparacion.Estado.values())
-        );
+        cbxEstado.setModel(new DefaultComboBoxModel<>(Reparacion.Estado.values()));
     }
 
     /**
@@ -99,13 +95,13 @@ public class ReparacionDialog extends javax.swing.JDialog {
             r.setDiagnostico(txtaDiagnostico.getText().trim());
             r.setSolucion(txtaSolucion.getText().trim());
             r.setPiezasUsadas(txtaPiezas.getText().trim());
-            r.setCostoRepuestos(Double.parseDouble(txtCosto.getText().trim()));
             r.setEstado((Reparacion.Estado) cbxEstado.getSelectedItem());
 
-            String error = ReparacionValidator.validar(r);
-
-            if (error != null) {
-                DialogUtil.mostrarMensajeAdvertencia(this, error);
+            try {
+                r.setCostoRepuestos(Double.parseDouble(txtCosto.getText().trim()));
+            } catch (NumberFormatException e) {
+                DialogUtil.mostrarMensajeAdvertencia(this, "El costo debe ser numérico");
+                txtCosto.requestFocus();
                 return;
             }
 
@@ -118,15 +114,13 @@ public class ReparacionDialog extends javax.swing.JDialog {
             }
 
             if (!resultado.isExito()) {
-                DialogUtil.mostrarMensajeError(this, resultado.getMensaje());
+                DialogUtil.mostrarMensajeAdvertencia(this, resultado.getMensaje());
                 return;
             }
 
             DialogUtil.mostrarMensajeInformacion(this, resultado.getMensaje());
             dispose();
 
-        } catch (NumberFormatException e) {
-            DialogUtil.mostrarMensajeError(this, "El costo debe ser numérico");
         } catch (Exception ex) {
             DialogUtil.mostrarMensajeError(this, "Error: " + ex.getMessage());
         }

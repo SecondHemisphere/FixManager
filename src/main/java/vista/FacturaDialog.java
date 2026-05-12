@@ -8,7 +8,6 @@ import modelo.Factura.MetodoPago;
 import modelo.Reparacion;
 import util.DialogUtil;
 import util.ResultadoOperacion;
-import validator.FacturaValidator;
 
 /**
  * Diálogo para crear o editar facturas.
@@ -69,9 +68,7 @@ public class FacturaDialog extends javax.swing.JDialog {
      * Carga métodos de pago
      */
     private void cargarMetodos() {
-        cbxMetodo.setModel(
-                new javax.swing.DefaultComboBoxModel<>(MetodoPago.values())
-        );
+        cbxMetodo.setModel(new DefaultComboBoxModel<>(MetodoPago.values()));
     }
 
     /**
@@ -97,27 +94,16 @@ public class FacturaDialog extends javax.swing.JDialog {
             }
 
             f.setReparacion((Reparacion) cbxReparacion.getSelectedItem());
-            f.setCostoTotal(Double.parseDouble(txtCosto.getText()));
-            f.setObservaciones(txtaObservaciones.getText());
+            f.setCostoTotal(Double.parseDouble(txtCosto.getText().trim()));
+            f.setObservaciones(txtaObservaciones.getText().trim());
             f.setMetodoPago((MetodoPago) cbxMetodo.getSelectedItem());
 
-            String error = FacturaValidator.validar(f);
-
-            if (error != null) {
-                DialogUtil.mostrarMensajeAdvertencia(this, error);
-                return;
-            }
-
-            ResultadoOperacion resultado;
-
-            if (factura == null) {
-                resultado = controller.guardarFactura(f);
-            } else {
-                resultado = controller.actualizarFactura(f);
-            }
+            ResultadoOperacion resultado = (factura == null)
+                    ? controller.guardarFactura(f)
+                    : controller.actualizarFactura(f);
 
             if (!resultado.isExito()) {
-                DialogUtil.mostrarMensajeError(this, resultado.getMensaje());
+                DialogUtil.mostrarMensajeAdvertencia(this, resultado.getMensaje());
                 return;
             }
 
@@ -125,9 +111,9 @@ public class FacturaDialog extends javax.swing.JDialog {
             dispose();
 
         } catch (NumberFormatException e) {
-            DialogUtil.mostrarMensajeError(this, "El costo debe ser numérico");
+            DialogUtil.mostrarMensajeAdvertencia(this, "El costo debe ser numérico");
         } catch (Exception ex) {
-            DialogUtil.mostrarMensajeError(this, ex.getMessage());
+            DialogUtil.mostrarMensajeError(this, "Error: " + ex.getMessage());
         }
     }
 

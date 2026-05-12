@@ -26,7 +26,6 @@ public class ClienteController {
     }
 
     public ResultadoOperacion guardarCliente(Cliente c) {
-
         String error = validar(c);
 
         if (error != null) {
@@ -49,7 +48,6 @@ public class ClienteController {
     }
 
     public ResultadoOperacion actualizarCliente(Cliente c) {
-
         String error = validar(c);
 
         if (error != null) {
@@ -72,7 +70,6 @@ public class ClienteController {
     }
 
     public ResultadoOperacion eliminarCliente(int id) {
-
         boolean ok = dao.eliminar(id);
 
         return ok

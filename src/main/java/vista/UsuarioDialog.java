@@ -1,6 +1,7 @@
 package vista;
 
 import controlador.UsuarioController;
+import javax.swing.DefaultComboBoxModel;
 import modelo.Usuario;
 import modelo.Usuario.Rol;
 import util.DialogUtil;
@@ -30,7 +31,7 @@ public class UsuarioDialog extends javax.swing.JDialog {
         controlador = new UsuarioController();
         this.usuario = usuario;
 
-        cbxRol.setModel(new javax.swing.DefaultComboBoxModel<>(Rol.values()));
+        cbxRol.setModel(new DefaultComboBoxModel<>(Rol.values()));
 
         if (usuario != null) {
             lblTitulo.setText("Editar Usuario");

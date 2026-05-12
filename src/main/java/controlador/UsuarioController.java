@@ -26,7 +26,6 @@ public class UsuarioController {
     }
 
     public ResultadoOperacion guardarUsuario(Usuario u) {
-
         String error = validar(u);
 
         if (error != null) {
@@ -45,7 +44,6 @@ public class UsuarioController {
     }
 
     public ResultadoOperacion actualizarUsuario(Usuario u) {
-
         String error = validar(u);
 
         if (error != null) {
@@ -64,7 +62,6 @@ public class UsuarioController {
     }
 
     public ResultadoOperacion eliminarUsuario(int id) {
-
         boolean ok = dao.eliminar(id);
 
         return ok
@@ -77,7 +74,6 @@ public class UsuarioController {
     }
 
     public Usuario login(String correo, String password) {
-
         Usuario u = dao.login(correo, password);
 
         if (u != null && !u.isActivo()) {

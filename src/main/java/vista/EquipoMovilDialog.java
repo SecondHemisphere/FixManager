@@ -7,7 +7,6 @@ import modelo.Cliente;
 import modelo.EquipoMovil;
 import util.DialogUtil;
 import util.ResultadoOperacion;
-import validator.EquipoMovilValidator;
 
 /**
  * Diálogo para crear o editar equipos móviles.
@@ -78,9 +77,7 @@ public class EquipoMovilDialog extends javax.swing.JDialog {
      * realiza un INSERT. Si existe, realiza un UPDATE.
      */
     private void guardarDatos() {
-
         try {
-
             EquipoMovil e = new EquipoMovil();
 
             if (equipo != null) {
@@ -92,34 +89,22 @@ public class EquipoMovilDialog extends javax.swing.JDialog {
             e.setImei(txtImei.getText().trim());
             e.setTipo(txtTipo.getText().trim());
             e.setDescripcionDanio(txtaDescripcion.getText().trim());
-
             e.setCliente((Cliente) cbxCliente.getSelectedItem());
 
-            String error = EquipoMovilValidator.validar(e);
-
-            if (error != null) {
-                DialogUtil.mostrarMensajeAdvertencia(this, error);
-                return;
-            }
-
-            ResultadoOperacion resultado;
-
-            if (equipo == null) {
-                resultado = equipoController.guardarEquipo(e);
-            } else {
-                resultado = equipoController.actualizarEquipo(e);
-            }
+            ResultadoOperacion resultado = (equipo == null)
+                    ? equipoController.guardarEquipo(e)
+                    : equipoController.actualizarEquipo(e);
 
             if (!resultado.isExito()) {
-                DialogUtil.mostrarMensajeError(this, resultado.getMensaje());
+                DialogUtil.mostrarMensajeAdvertencia(this, resultado.getMensaje());
                 return;
             }
 
             DialogUtil.mostrarMensajeInformacion(this, resultado.getMensaje());
             dispose();
 
-        } catch (Exception ex) {
-            DialogUtil.mostrarMensajeError(this, "Error: " + ex.getMessage());
+        } catch (Exception e) {
+            DialogUtil.mostrarMensajeError(this, "Error: " + e.getMessage());
         }
     }
 
