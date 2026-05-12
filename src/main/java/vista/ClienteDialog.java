@@ -4,7 +4,6 @@ import controlador.ClienteController;
 import modelo.Cliente;
 import util.DialogUtil;
 import util.ResultadoOperacion;
-import validator.ClienteValidator;
 
 /**
  * Diálogo para crear o editar clientes.
@@ -56,7 +55,6 @@ public class ClienteDialog extends javax.swing.JDialog {
      */
     private void guardarDatos() {
         try {
-
             Cliente c = new Cliente();
 
             if (cliente != null) {
@@ -68,20 +66,9 @@ public class ClienteDialog extends javax.swing.JDialog {
             c.setTelefono(txtTelefono.getText().trim());
             c.setDireccion(txtaDireccion.getText().trim());
 
-            String error = ClienteValidator.validar(c);
-
-            if (error != null) {
-                DialogUtil.mostrarMensajeAdvertencia(this, error);
-                return;
-            }
-
-            ResultadoOperacion resultado;
-
-            if (cliente == null) {
-                resultado = controlador.guardarCliente(c);
-            } else {
-                resultado = controlador.actualizarCliente(c);
-            }
+            ResultadoOperacion resultado = (cliente == null)
+                    ? controlador.guardarCliente(c)
+                    : controlador.actualizarCliente(c);
 
             if (!resultado.isExito()) {
                 DialogUtil.mostrarMensajeAdvertencia(this, resultado.getMensaje());
@@ -89,8 +76,8 @@ public class ClienteDialog extends javax.swing.JDialog {
             }
 
             DialogUtil.mostrarMensajeInformacion(this, resultado.getMensaje());
-            this.dispose();
-
+            dispose();
+            
         } catch (Exception e) {
             DialogUtil.mostrarMensajeError(this, "Error: " + e.getMessage());
         }

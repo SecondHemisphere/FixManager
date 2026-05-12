@@ -5,7 +5,6 @@ import modelo.Usuario;
 import modelo.Usuario.Rol;
 import util.DialogUtil;
 import util.ResultadoOperacion;
-import validator.UsuarioValidator;
 
 /**
  * Diálogo para crear o editar usuarios.
@@ -78,37 +77,18 @@ public class UsuarioDialog extends javax.swing.JDialog {
 
             String pass = txtContrasena.getText().trim();
 
-            if (usuario == null) {
-                if (pass.isEmpty()) {
-                    DialogUtil.mostrarMensajeAdvertencia(this, "La contraseña es obligatoria");
-                    return;
-                }
+            if (usuario == null || !pass.isEmpty()) {
                 u.setContrasena(pass);
             } else {
-                if (!pass.isEmpty()) {
-                    u.setContrasena(pass);
-                } else {
-                    u.setContrasena(usuario.getContrasena());
-                }
+                u.setContrasena(usuario.getContrasena());
             }
 
-            String error = UsuarioValidator.validar(u);
-
-            if (error != null) {
-                DialogUtil.mostrarMensajeAdvertencia(this, error);
-                return;
-            }
-
-            ResultadoOperacion resultado;
-
-            if (usuario == null) {
-                resultado = controlador.guardarUsuario(u);
-            } else {
-                resultado = controlador.actualizarUsuario(u);
-            }
+            ResultadoOperacion resultado = (usuario == null)
+                    ? controlador.guardarUsuario(u)
+                    : controlador.actualizarUsuario(u);
 
             if (!resultado.isExito()) {
-                DialogUtil.mostrarMensajeError(this, resultado.getMensaje());
+                DialogUtil.mostrarMensajeAdvertencia(this, resultado.getMensaje());
                 return;
             }
 

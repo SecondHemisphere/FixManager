@@ -2,9 +2,10 @@ package controlador;
 
 import dao.UsuarioDAO;
 import java.util.List;
+import java.util.regex.Pattern;
 import modelo.Usuario;
+import modelo.Usuario.Rol;
 import util.ResultadoOperacion;
-import validator.UsuarioValidator;
 
 /**
  * Controlador de la entidad Usuario.
@@ -14,6 +15,7 @@ import validator.UsuarioValidator;
 public class UsuarioController {
 
     private final UsuarioDAO dao = new UsuarioDAO();
+    private static final Pattern EMAIL = Pattern.compile("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
 
     public List<Usuario> listarUsuarios() {
         return dao.listar();
@@ -25,7 +27,8 @@ public class UsuarioController {
 
     public ResultadoOperacion guardarUsuario(Usuario u) {
 
-        String error = UsuarioValidator.validar(u);
+        String error = validar(u);
+
         if (error != null) {
             return ResultadoOperacion.error(error);
         }
@@ -43,7 +46,8 @@ public class UsuarioController {
 
     public ResultadoOperacion actualizarUsuario(Usuario u) {
 
-        String error = UsuarioValidator.validar(u);
+        String error = validar(u);
+
         if (error != null) {
             return ResultadoOperacion.error(error);
         }
@@ -81,5 +85,110 @@ public class UsuarioController {
         }
 
         return u;
+    }
+
+    public static String validar(Usuario u) {
+
+        if (u == null) {
+            return "El usuario no puede ser nulo";
+        }
+
+        String error = validarNombre(u.getNombre());
+
+        if (error != null) {
+            return error;
+        }
+
+        error = validarCorreo(u.getCorreo());
+
+        if (error != null) {
+            return error;
+        }
+
+        if (u.getContrasena() != null && !u.getContrasena().isEmpty()) {
+            error = validarPassword(u.getContrasena());
+
+            if (error != null) {
+                return error;
+            }
+        }
+
+        error = validarRol(u.getRol());
+
+        if (error != null) {
+            return error;
+        }
+
+        return null;
+    }
+
+    /**
+     * Valida el nombre del usuario.
+     */
+    private static String validarNombre(String nombre) {
+
+        if (nombre == null || nombre.trim().isEmpty()) {
+            return "El nombre es obligatorio";
+        }
+
+        nombre = nombre.trim();
+
+        if (nombre.length() < 3) {
+            return "El nombre debe tener al menos 3 caracteres";
+        }
+
+        if (nombre.length() > 100) {
+            return "El nombre no puede superar 100 caracteres";
+        }
+
+        return null;
+    }
+
+    /**
+     * Valida el correo electrónico.
+     */
+    private static String validarCorreo(String correo) {
+
+        if (correo == null || correo.trim().isEmpty()) {
+            return "El correo es obligatorio";
+        }
+
+        correo = correo.trim();
+
+        if (!EMAIL.matcher(correo).matches()) {
+            return "Correo inválido";
+        }
+
+        return null;
+    }
+
+    /**
+     * Valida la contraseña.
+     */
+    private static String validarPassword(String password) {
+
+        if (password == null || password.trim().isEmpty()) {
+            return "La contraseña es obligatoria";
+        }
+
+        password = password.trim();
+
+        if (password.length() < 4) {
+            return "La contraseña debe tener al menos 4 caracteres";
+        }
+
+        return null;
+    }
+
+    /**
+     * Valida el rol del usuario.
+     */
+    private static String validarRol(Rol rol) {
+
+        if (rol == null) {
+            return "El rol es obligatorio";
+        }
+
+        return null;
     }
 }
