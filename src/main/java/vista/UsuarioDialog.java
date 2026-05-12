@@ -2,7 +2,7 @@ package vista;
 
 import controlador.UsuarioController;
 import modelo.Usuario;
-import modelo.Rol;
+import modelo.Usuario.Rol;
 import util.DialogUtil;
 import util.ResultadoOperacion;
 import validator.UsuarioValidator;

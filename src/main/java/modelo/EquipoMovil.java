@@ -9,23 +9,41 @@ import java.util.Objects;
  */
 public class EquipoMovil {
 
+    public enum Estado {
+
+        REGISTRADO("Registrado"),
+        RECEPCIONADO("Recepcionado"),
+        ENTREGADO("Entregado");
+
+        private final String descripcion;
+
+        Estado(String descripcion) {
+            this.descripcion = descripcion;
+        }
+
+        @Override
+        public String toString() {
+            return descripcion;
+        }
+    }
+
     private int id;
     private String marca;
     private String modelo;
     private String imei;
     private String tipo;
     private String descripcionDanio;
-    private EstadoEquipoMovil estado;
+    private Estado estado;
 
     private Cliente cliente;
 
     public EquipoMovil() {
-        this.estado = EstadoEquipoMovil.REGISTRADO;
+        this.estado = Estado.REGISTRADO;
     }
 
     public EquipoMovil(int id, String marca, String modelo, String imei,
             String tipo, String descripcionDanio,
-            EstadoEquipoMovil estado, Cliente cliente) {
+            Estado estado, Cliente cliente) {
         this.id = id;
         this.marca = marca;
         this.modelo = modelo;
@@ -45,7 +63,7 @@ public class EquipoMovil {
         this.tipo = tipo;
         this.descripcionDanio = descripcionDanio;
         this.cliente = cliente;
-        this.estado = EstadoEquipoMovil.REGISTRADO;
+        this.estado = Estado.REGISTRADO;
     }
 
     public int getId() {
@@ -96,11 +114,11 @@ public class EquipoMovil {
         this.descripcionDanio = descripcionDanio;
     }
 
-    public EstadoEquipoMovil getEstado() {
+    public Estado getEstado() {
         return estado;
     }
 
-    public void setEstado(EstadoEquipoMovil estado) {
+    public void setEstado(Estado estado) {
         this.estado = estado;
     }
 

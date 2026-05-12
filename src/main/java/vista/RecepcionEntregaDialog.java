@@ -4,7 +4,6 @@ import controlador.EquipoMovilController;
 import controlador.RecepcionEntregaController;
 import javax.swing.DefaultComboBoxModel;
 import modelo.EquipoMovil;
-import modelo.EstadoRecepcionEntrega;
 import modelo.RecepcionEntrega;
 import util.DialogUtil;
 import util.ResultadoOperacion;
@@ -68,7 +67,7 @@ public class RecepcionEntregaDialog extends javax.swing.JDialog {
      */
     private void cargarEstados() {
         cbxEstado.setModel(
-                new javax.swing.DefaultComboBoxModel<>(EstadoRecepcionEntrega.values())
+                new javax.swing.DefaultComboBoxModel<>(RecepcionEntrega.Estado.values())
         );
     }
 
@@ -95,7 +94,7 @@ public class RecepcionEntregaDialog extends javax.swing.JDialog {
 
             r.setEquipoMovil((EquipoMovil) cbxEquipo.getSelectedItem());
             r.setProblemaReportado(txtaProblema.getText().trim());
-            r.setEstado((EstadoRecepcionEntrega) cbxEstado.getSelectedItem());
+            r.setEstado((RecepcionEntrega.Estado) cbxEstado.getSelectedItem());
 
             String error = RecepcionEntregaValidator.validar(r);
 
@@ -143,7 +142,7 @@ public class RecepcionEntregaDialog extends javax.swing.JDialog {
         scrProblema = new javax.swing.JScrollPane();
         txtaProblema = new javax.swing.JTextArea();
         lblEstado = new javax.swing.JLabel();
-        cbxEstado = new javax.swing.JComboBox<EstadoRecepcionEntrega>();
+        cbxEstado = new javax.swing.JComboBox<RecepcionEntrega.Estado>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -247,7 +246,7 @@ public class RecepcionEntregaDialog extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;
     private javax.swing.JComboBox<EquipoMovil> cbxEquipo;
-    private javax.swing.JComboBox<EstadoRecepcionEntrega> cbxEstado;
+    private javax.swing.JComboBox<RecepcionEntrega.Estado> cbxEstado;
     private javax.swing.JLabel lblEquipo;
     private javax.swing.JLabel lblEstado;
     private javax.swing.JLabel lblProblema;

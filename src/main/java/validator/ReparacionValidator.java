@@ -1,6 +1,5 @@
 package validator;
 
-import modelo.EstadoReparacion;
 import modelo.Reparacion;
 
 /**
@@ -134,7 +133,7 @@ public class ReparacionValidator {
     /**
      * Valida el estado de la reparación.
      */
-    private static String validarEstado(EstadoReparacion estado) {
+    private static String validarEstado(Reparacion.Estado estado) {
         if (estado == null) {
             return "El estado es obligatorio";
         }

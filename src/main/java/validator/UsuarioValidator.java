@@ -1,7 +1,7 @@
 package validator;
 
 import java.util.regex.Pattern;
-import modelo.Rol;
+import modelo.Usuario.Rol;
 import modelo.Usuario;
 
 /**

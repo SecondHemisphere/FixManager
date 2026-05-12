@@ -6,7 +6,7 @@ import java.awt.Component;
 /**
  * Clase para mostrar los mensajes en pantalla del sistema.
  *
- * @author Cagua Derek
+ * @author Mendoza Sebastian
  */
 public class DialogUtil {
 

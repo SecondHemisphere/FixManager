@@ -9,11 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 import modelo.Cliente;
 import modelo.EquipoMovil;
-import modelo.EstadoFactura;
 import modelo.RecepcionEntrega;
 import modelo.Reparacion;
 import modelo.Factura;
-import modelo.MetodoPago;
+import modelo.Factura.MetodoPago;
 
 /**
  * DAO encargado de las operaciones CRUD de la entidad Factura.
@@ -70,7 +69,7 @@ public class FacturaDAO {
                 f.setId(rs.getInt("id"));
                 f.setCostoTotal(rs.getDouble("costo_total"));
                 f.setFechaEmision(rs.getTimestamp("fecha_emision").toLocalDateTime());
-                f.setEstado(EstadoFactura.valueOf(rs.getString("estado")));
+                f.setEstado(Factura.Estado.valueOf(rs.getString("estado")));
                 f.setObservaciones(rs.getString("observaciones"));
 
                 if (rs.getString("metodo_pago") != null) {
@@ -142,7 +141,7 @@ public class FacturaDAO {
                     f.setId(rs.getInt("id"));
                     f.setCostoTotal(rs.getDouble("costo_total"));
                     f.setFechaEmision(rs.getTimestamp("fecha_emision").toLocalDateTime());
-                    f.setEstado(EstadoFactura.valueOf(rs.getString("estado")));
+                    f.setEstado(Factura.Estado.valueOf(rs.getString("estado")));
                     f.setObservaciones(rs.getString("observaciones"));
 
                     if (rs.getString("metodo_pago") != null) {
@@ -309,7 +308,7 @@ public class FacturaDAO {
                 Factura f = new Factura();
                 f.setId(rs.getInt("id"));
                 f.setCostoTotal(rs.getDouble("costo_total"));
-                f.setEstado(EstadoFactura.valueOf(rs.getString("estado")));
+                f.setEstado(Factura.Estado.valueOf(rs.getString("estado")));
                 f.setReparacion(r);
 
                 lista.add(f);

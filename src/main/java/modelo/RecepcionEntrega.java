@@ -10,20 +10,38 @@ import java.util.Objects;
  */
 public class RecepcionEntrega {
 
+    public enum Estado {
+
+        RECIBIDO("Recibido"),
+        LISTO("Listo"),
+        ENTREGADO("Entregado");
+
+        private final String descripcion;
+
+        Estado(String descripcion) {
+            this.descripcion = descripcion;
+        }
+
+        @Override
+        public String toString() {
+            return descripcion;
+        }
+    }
+    
     private int id;
     private LocalDateTime fechaRecepcion;
     private String problemaReportado;
-    private EstadoRecepcionEntrega estado;
+    private Estado estado;
 
     private EquipoMovil equipoMovil;
 
     public RecepcionEntrega() {
         this.fechaRecepcion = LocalDateTime.now();
-        this.estado = EstadoRecepcionEntrega.RECIBIDO;
+        this.estado = Estado.RECIBIDO;
     }
 
     public RecepcionEntrega(int id, LocalDateTime fechaRecepcion,
-            String problemaReportado, EstadoRecepcionEntrega estado,
+            String problemaReportado, Estado estado,
             EquipoMovil equipoMovil) {
         this.id = id;
         this.fechaRecepcion = fechaRecepcion;
@@ -35,7 +53,7 @@ public class RecepcionEntrega {
     public RecepcionEntrega(String problemaReportado, EquipoMovil equipoMovil) {
         this.fechaRecepcion = LocalDateTime.now();
         this.problemaReportado = problemaReportado;
-        this.estado = EstadoRecepcionEntrega.RECIBIDO;
+        this.estado = Estado.RECIBIDO;
         this.equipoMovil = equipoMovil;
     }
 
@@ -63,11 +81,11 @@ public class RecepcionEntrega {
         this.problemaReportado = problemaReportado;
     }
 
-    public EstadoRecepcionEntrega getEstado() {
+    public Estado getEstado() {
         return estado;
     }
 
-    public void setEstado(EstadoRecepcionEntrega estado) {
+    public void setEstado(Estado estado) {
         this.estado = estado;
     }
 

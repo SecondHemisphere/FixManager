@@ -173,8 +173,8 @@
         </Component>
         <Component class="javax.swing.JComboBox" name="cbxEstado">
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JComboBox&lt;EstadoRecepcionEntrega&gt;()"/>
-            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;EstadoRecepcionEntrega&gt;"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JComboBox&lt;RecepcionEntrega.Estado&gt;()"/>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;RecepcionEntrega.Estado&gt;"/>
           </AuxValues>
         </Component>
       </SubComponents>

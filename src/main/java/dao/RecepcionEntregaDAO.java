@@ -10,8 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import modelo.Cliente;
 import modelo.EquipoMovil;
-import modelo.EstadoEquipoMovil;
-import modelo.EstadoRecepcionEntrega;
 import modelo.RecepcionEntrega;
 
 /**
@@ -53,14 +51,14 @@ public class RecepcionEntregaDAO {
                 e.setImei(rs.getString("imei"));
                 e.setTipo(rs.getString("tipo"));
                 e.setDescripcionDanio(rs.getString("descripcion_danio"));
-                e.setEstado(EstadoEquipoMovil.valueOf(rs.getString("estado_equipo")));
+                e.setEstado(EquipoMovil.Estado.valueOf(rs.getString("estado_equipo")));
                 e.setCliente(c);
 
                 RecepcionEntrega r = new RecepcionEntrega();
                 r.setId(rs.getInt("id"));
                 r.setFechaRecepcion(rs.getTimestamp("fecha_recepcion").toLocalDateTime());
                 r.setProblemaReportado(rs.getString("problema_reportado"));
-                r.setEstado(EstadoRecepcionEntrega.valueOf(rs.getString("estado")));
+                r.setEstado(RecepcionEntrega.Estado.valueOf(rs.getString("estado")));
                 r.setEquipoMovil(e);
 
                 lista.add(r);
@@ -110,14 +108,14 @@ public class RecepcionEntregaDAO {
                     e.setImei(rs.getString("imei"));
                     e.setTipo(rs.getString("tipo"));
                     e.setDescripcionDanio(rs.getString("descripcion_danio"));
-                    e.setEstado(EstadoEquipoMovil.valueOf(rs.getString("estado_equipo")));
+                    e.setEstado(EquipoMovil.Estado.valueOf(rs.getString("estado_equipo")));
                     e.setCliente(c);
 
                     RecepcionEntrega r = new RecepcionEntrega();
                     r.setId(rs.getInt("id"));
                     r.setFechaRecepcion(rs.getTimestamp("fecha_recepcion").toLocalDateTime());
                     r.setProblemaReportado(rs.getString("problema_reportado"));
-                    r.setEstado(EstadoRecepcionEntrega.valueOf(rs.getString("estado")));
+                    r.setEstado(RecepcionEntrega.Estado.valueOf(rs.getString("estado")));
                     r.setEquipoMovil(e);
 
                     return r;
@@ -254,7 +252,7 @@ public class RecepcionEntregaDAO {
                     RecepcionEntrega r = new RecepcionEntrega();
                     r.setId(rs.getInt("id"));
                     r.setProblemaReportado(rs.getString("problema_reportado"));
-                    r.setEstado(EstadoRecepcionEntrega.valueOf(rs.getString("estado")));
+                    r.setEstado(RecepcionEntrega.Estado.valueOf(rs.getString("estado")));
                     r.setEquipoMovil(e);
 
                     lista.add(r);

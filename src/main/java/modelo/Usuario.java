@@ -9,6 +9,24 @@ import java.util.Objects;
  */
 public class Usuario {
 
+    public enum Rol {
+
+        ADMIN("Administrador"),
+        TECNICO("Técnico"),
+        CAJERO("Cajero");
+
+        private final String descripcion;
+
+        Rol(String descripcion) {
+            this.descripcion = descripcion;
+        }
+
+        @Override
+        public String toString() {
+            return descripcion;
+        }
+    }
+    
     private int id;
     private String nombre;
     private String correo;

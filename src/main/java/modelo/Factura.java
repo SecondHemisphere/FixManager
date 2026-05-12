@@ -10,21 +10,56 @@ import java.util.Objects;
  */
 public class Factura {
 
+    public enum Estado {
+
+        PENDIENTE("Pendiente"),
+        PAGADA("Pagada"),
+        ANULADA("Anulada");
+
+        private final String descripcion;
+
+        Estado(String descripcion) {
+            this.descripcion = descripcion;
+        }
+
+        @Override
+        public String toString() {
+            return descripcion;
+        }
+    }
+
+    public enum MetodoPago {
+
+        EFECTIVO("Efectivo"),
+        TARJETA("Tarjeta"),
+        TRANSFERENCIA("Transferencia");
+
+        private final String descripcion;
+
+        MetodoPago(String descripcion) {
+            this.descripcion = descripcion;
+        }
+
+        @Override
+        public String toString() {
+            return descripcion;
+        }
+    }
+
     private int id;
     private double costoTotal;
     private LocalDateTime fechaEmision;
-    private EstadoFactura estado;
+    private Estado estado;
     private String observaciones;
     private MetodoPago metodoPago;
-
     private Reparacion reparacion;
 
     public Factura() {
         this.fechaEmision = LocalDateTime.now();
-        this.estado = EstadoFactura.PENDIENTE;
+        this.estado = Estado.PENDIENTE;
     }
 
-    public Factura(int id, double costoTotal, LocalDateTime fechaEmision, EstadoFactura estado, String observaciones, MetodoPago metodoPago, Reparacion reparacion) {
+    public Factura(int id, double costoTotal, LocalDateTime fechaEmision, Estado estado, String observaciones, MetodoPago metodoPago, Reparacion reparacion) {
         this.id = id;
         this.costoTotal = costoTotal;
         this.fechaEmision = fechaEmision;
@@ -36,7 +71,7 @@ public class Factura {
 
     public Factura(double costoTotal, String observaciones, MetodoPago metodoPago, Reparacion reparacion) {
         this.fechaEmision = LocalDateTime.now();
-        this.estado = EstadoFactura.PENDIENTE;
+        this.estado = Estado.PENDIENTE;
         this.costoTotal = costoTotal;
         this.observaciones = observaciones;
         this.metodoPago = metodoPago;
@@ -67,11 +102,11 @@ public class Factura {
         this.fechaEmision = fechaEmision;
     }
 
-    public EstadoFactura getEstado() {
+    public Estado getEstado() {
         return estado;
     }
 
-    public void setEstado(EstadoFactura estado) {
+    public void setEstado(Estado estado) {
         this.estado = estado;
     }
 

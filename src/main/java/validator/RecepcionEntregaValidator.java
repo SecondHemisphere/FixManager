@@ -1,6 +1,5 @@
 package validator;
 
-import modelo.EstadoRecepcionEntrega;
 import modelo.RecepcionEntrega;
 
 /**
@@ -75,7 +74,7 @@ public class RecepcionEntregaValidator {
     /**
      * Valida el estado de la recepción.
      */
-    private static String validarEstado(EstadoRecepcionEntrega estado) {
+    private static String validarEstado(RecepcionEntrega.Estado estado) {
         if (estado == null) {
             return "El estado es obligatorio";
         }

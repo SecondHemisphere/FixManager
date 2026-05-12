@@ -3,7 +3,6 @@ package vista;
 import controlador.ReparacionController;
 import controlador.RecepcionEntregaController;
 import javax.swing.DefaultComboBoxModel;
-import modelo.EstadoReparacion;
 import modelo.Reparacion;
 import modelo.RecepcionEntrega;
 import util.DialogUtil;
@@ -68,7 +67,7 @@ public class ReparacionDialog extends javax.swing.JDialog {
      */
     private void cargarEstados() {
         cbxEstado.setModel(
-                new javax.swing.DefaultComboBoxModel<>(EstadoReparacion.values())
+                new javax.swing.DefaultComboBoxModel<>(Reparacion.Estado.values())
         );
     }
 
@@ -101,7 +100,7 @@ public class ReparacionDialog extends javax.swing.JDialog {
             r.setSolucion(txtaSolucion.getText().trim());
             r.setPiezasUsadas(txtaPiezas.getText().trim());
             r.setCostoRepuestos(Double.parseDouble(txtCosto.getText().trim()));
-            r.setEstado((EstadoReparacion) cbxEstado.getSelectedItem());
+            r.setEstado((Reparacion.Estado) cbxEstado.getSelectedItem());
 
             String error = ReparacionValidator.validar(r);
 
@@ -158,7 +157,7 @@ public class ReparacionDialog extends javax.swing.JDialog {
         lblCosto = new javax.swing.JLabel();
         txtCosto = new javax.swing.JTextField();
         lblEstado = new javax.swing.JLabel();
-        cbxEstado = new javax.swing.JComboBox<EstadoReparacion>();
+        cbxEstado = new javax.swing.JComboBox<Reparacion.Estado>();
         btnGuardar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -315,7 +314,7 @@ public class ReparacionDialog extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;
-    private javax.swing.JComboBox<EstadoReparacion> cbxEstado;
+    private javax.swing.JComboBox<Reparacion.Estado> cbxEstado;
     private javax.swing.JComboBox<RecepcionEntrega> cbxRecepcion;
     private javax.swing.JLabel lblCosto;
     private javax.swing.JLabel lblDiagnostico;

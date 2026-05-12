@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import modelo.EstadoReparacion;
 import modelo.RecepcionEntrega;
 import modelo.Reparacion;
 
@@ -58,7 +57,7 @@ public class ReparacionDAO {
                 r.setSolucion(rs.getString("solucion"));
                 r.setCostoRepuestos(rs.getDouble("costo_repuestos"));
                 r.setPiezasUsadas(rs.getString("piezas_usadas"));
-                r.setEstado(EstadoReparacion.valueOf(rs.getString("estado")));
+                r.setEstado(Reparacion.Estado.valueOf(rs.getString("estado")));
                 r.setRecepcion(re);
 
                 lista.add(r);
@@ -217,7 +216,7 @@ public class ReparacionDAO {
                 r.setSolucion(rs.getString("solucion"));
                 r.setCostoRepuestos(rs.getDouble("costo_repuestos"));
                 r.setPiezasUsadas(rs.getString("piezas_usadas"));
-                r.setEstado(EstadoReparacion.valueOf(rs.getString("estado")));
+                r.setEstado(Reparacion.Estado.valueOf(rs.getString("estado")));
                 r.setRecepcion(re);
 
                 lista.add(r);

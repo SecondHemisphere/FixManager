@@ -9,17 +9,35 @@ import java.util.Objects;
  */
 public class Reparacion {
 
+    public enum Estado {
+
+        PENDIENTE("Pendiente"),
+        EN_PROCESO("En proceso"),
+        FINALIZADO("Finalizado");
+
+        private final String descripcion;
+
+        Estado(String descripcion) {
+            this.descripcion = descripcion;
+        }
+
+        @Override
+        public String toString() {
+            return descripcion;
+        }
+    }
+
     private int id;
     private String diagnostico;
     private String solucion;
     private double costoRepuestos;
     private String piezasUsadas;
-    private EstadoReparacion estado;
+    private Estado estado;
 
     private RecepcionEntrega recepcion;
 
     public Reparacion() {
-        this.estado = EstadoReparacion.PENDIENTE;
+        this.estado = Estado.PENDIENTE;
     }
 
     public Reparacion(String diagnostico, String solucion,
@@ -29,13 +47,13 @@ public class Reparacion {
         this.solucion = solucion;
         this.costoRepuestos = costoRepuestos;
         this.piezasUsadas = piezasUsadas;
-        this.estado = EstadoReparacion.PENDIENTE;
+        this.estado = Estado.PENDIENTE;
         this.recepcion = recepcion;
     }
 
     public Reparacion(int id, String diagnostico, String solucion,
             double costoRepuestos, String piezasUsadas,
-            EstadoReparacion estado, RecepcionEntrega recepcion) {
+            Estado estado, RecepcionEntrega recepcion) {
         this.id = id;
         this.diagnostico = diagnostico;
         this.solucion = solucion;
@@ -85,11 +103,11 @@ public class Reparacion {
         this.piezasUsadas = piezasUsadas;
     }
 
-    public EstadoReparacion getEstado() {
+    public Estado getEstado() {
         return estado;
     }
 
-    public void setEstado(EstadoReparacion estado) {
+    public void setEstado(Estado estado) {
         this.estado = estado;
     }
 

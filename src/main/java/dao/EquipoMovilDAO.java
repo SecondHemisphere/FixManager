@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import modelo.Cliente;
 import modelo.EquipoMovil;
-import modelo.EstadoEquipoMovil;
 
 /**
  * DAO encargado de las operaciones CRUD de la entidad EquipoMovil.
@@ -51,7 +50,7 @@ public class EquipoMovilDAO {
                 e.setTipo(rs.getString("tipo"));
                 e.setDescripcionDanio(rs.getString("descripcion_danio"));
 
-                e.setEstado(EstadoEquipoMovil.valueOf(rs.getString("estado")));
+                e.setEstado(EquipoMovil.Estado.valueOf(rs.getString("estado")));
                 e.setCliente(c);
 
                 lista.add(e);
@@ -100,7 +99,7 @@ public class EquipoMovilDAO {
                     e.setImei(rs.getString("imei"));
                     e.setTipo(rs.getString("tipo"));
                     e.setDescripcionDanio(rs.getString("descripcion_danio"));
-                    e.setEstado(EstadoEquipoMovil.valueOf(rs.getString("estado")));
+                    e.setEstado(EquipoMovil.Estado.valueOf(rs.getString("estado")));
                     e.setCliente(c);
 
                     return e;
@@ -240,7 +239,7 @@ public class EquipoMovilDAO {
                     e.setImei(rs.getString("imei"));
                     e.setTipo(rs.getString("tipo"));
                     e.setDescripcionDanio(rs.getString("descripcion_danio"));
-                    e.setEstado(EstadoEquipoMovil.valueOf(rs.getString("estado")));
+                    e.setEstado(EquipoMovil.Estado.valueOf(rs.getString("estado")));
                     e.setCliente(c);
 
                     lista.add(e);

@@ -1,6 +1,5 @@
 package validator;
 
-import modelo.EstadoFactura;
 import modelo.Factura;
 
 /**
@@ -84,7 +83,7 @@ public class FacturaValidator {
     /**
      * Valida el estado de la factura.
      */
-    private static String validarEstado(EstadoFactura estado) {
+    private static String validarEstado(Factura.Estado estado) {
         if (estado == null) {
             return "El estado es obligatorio";
         }

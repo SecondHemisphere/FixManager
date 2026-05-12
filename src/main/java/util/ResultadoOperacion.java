@@ -4,7 +4,7 @@ package util;
  * Representa el resultado de una operación del sistema, indicando si fue
  * exitosa o si ocurrió un error.
  *
- * @author Cagua Derek
+ * @author Mendoza Sebastian
  */
 public class ResultadoOperacion {
 

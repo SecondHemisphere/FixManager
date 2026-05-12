@@ -3,9 +3,8 @@ package vista;
 import controlador.FacturaController;
 import controlador.ReparacionController;
 import javax.swing.DefaultComboBoxModel;
-import modelo.EstadoReparacion;
 import modelo.Factura;
-import modelo.MetodoPago;
+import modelo.Factura.MetodoPago;
 import modelo.Reparacion;
 import util.DialogUtil;
 import util.ResultadoOperacion;
@@ -58,7 +57,7 @@ public class FacturaDialog extends javax.swing.JDialog {
         DefaultComboBoxModel<Reparacion> model = new DefaultComboBoxModel<>();
 
         for (Reparacion r : reparacionController.listar()) {
-            if (r.getEstado() == EstadoReparacion.FINALIZADO) {
+            if (r.getEstado() == Reparacion.Estado.FINALIZADO) {
                 model.addElement(r);
             }
         }
