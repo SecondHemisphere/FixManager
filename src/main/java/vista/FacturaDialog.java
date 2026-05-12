@@ -33,11 +33,11 @@ public class FacturaDialog extends javax.swing.JDialog {
 
         controller = new FacturaController();
         reparacionController = new ReparacionController();
-
         this.factura = factura;
 
         cargarReparaciones();
         cargarMetodos();
+        cargarEstados();
 
         if (factura != null) {
             lblTitulo.setText("Editar Factura");
@@ -65,6 +65,13 @@ public class FacturaDialog extends javax.swing.JDialog {
     }
 
     /**
+     * Carga estados de factura
+     */
+    private void cargarEstados() {
+        cbxEstado.setModel(new DefaultComboBoxModel<>(Factura.Estado.values()));
+    }
+
+    /**
      * Carga métodos de pago
      */
     private void cargarMetodos() {
@@ -79,6 +86,7 @@ public class FacturaDialog extends javax.swing.JDialog {
         txtCosto.setText(String.valueOf(factura.getCostoTotal()));
         txtaObservaciones.setText(factura.getObservaciones());
         cbxMetodo.setSelectedItem(factura.getMetodoPago());
+        cbxEstado.setSelectedItem(factura.getEstado());
     }
 
     /**
@@ -97,6 +105,7 @@ public class FacturaDialog extends javax.swing.JDialog {
             f.setCostoTotal(Double.parseDouble(txtCosto.getText().trim()));
             f.setObservaciones(txtaObservaciones.getText().trim());
             f.setMetodoPago((MetodoPago) cbxMetodo.getSelectedItem());
+            f.setEstado((Factura.Estado) cbxEstado.getSelectedItem());
 
             ResultadoOperacion resultado = (factura == null)
                     ? controller.guardarFactura(f)
@@ -137,6 +146,8 @@ public class FacturaDialog extends javax.swing.JDialog {
         txtCosto = new javax.swing.JTextField();
         lblMetodo = new javax.swing.JLabel();
         cbxMetodo = new javax.swing.JComboBox<MetodoPago>();
+        lblEstado = new javax.swing.JLabel();
+        cbxEstado = new javax.swing.JComboBox<Factura.Estado>();
         btnGuardar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -170,6 +181,10 @@ public class FacturaDialog extends javax.swing.JDialog {
         lblMetodo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         lblMetodo.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblMetodo.setText("Método De Pago *:");
+
+        lblEstado.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblEstado.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblEstado.setText("Estado*:");
 
         btnGuardar.setBackground(new java.awt.Color(0, 204, 102));
         btnGuardar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -205,9 +220,16 @@ public class FacturaDialog extends javax.swing.JDialog {
                             .addComponent(txtCosto))
                         .addGap(30, 30, 30))))
             .addGroup(pnlFormularioLayout.createSequentialGroup()
-                .addGap(120, 120, 120)
-                .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlFormularioLayout.createSequentialGroup()
+                        .addGap(120, 120, 120)
+                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlFormularioLayout.createSequentialGroup()
+                        .addGap(80, 80, 80)
+                        .addComponent(lblEstado)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cbxEstado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(32, 32, 32))
         );
         pnlFormularioLayout.setVerticalGroup(
             pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -232,8 +254,12 @@ public class FacturaDialog extends javax.swing.JDialog {
                             .addComponent(lblMetodo)))
                     .addComponent(lblObservaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
+                .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblEstado)
+                    .addComponent(cbxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addComponent(btnGuardar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -244,7 +270,7 @@ public class FacturaDialog extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlFormulario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(pnlFormulario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -256,9 +282,11 @@ public class FacturaDialog extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JComboBox<Factura.Estado> cbxEstado;
     private javax.swing.JComboBox<MetodoPago> cbxMetodo;
     private javax.swing.JComboBox<Reparacion> cbxReparacion;
     private javax.swing.JLabel lblCosto;
+    private javax.swing.JLabel lblEstado;
     private javax.swing.JLabel lblMetodo;
     private javax.swing.JLabel lblObservaciones;
     private javax.swing.JLabel lblReparacion;
