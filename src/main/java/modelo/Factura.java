@@ -53,13 +53,14 @@ public class Factura {
     private String observaciones;
     private MetodoPago metodoPago;
     private Reparacion reparacion;
+    private Usuario usuario;
 
     public Factura() {
         this.fechaEmision = LocalDateTime.now();
         this.estado = Estado.PENDIENTE;
     }
 
-    public Factura(int id, double costoTotal, LocalDateTime fechaEmision, Estado estado, String observaciones, MetodoPago metodoPago, Reparacion reparacion) {
+    public Factura(int id, double costoTotal, LocalDateTime fechaEmision, Estado estado, String observaciones, MetodoPago metodoPago, Reparacion reparacion, Usuario usuario) {
         this.id = id;
         this.costoTotal = costoTotal;
         this.fechaEmision = fechaEmision;
@@ -67,15 +68,17 @@ public class Factura {
         this.observaciones = observaciones;
         this.metodoPago = metodoPago;
         this.reparacion = reparacion;
+        this.usuario = usuario;
     }
 
-    public Factura(double costoTotal, String observaciones, MetodoPago metodoPago, Reparacion reparacion) {
+    public Factura(double costoTotal, String observaciones, MetodoPago metodoPago, Reparacion reparacion, Usuario usuario) {
         this.fechaEmision = LocalDateTime.now();
         this.estado = Estado.PENDIENTE;
         this.costoTotal = costoTotal;
         this.observaciones = observaciones;
         this.metodoPago = metodoPago;
         this.reparacion = reparacion;
+        this.usuario = usuario;
     }
 
     public int getId() {
@@ -132,6 +135,14 @@ public class Factura {
 
     public void setReparacion(Reparacion reparacion) {
         this.reparacion = reparacion;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     @Override

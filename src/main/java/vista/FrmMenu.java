@@ -1,6 +1,7 @@
 package vista;
 
 import javax.swing.Box;
+import util.Sesion;
 
 /**
  *
@@ -46,7 +47,7 @@ public class FrmMenu extends javax.swing.JFrame {
 
         menuCerrarSesion.setOpaque(true);
         menuCerrarSesion.setBackground(new java.awt.Color(220, 53, 69));
-        menuCerrarSesion.setForeground(java.awt.Color.WHITE);   
+        menuCerrarSesion.setForeground(java.awt.Color.WHITE);
     }
 
     private void estilizarMenu(javax.swing.JMenu menu) {
@@ -286,18 +287,22 @@ public class FrmMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void itemGestionarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemGestionarClienteActionPerformed
-    ClienteCRUDPanel v = new ClienteCRUDPanel();
-    
-    pnlPrincipal.removeAll();
-    pnlPrincipal.add(v, new org.netbeans.lib.awtextra.AbsoluteConstraints(
-    0, 0, pnlPrincipal.getWidth(), pnlPrincipal.getHeight()));
-    pnlPrincipal.revalidate();
-    pnlPrincipal.repaint();
+        ClienteCRUDPanel v = new ClienteCRUDPanel();
+
+        pnlPrincipal.removeAll();
+        pnlPrincipal.add(v, new org.netbeans.lib.awtextra.AbsoluteConstraints(
+                0, 0, pnlPrincipal.getWidth(), pnlPrincipal.getHeight()));
+        pnlPrincipal.revalidate();
+        pnlPrincipal.repaint();
     }//GEN-LAST:event_itemGestionarClienteActionPerformed
 
     private void itemCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCerrarSesionActionPerformed
+        Sesion.cerrarSesion();
+        
         FrmLogin login = new FrmLogin();
+        login.setLocationRelativeTo(null);
         login.setVisible(true);
+        
         this.dispose();
     }//GEN-LAST:event_itemCerrarSesionActionPerformed
 
@@ -306,49 +311,49 @@ public class FrmMenu extends javax.swing.JFrame {
 
         pnlPrincipal.removeAll();
         pnlPrincipal.add(v, new org.netbeans.lib.awtextra.AbsoluteConstraints(
-    0, 0, pnlPrincipal.getWidth(), pnlPrincipal.getHeight()));
+                0, 0, pnlPrincipal.getWidth(), pnlPrincipal.getHeight()));
         pnlPrincipal.revalidate();
         pnlPrincipal.repaint();
     }//GEN-LAST:event_itemGestionarEquipoMovilActionPerformed
 
     private void itemGestionarRecepcionEntregaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemGestionarRecepcionEntregaActionPerformed
         RecepcionEntregaCRUDPanel v = new RecepcionEntregaCRUDPanel();
-    
+
         pnlPrincipal.removeAll();
         pnlPrincipal.add(v, new org.netbeans.lib.awtextra.AbsoluteConstraints(
-    0, 0, pnlPrincipal.getWidth(), pnlPrincipal.getHeight()));
+                0, 0, pnlPrincipal.getWidth(), pnlPrincipal.getHeight()));
         pnlPrincipal.revalidate();
         pnlPrincipal.repaint();
     }//GEN-LAST:event_itemGestionarRecepcionEntregaActionPerformed
 
     private void itemGestionarFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemGestionarFacturaActionPerformed
         FacturaCRUDPanel v = new FacturaCRUDPanel();
-    
+
         pnlPrincipal.removeAll();
         pnlPrincipal.add(v, new org.netbeans.lib.awtextra.AbsoluteConstraints(
-    0, 0, pnlPrincipal.getWidth(), pnlPrincipal.getHeight()));
+                0, 0, pnlPrincipal.getWidth(), pnlPrincipal.getHeight()));
         pnlPrincipal.revalidate();
         pnlPrincipal.repaint();
     }//GEN-LAST:event_itemGestionarFacturaActionPerformed
 
     private void itemGestionarReparacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemGestionarReparacionActionPerformed
         ReparacionCRUDPanel v = new ReparacionCRUDPanel();
-    
+
         pnlPrincipal.removeAll();
         pnlPrincipal.add(v, new org.netbeans.lib.awtextra.AbsoluteConstraints(
-    0, 0, pnlPrincipal.getWidth(), pnlPrincipal.getHeight()));
+                0, 0, pnlPrincipal.getWidth(), pnlPrincipal.getHeight()));
         pnlPrincipal.revalidate();
         pnlPrincipal.repaint();
     }//GEN-LAST:event_itemGestionarReparacionActionPerformed
 
     private void itemGestionarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemGestionarUsuarioActionPerformed
-    UsuarioCRUDPanel v = new UsuarioCRUDPanel();
-    
-    pnlPrincipal.removeAll();
-    pnlPrincipal.add(v, new org.netbeans.lib.awtextra.AbsoluteConstraints(
-    0, 0, pnlPrincipal.getWidth(), pnlPrincipal.getHeight()));
-    pnlPrincipal.revalidate();
-    pnlPrincipal.repaint();                                                 
+        UsuarioCRUDPanel v = new UsuarioCRUDPanel();
+
+        pnlPrincipal.removeAll();
+        pnlPrincipal.add(v, new org.netbeans.lib.awtextra.AbsoluteConstraints(
+                0, 0, pnlPrincipal.getWidth(), pnlPrincipal.getHeight()));
+        pnlPrincipal.revalidate();
+        pnlPrincipal.repaint();
     }//GEN-LAST:event_itemGestionarUsuarioActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

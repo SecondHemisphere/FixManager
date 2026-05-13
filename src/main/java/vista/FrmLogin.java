@@ -4,8 +4,8 @@ import controlador.UsuarioController;
 import javax.swing.JOptionPane;
 import modelo.Usuario;
 import java.awt.Color;
+import util.Sesion;
 
-      
 /**
  * Ventana para iniciar sesión en el sistema.
  *
@@ -35,6 +35,7 @@ public class FrmLogin extends javax.swing.JFrame {
         Usuario u = controlUsuario.login(correo, contrasena);
 
         if (u != null) {
+            Sesion.setUsuarioActual(u);
             FrmMenu menu = new FrmMenu();
             menu.setVisible(true);
             this.dispose();
@@ -238,7 +239,7 @@ public class FrmLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_loginBtnTxtMouseEntered
 
     private void loginBtnTxtMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginBtnTxtMouseExited
-        btnLogin.setBackground(new Color(0,134,190));
+        btnLogin.setBackground(new Color(0, 134, 190));
     }//GEN-LAST:event_loginBtnTxtMouseExited
 
     private void loginBtnTxtMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginBtnTxtMouseClicked

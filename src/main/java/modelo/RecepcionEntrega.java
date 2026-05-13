@@ -27,34 +27,34 @@ public class RecepcionEntrega {
             return descripcion;
         }
     }
-    
+
     private int id;
     private LocalDateTime fechaRecepcion;
     private String problemaReportado;
     private Estado estado;
-
     private EquipoMovil equipoMovil;
+    private Usuario usuario;
 
     public RecepcionEntrega() {
         this.fechaRecepcion = LocalDateTime.now();
         this.estado = Estado.RECIBIDO;
     }
 
-    public RecepcionEntrega(int id, LocalDateTime fechaRecepcion,
-            String problemaReportado, Estado estado,
-            EquipoMovil equipoMovil) {
+    public RecepcionEntrega(int id, LocalDateTime fechaRecepcion, String problemaReportado, Estado estado, EquipoMovil equipoMovil, Usuario usuario) {
         this.id = id;
         this.fechaRecepcion = fechaRecepcion;
         this.problemaReportado = problemaReportado;
         this.estado = estado;
         this.equipoMovil = equipoMovil;
+        this.usuario = usuario;
     }
 
-    public RecepcionEntrega(String problemaReportado, EquipoMovil equipoMovil) {
+    public RecepcionEntrega(String problemaReportado, EquipoMovil equipoMovil, Usuario usuario) {
         this.fechaRecepcion = LocalDateTime.now();
         this.problemaReportado = problemaReportado;
         this.estado = Estado.RECIBIDO;
         this.equipoMovil = equipoMovil;
+        this.usuario = usuario;
     }
 
     public int getId() {
@@ -95,6 +95,14 @@ public class RecepcionEntrega {
 
     public void setEquipoMovil(EquipoMovil equipoMovil) {
         this.equipoMovil = equipoMovil;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     @Override

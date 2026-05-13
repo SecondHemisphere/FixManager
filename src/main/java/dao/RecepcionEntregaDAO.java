@@ -11,6 +11,7 @@ import java.util.List;
 import modelo.Cliente;
 import modelo.EquipoMovil;
 import modelo.RecepcionEntrega;
+import modelo.Usuario;
 
 /**
  * DAO encargado de las operaciones CRUD de la entidad RecepcionEntrega.
@@ -30,10 +31,12 @@ public class RecepcionEntregaDAO {
         String sql = """
             SELECT r.*, 
                    e.id AS equipo_id, e.marca, e.modelo, e.imei, e.tipo, e.descripcion_danio, e.estado AS estado_equipo,
-                   c.id AS cliente_id, c.nombre
+                   c.id AS cliente_id, c.nombre,
+                   u.id AS usuario_id, u.nombre AS usuario_nombre
             FROM recepcion_entrega r
             INNER JOIN equipo_movil e ON r.equipo_id = e.id
             INNER JOIN cliente c ON e.cliente_id = c.id
+            LEFT JOIN usuario u ON r.usuario_id = u.id
         """;
 
         try (Connection con = Conexion.conectar(); Statement st = con.createStatement(); ResultSet rs = st.executeQuery(sql)) {
@@ -54,12 +57,17 @@ public class RecepcionEntregaDAO {
                 e.setEstado(EquipoMovil.Estado.valueOf(rs.getString("estado_equipo")));
                 e.setCliente(c);
 
+                Usuario u = new Usuario();
+                u.setId(rs.getInt("usuario_id"));
+                u.setNombre(rs.getString("usuario_nombre"));
+
                 RecepcionEntrega r = new RecepcionEntrega();
                 r.setId(rs.getInt("id"));
                 r.setFechaRecepcion(rs.getTimestamp("fecha_recepcion").toLocalDateTime());
                 r.setProblemaReportado(rs.getString("problema_reportado"));
                 r.setEstado(RecepcionEntrega.Estado.valueOf(rs.getString("estado")));
                 r.setEquipoMovil(e);
+                r.setUsuario(u);
 
                 lista.add(r);
             }
@@ -78,14 +86,15 @@ public class RecepcionEntregaDAO {
      * @return recepción encontrada o null si no existe
      */
     public RecepcionEntrega obtenerPorId(int idRecepcion) {
-
         String sql = """
         SELECT r.*, 
                e.id AS equipo_id, e.marca, e.modelo, e.imei, e.tipo, e.descripcion_danio, e.estado AS estado_equipo,
-               c.id AS cliente_id, c.nombre
+               c.id AS cliente_id, c.nombre,
+               u.id AS usuario_id, u.nombre AS usuario_nombre
         FROM recepcion_entrega r
         INNER JOIN equipo_movil e ON r.equipo_id = e.id
         INNER JOIN cliente c ON e.cliente_id = c.id
+        LEFT JOIN usuario u ON r.usuario_id = u.id
         WHERE r.id = ?
     """;
 
@@ -111,12 +120,17 @@ public class RecepcionEntregaDAO {
                     e.setEstado(EquipoMovil.Estado.valueOf(rs.getString("estado_equipo")));
                     e.setCliente(c);
 
+                    Usuario u = new Usuario();
+                    u.setId(rs.getInt("usuario_id"));
+                    u.setNombre(rs.getString("usuario_nombre"));
+
                     RecepcionEntrega r = new RecepcionEntrega();
                     r.setId(rs.getInt("id"));
                     r.setFechaRecepcion(rs.getTimestamp("fecha_recepcion").toLocalDateTime());
                     r.setProblemaReportado(rs.getString("problema_reportado"));
                     r.setEstado(RecepcionEntrega.Estado.valueOf(rs.getString("estado")));
                     r.setEquipoMovil(e);
+                    r.setUsuario(u);
 
                     return r;
                 }
@@ -139,8 +153,8 @@ public class RecepcionEntregaDAO {
 
         String sql = """
             INSERT INTO recepcion_entrega
-            (fecha_recepcion, problema_reportado, estado, equipo_id)
-            VALUES (?,?,?,?)
+            (fecha_recepcion, problema_reportado, estado, equipo_id, usuario_id)
+            VALUES (?,?,?,?,?)
         """;
 
         try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
@@ -149,6 +163,7 @@ public class RecepcionEntregaDAO {
             pst.setString(2, r.getProblemaReportado());
             pst.setString(3, r.getEstado().name());
             pst.setInt(4, r.getEquipoMovil().getId());
+            pst.setInt(5, r.getUsuario().getId());
 
             return pst.executeUpdate() > 0;
 
@@ -167,7 +182,7 @@ public class RecepcionEntregaDAO {
 
         String sql = """
             UPDATE recepcion_entrega
-            SET problema_reportado=?, estado=?
+            SET problema_reportado=?, estado=?, usuario_id=?
             WHERE id=?
         """;
 
@@ -175,7 +190,8 @@ public class RecepcionEntregaDAO {
 
             pst.setString(1, r.getProblemaReportado());
             pst.setString(2, r.getEstado().name());
-            pst.setInt(3, r.getId());
+            pst.setInt(3, r.getUsuario().getId());
+            pst.setInt(4, r.getId());
 
             return pst.executeUpdate() > 0;
 
@@ -212,16 +228,17 @@ public class RecepcionEntregaDAO {
      * @return lista de recepciones que coinciden
      */
     public List<RecepcionEntrega> filtrar(String texto) {
-
         List<RecepcionEntrega> lista = new ArrayList<>();
 
         String sql = """
             SELECT r.*, 
                    e.id AS equipo_id, e.marca, e.modelo,
-                   c.id AS cliente_id, c.nombre
+                   c.id AS cliente_id, c.nombre,
+                   u.id AS usuario_id, u.nombre AS usuario_nombre
             FROM recepcion_entrega r
             INNER JOIN equipo_movil e ON r.equipo_id = e.id
             INNER JOIN cliente c ON e.cliente_id = c.id
+            LEFT JOIN usuario u ON r.usuario_id = u.id
             WHERE LOWER(c.nombre) LIKE ?
                OR LOWER(e.marca) LIKE ?
                OR LOWER(e.modelo) LIKE ?
@@ -249,11 +266,16 @@ public class RecepcionEntregaDAO {
                     e.setModelo(rs.getString("modelo"));
                     e.setCliente(c);
 
+                    Usuario u = new Usuario();
+                    u.setId(rs.getInt("usuario_id"));
+                    u.setNombre(rs.getString("usuario_nombre"));
+
                     RecepcionEntrega r = new RecepcionEntrega();
                     r.setId(rs.getInt("id"));
                     r.setProblemaReportado(rs.getString("problema_reportado"));
                     r.setEstado(RecepcionEntrega.Estado.valueOf(rs.getString("estado")));
                     r.setEquipoMovil(e);
+                    r.setUsuario(u);
 
                     lista.add(r);
                 }

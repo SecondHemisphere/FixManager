@@ -64,13 +64,18 @@ public class RecepcionEntregaCRUDPanel extends javax.swing.JPanel {
                     ? r.getFechaRecepcion().format(formatter)
                     : "";
 
+            String usuario = (r.getUsuario() != null && r.getUsuario().getNombre() != null)
+                    ? r.getUsuario().getNombre()
+                    : "Sin usuario";
+
             model.addRow(new Object[]{
                 r.getId(),
                 fecha,
                 cliente,
                 equipo,
                 r.getProblemaReportado(),
-                r.getEstado()
+                r.getEstado(),
+                usuario
             });
         }
     }
@@ -91,7 +96,7 @@ public class RecepcionEntregaCRUDPanel extends javax.swing.JPanel {
      */
     private void cargarTabla() {
         DefaultTableModel model = new DefaultTableModel(
-                new String[]{"ID", "Fecha", "Cliente", "Equipo", "Problema", "Estado"}, 0
+                new String[]{"ID", "Fecha", "Cliente", "Equipo", "Problema", "Estado", "Modificado Por"}, 0
         );
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
@@ -106,6 +111,10 @@ public class RecepcionEntregaCRUDPanel extends javax.swing.JPanel {
                     ? r.getEquipoMovil().getCliente().getNombre()
                     : "Sin cliente";
 
+            String usuario = (r.getUsuario() != null && r.getUsuario().getNombre() != null)
+                    ? r.getUsuario().getNombre()
+                    : "Sin usuario";
+
             String fecha = (r.getFechaRecepcion() != null)
                     ? r.getFechaRecepcion().format(formatter)
                     : "";
@@ -116,7 +125,9 @@ public class RecepcionEntregaCRUDPanel extends javax.swing.JPanel {
                 cliente,
                 equipo,
                 r.getProblemaReportado(),
-                r.getEstado()
+                r.getEstado(),
+                r.getUsuario().getNombre(),
+                usuario
             });
         }
 

@@ -33,27 +33,24 @@ public class Reparacion {
     private double costoRepuestos;
     private String piezasUsadas;
     private Estado estado;
-
     private RecepcionEntrega recepcion;
+    private Usuario usuario;
 
     public Reparacion() {
         this.estado = Estado.PENDIENTE;
     }
 
-    public Reparacion(String diagnostico, String solucion,
-            double costoRepuestos, String piezasUsadas,
-            RecepcionEntrega recepcion) {
+    public Reparacion(String diagnostico, String solucion, double costoRepuestos, String piezasUsadas, RecepcionEntrega recepcion, Usuario usuario) {
         this.diagnostico = diagnostico;
         this.solucion = solucion;
         this.costoRepuestos = costoRepuestos;
         this.piezasUsadas = piezasUsadas;
         this.estado = Estado.PENDIENTE;
         this.recepcion = recepcion;
+        this.usuario = usuario;
     }
 
-    public Reparacion(int id, String diagnostico, String solucion,
-            double costoRepuestos, String piezasUsadas,
-            Estado estado, RecepcionEntrega recepcion) {
+    public Reparacion(int id, String diagnostico, String solucion, double costoRepuestos, String piezasUsadas, Estado estado, RecepcionEntrega recepcion, Usuario usuario) {
         this.id = id;
         this.diagnostico = diagnostico;
         this.solucion = solucion;
@@ -61,6 +58,7 @@ public class Reparacion {
         this.piezasUsadas = piezasUsadas;
         this.estado = estado;
         this.recepcion = recepcion;
+        this.usuario = usuario;
     }
 
     public int getId() {
@@ -117,6 +115,14 @@ public class Reparacion {
 
     public void setRecepcion(RecepcionEntrega recepcion) {
         this.recepcion = recepcion;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     @Override

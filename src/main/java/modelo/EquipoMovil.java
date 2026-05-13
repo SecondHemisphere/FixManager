@@ -41,9 +41,7 @@ public class EquipoMovil {
         this.estado = Estado.REGISTRADO;
     }
 
-    public EquipoMovil(int id, String marca, String modelo, String imei,
-            String tipo, String descripcionDanio,
-            Estado estado, Cliente cliente) {
+    public EquipoMovil(int id, String marca, String modelo, String imei, String tipo, String descripcionDanio, Estado estado, Cliente cliente) {
         this.id = id;
         this.marca = marca;
         this.modelo = modelo;
@@ -54,9 +52,7 @@ public class EquipoMovil {
         this.cliente = cliente;
     }
 
-    public EquipoMovil(String marca, String modelo, String imei,
-            String tipo, String descripcionDanio,
-            Cliente cliente) {
+    public EquipoMovil(String marca, String modelo, String imei, String tipo, String descripcionDanio, Cliente cliente) {
         this.marca = marca;
         this.modelo = modelo;
         this.imei = imei;

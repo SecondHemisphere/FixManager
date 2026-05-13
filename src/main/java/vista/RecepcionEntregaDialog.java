@@ -7,6 +7,7 @@ import modelo.EquipoMovil;
 import modelo.RecepcionEntrega;
 import util.DialogUtil;
 import util.ResultadoOperacion;
+import util.Sesion;
 
 /**
  * Diálogo para crear o editar recepciones.
@@ -92,6 +93,7 @@ public class RecepcionEntregaDialog extends javax.swing.JDialog {
             r.setEquipoMovil((EquipoMovil) cbxEquipo.getSelectedItem());
             r.setProblemaReportado(txtaProblema.getText().trim());
             r.setEstado((RecepcionEntrega.Estado) cbxEstado.getSelectedItem());
+            r.setUsuario(Sesion.getUsuarioActual());
 
             ResultadoOperacion resultado = (recepcion == null)
                     ? controller.guardarRecepcion(r)
