@@ -7,6 +7,7 @@ import modelo.Reparacion;
 import modelo.RecepcionEntrega;
 import util.DialogUtil;
 import util.ResultadoOperacion;
+import util.Sesion;
 
 /**
  * Diálogo para crear o editar reparaciones.
@@ -96,6 +97,7 @@ public class ReparacionDialog extends javax.swing.JDialog {
             r.setSolucion(txtaSolucion.getText().trim());
             r.setPiezasUsadas(txtaPiezas.getText().trim());
             r.setEstado((Reparacion.Estado) cbxEstado.getSelectedItem());
+            r.setUsuario(Sesion.getUsuarioActual());
 
             try {
                 r.setCostoRepuestos(Double.parseDouble(txtCosto.getText().trim()));

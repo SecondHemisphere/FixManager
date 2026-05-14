@@ -13,6 +13,7 @@ import modelo.RecepcionEntrega;
 import modelo.Reparacion;
 import modelo.Factura;
 import modelo.Factura.MetodoPago;
+import modelo.Usuario;
 
 /**
  * DAO encargado de las operaciones CRUD de la entidad Factura.
@@ -34,12 +35,14 @@ public class FacturaDAO {
                    r.id AS reparacion_id, r.diagnostico,
                    re.id AS recepcion_id,
                    e.id AS equipo_id, e.marca, e.modelo,
-                   c.id AS cliente_id, c.nombre
+                   c.id AS cliente_id, c.nombre,
+                   u.id AS usuario_id, u.nombre AS usuario_nombre
             FROM factura f
             INNER JOIN reparacion r ON f.reparacion_id = r.id
             INNER JOIN recepcion_entrega re ON r.recepcion_id = re.id
             INNER JOIN equipo_movil e ON re.equipo_id = e.id
             INNER JOIN cliente c ON e.cliente_id = c.id
+            LEFT JOIN usuario u ON f.usuario_id = u.id
         """;
 
         try (Connection con = Conexion.conectar(); Statement st = con.createStatement(); ResultSet rs = st.executeQuery(sql)) {
@@ -55,6 +58,10 @@ public class FacturaDAO {
                 e.setMarca(rs.getString("marca"));
                 e.setModelo(rs.getString("modelo"));
                 e.setCliente(c);
+
+                Usuario u = new Usuario();
+                u.setId(rs.getInt("usuario_id"));
+                u.setNombre(rs.getString("usuario_nombre"));
 
                 RecepcionEntrega re = new RecepcionEntrega();
                 re.setId(rs.getInt("recepcion_id"));
@@ -77,6 +84,7 @@ public class FacturaDAO {
                 }
 
                 f.setReparacion(r);
+                f.setUsuario(u);
 
                 lista.add(f);
             }
@@ -95,18 +103,19 @@ public class FacturaDAO {
      * @return factura encontrada o null si no existe
      */
     public Factura obtenerPorId(int idFactura) {
-
         String sql = """
         SELECT f.*, 
                r.id AS reparacion_id, r.diagnostico,
                re.id AS recepcion_id,
                e.id AS equipo_id, e.marca, e.modelo,
-               c.id AS cliente_id, c.nombre
+               c.id AS cliente_id, c.nombre,
+               u.id AS usuario_id, u.nombre AS usuario_nombre
         FROM factura f
         INNER JOIN reparacion r ON f.reparacion_id = r.id
         INNER JOIN recepcion_entrega re ON r.recepcion_id = re.id
         INNER JOIN equipo_movil e ON re.equipo_id = e.id
         INNER JOIN cliente c ON e.cliente_id = c.id
+        LEFT JOIN usuario u ON f.usuario_id = u.id
         WHERE f.id = ?
     """;
 
@@ -127,6 +136,10 @@ public class FacturaDAO {
                     e.setMarca(rs.getString("marca"));
                     e.setModelo(rs.getString("modelo"));
                     e.setCliente(c);
+
+                    Usuario u = new Usuario();
+                    u.setId(rs.getInt("usuario_id"));
+                    u.setNombre(rs.getString("usuario_nombre"));
 
                     RecepcionEntrega re = new RecepcionEntrega();
                     re.setId(rs.getInt("recepcion_id"));
@@ -149,6 +162,7 @@ public class FacturaDAO {
                     }
 
                     f.setReparacion(r);
+                    f.setUsuario(u);
 
                     return f;
                 }
@@ -169,7 +183,6 @@ public class FacturaDAO {
      * caso contrario
      */
     public boolean existePorReparacion(int reparacionId) {
-
         String sql = "SELECT COUNT(*) FROM factura WHERE reparacion_id=?";
 
         try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
@@ -203,8 +216,8 @@ public class FacturaDAO {
 
         String sql = """
             INSERT INTO factura
-            (costo_total, estado, observaciones, metodo_pago, reparacion_id)
-            VALUES (?,?,?,?,?)
+            (costo_total, estado, observaciones, metodo_pago, reparacion_id, usuario_id)
+            VALUES (?,?,?,?,?,?)
         """;
 
         try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
@@ -214,6 +227,7 @@ public class FacturaDAO {
             pst.setString(3, f.getObservaciones());
             pst.setString(4, f.getMetodoPago() != null ? f.getMetodoPago().name() : null);
             pst.setInt(5, f.getReparacion().getId());
+            pst.setInt(6, f.getUsuario().getId());
 
             return pst.executeUpdate() > 0;
 
@@ -229,10 +243,9 @@ public class FacturaDAO {
      * @return true si se actualizó correctamente
      */
     public boolean actualizar(Factura f) {
-
         String sql = """
             UPDATE factura
-            SET observaciones=?, metodo_pago=?, estado=?
+            SET observaciones=?, metodo_pago=?, estado=?, usuario_id=?
             WHERE id=? AND estado != 'PAGADA'
         """;
 
@@ -241,12 +254,38 @@ public class FacturaDAO {
             pst.setString(1, f.getObservaciones());
             pst.setString(2, f.getMetodoPago().name());
             pst.setString(3, f.getEstado().name());
-            pst.setInt(4, f.getId());
+            pst.setInt(4, f.getUsuario().getId());
+            pst.setInt(5, f.getId());
 
             return pst.executeUpdate() > 0;
 
         } catch (SQLException e) {
             throw new RuntimeException("Error al actualizar factura", e);
+        }
+    }
+
+    /**
+     * Elimina una factura por su ID.
+     *
+     * @param idFactura ID de la factura
+     * @return true si se eliminó correctamente
+     */
+    public boolean eliminar(int idFactura) {
+
+        String sql = """
+        UPDATE factura
+        SET estado = 'ANULADA'
+        WHERE id = ? AND estado != 'ANULADA' AND estado != 'PAGADA'
+    """;
+
+        try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setInt(1, idFactura);
+
+            return pst.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al anular factura", e);
         }
     }
 
@@ -257,7 +296,6 @@ public class FacturaDAO {
      * @return lista de facturas que coinciden
      */
     public List<Factura> filtrar(String texto) {
-
         List<Factura> lista = new ArrayList<>();
 
         String sql = """
@@ -265,12 +303,14 @@ public class FacturaDAO {
                r.id AS reparacion_id, r.diagnostico,
                re.id AS recepcion_id,
                e.id AS equipo_id, e.marca, e.modelo,
-               c.id AS cliente_id, c.nombre
+               c.id AS cliente_id, c.nombre,
+               u.id AS usuario_id, u.nombre AS usuario_nombre
         FROM factura f
         INNER JOIN reparacion r ON f.reparacion_id = r.id
         INNER JOIN recepcion_entrega re ON r.recepcion_id = re.id
         INNER JOIN equipo_movil e ON re.equipo_id = e.id
         INNER JOIN cliente c ON e.cliente_id = c.id
+        LEFT JOIN usuario u ON f.usuario_id = u.id
         WHERE LOWER(c.nombre) LIKE ?
            OR LOWER(f.estado) LIKE ?
     """;
@@ -296,6 +336,10 @@ public class FacturaDAO {
                 e.setModelo(rs.getString("modelo"));
                 e.setCliente(c);
 
+                Usuario u = new Usuario();
+                u.setId(rs.getInt("usuario_id"));
+                u.setNombre(rs.getString("usuario_nombre"));
+
                 RecepcionEntrega re = new RecepcionEntrega();
                 re.setId(rs.getInt("recepcion_id"));
                 re.setEquipoMovil(e);
@@ -309,7 +353,13 @@ public class FacturaDAO {
                 f.setId(rs.getInt("id"));
                 f.setCostoTotal(rs.getDouble("costo_total"));
                 f.setEstado(Factura.Estado.valueOf(rs.getString("estado")));
+
+                if (rs.getString("metodo_pago") != null) {
+                    f.setMetodoPago(MetodoPago.valueOf(rs.getString("metodo_pago")));
+                }
+
                 f.setReparacion(r);
+                f.setUsuario(u);
 
                 lista.add(f);
             }

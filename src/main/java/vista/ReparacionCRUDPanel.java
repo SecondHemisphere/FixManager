@@ -48,6 +48,10 @@ public class ReparacionCRUDPanel extends javax.swing.JPanel {
 
         for (Reparacion r : controlador.filtrar(texto)) {
 
+            String usuario = (r.getUsuario() != null && r.getUsuario().getNombre() != null)
+                    ? r.getUsuario().getNombre()
+                    : "Sin usuario";
+
             model.addRow(new Object[]{
                 r.getId(),
                 obtenerCliente(r),
@@ -55,7 +59,8 @@ public class ReparacionCRUDPanel extends javax.swing.JPanel {
                 r.getDiagnostico(),
                 r.getPiezasUsadas(),
                 r.getCostoRepuestos(),
-                r.getEstado()
+                r.getEstado(),
+                usuario
             });
         }
     }
@@ -97,10 +102,14 @@ public class ReparacionCRUDPanel extends javax.swing.JPanel {
     private void cargarTabla() {
 
         DefaultTableModel model = new DefaultTableModel(
-                new String[]{"ID", "Cliente", "Equipo", "Diagnóstico", "Piezas", "Costo", "Estado"}, 0
+                new String[]{"ID", "Cliente", "Equipo", "Diagnóstico", "Piezas", "Costo", "Estado", "Modificado Por"}, 0
         );
 
         for (Reparacion r : controlador.listar()) {
+
+            String usuario = (r.getUsuario() != null && r.getUsuario().getNombre() != null)
+                    ? r.getUsuario().getNombre()
+                    : "Sin usuario";
 
             model.addRow(new Object[]{
                 r.getId(),
@@ -109,7 +118,8 @@ public class ReparacionCRUDPanel extends javax.swing.JPanel {
                 r.getDiagnostico(),
                 r.getPiezasUsadas(),
                 r.getCostoRepuestos(),
-                r.getEstado()
+                r.getEstado(),
+                usuario
             });
         }
 

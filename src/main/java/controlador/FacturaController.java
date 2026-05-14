@@ -43,14 +43,31 @@ public class FacturaController {
     }
 
     public ResultadoOperacion actualizarFactura(Factura f) {
-        String error = validar(f);
 
+        if (f == null || f.getId() == 0) {
+            return ResultadoOperacion.error("Factura inválida");
+        }
+
+        Factura actual = dao.obtenerPorId(f.getId());
+
+        if (actual == null) {
+            return ResultadoOperacion.error("Factura no encontrada");
+        }
+
+        if (actual.getEstado() == Factura.Estado.PAGADA) {
+            return ResultadoOperacion.error("No se puede modificar una factura PAGADA");
+        }
+
+        if (actual.getEstado() == Factura.Estado.ANULADA) {
+            return ResultadoOperacion.error("No se puede modificar una factura ANULADA");
+        }
+
+        String error = validar(f);
         if (error != null) {
             return ResultadoOperacion.error(error);
         }
 
         try {
-
             boolean ok = dao.actualizar(f);
 
             return ok
@@ -60,6 +77,29 @@ public class FacturaController {
         } catch (RuntimeException e) {
             return ResultadoOperacion.error(e.getMessage());
         }
+    }
+
+    public ResultadoOperacion eliminarFactura(int id) {
+
+        Factura f = dao.obtenerPorId(id);
+
+        if (f == null) {
+            return ResultadoOperacion.error("Factura no encontrada");
+        }
+
+        if (f.getEstado() == Factura.Estado.PAGADA) {
+            return ResultadoOperacion.error("No se puede anular una factura PAGADA");
+        }
+
+        if (f.getEstado() == Factura.Estado.ANULADA) {
+            return ResultadoOperacion.error("La factura ya está ANULADA");
+        }
+
+        boolean ok = dao.eliminar(id);
+
+        return ok
+                ? ResultadoOperacion.exito("Factura anulada correctamente")
+                : ResultadoOperacion.error("No se pudo anular la factura");
     }
 
     public List<Factura> filtrarFacturas(String texto) {
@@ -73,6 +113,14 @@ public class FacturaController {
         }
 
         String error = validarReparacion(f);
+
+        if (error != null) {
+            return error;
+        }
+
+        if (error != null) {
+            return error;
+        }
 
         if (error != null) {
             return error;
@@ -151,4 +199,5 @@ public class FacturaController {
 
         return null;
     }
+
 }
