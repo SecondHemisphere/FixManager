@@ -3,6 +3,7 @@ package controlador;
 import dao.FacturaDAO;
 import java.util.List;
 import modelo.Factura;
+import modelo.Factura.MetodoPago;
 import util.ResultadoOperacion;
 
 /**
@@ -104,6 +105,27 @@ public class FacturaController {
 
     public List<Factura> filtrarFacturas(String texto) {
         return dao.filtrar(texto);
+    }
+
+    public ResultadoOperacion pagarFactura(int id, MetodoPago metodo) {
+        Factura f = dao.obtenerPorId(id);
+
+        if (f == null) {
+            return ResultadoOperacion.error("Factura no encontrada");
+        }
+
+        if (f.getEstado() != Factura.Estado.PENDIENTE) {
+            return ResultadoOperacion.error("Solo se pueden pagar facturas PENDIENTES");
+        }
+
+        f.setEstado(Factura.Estado.PAGADA);
+        f.setMetodoPago(metodo);
+
+        boolean ok = dao.actualizar(f);
+
+        return ok
+                ? ResultadoOperacion.exito("Factura pagada correctamente")
+                : ResultadoOperacion.error("No se pudo procesar el pago");
     }
 
     public static String validar(Factura f) {

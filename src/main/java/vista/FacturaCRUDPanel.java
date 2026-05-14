@@ -5,8 +5,10 @@ import java.awt.Color;
 import java.awt.Image;
 import java.time.format.DateTimeFormatter;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelo.Factura;
+import modelo.Factura.MetodoPago;
 import util.DialogUtil;
 import util.ResultadoOperacion;
 
@@ -20,15 +22,22 @@ public class FacturaCRUDPanel extends javax.swing.JPanel {
     private final FacturaController controlador = new FacturaController();
     private int idFactura = 0;
 
+    private final ImageIcon iconPago;
+
     /**
      * Creates new form FacturaCRUDPanel
      */
     public FacturaCRUDPanel() {
         initComponents();
 
-        ImageIcon icon = new ImageIcon(getClass().getResource("/img/buscar.png"));
-        Image img = icon.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH);
-        btnBuscar.setIcon(new ImageIcon(img));
+        ImageIcon iconBuscar = new ImageIcon(getClass().getResource("/img/buscar.png"));
+        Image imgBuscar = iconBuscar.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH);
+        btnBuscar.setIcon(new ImageIcon(imgBuscar));
+
+        ImageIcon iconDinero = new ImageIcon(getClass().getResource("/img/coin.png"));
+        Image imgDinero = iconDinero.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH);
+        this.iconPago = new ImageIcon(imgDinero);
+
         cargarTabla();
     }
 
@@ -176,6 +185,52 @@ public class FacturaCRUDPanel extends javax.swing.JPanel {
     }
 
     /**
+     * Procesa el pago de una factura seleccionada.
+     */
+    private void pagar() {
+        capturarSeleccion();
+
+        if (idFactura == 0) {
+            DialogUtil.mostrarMensajeAdvertencia(this, "Seleccione una factura");
+            return;
+        }
+
+        boolean confirmar = DialogUtil.mostrarDialogoConfirmacion(this, """
+                                                                            \u00bfEst\u00e1 seguro de iniciar el pago de esta factura?
+                                                           
+                                                                            Una vez pagada, la factura no podr\u00e1 ser modificada.""");
+
+        if (!confirmar) {
+            return;
+        }
+
+        MetodoPago metodo = (MetodoPago) JOptionPane.showInputDialog(
+                this,
+                "Seleccione método de pago",
+                "Pagar factura",
+                JOptionPane.QUESTION_MESSAGE,
+                iconPago,
+                MetodoPago.values(),
+                MetodoPago.EFECTIVO
+        );
+
+        if (metodo == null) {
+            return;
+        }
+
+        ResultadoOperacion resultado = controlador.pagarFactura(idFactura, metodo);
+
+        if (!resultado.isExito()) {
+            DialogUtil.mostrarMensajeError(this, resultado.getMensaje());
+            return;
+        }
+
+        DialogUtil.mostrarMensajeInformacion(this, resultado.getMensaje());
+        cargarTabla();
+        idFactura = 0;
+    }
+
+    /**
      * Abre el formulario para registrar una nueva factura.
      */
     private void registrar() {
@@ -198,12 +253,13 @@ public class FacturaCRUDPanel extends javax.swing.JPanel {
         pnlListado = new javax.swing.JPanel();
         pnlScroll = new javax.swing.JScrollPane();
         tblFacturas = new javax.swing.JTable();
-        btnEditar = new javax.swing.JButton();
-        btnNuevo = new javax.swing.JButton();
         lblTitulo = new javax.swing.JLabel();
         lblSubtitulo = new javax.swing.JLabel();
         txtBuscar = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JButton();
+        btnNuevo = new javax.swing.JButton();
+        btnEditar = new javax.swing.JButton();
+        btnPagar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(204, 255, 204));
@@ -235,24 +291,6 @@ public class FacturaCRUDPanel extends javax.swing.JPanel {
         tblFacturas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         pnlScroll.setViewportView(tblFacturas);
 
-        btnEditar.setBackground(new java.awt.Color(51, 204, 0));
-        btnEditar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        btnEditar.setText("Editar");
-        btnEditar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditarActionPerformed(evt);
-            }
-        });
-
-        btnNuevo.setBackground(new java.awt.Color(0, 204, 102));
-        btnNuevo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        btnNuevo.setText("+ Nueva Factura");
-        btnNuevo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnNuevoActionPerformed(evt);
-            }
-        });
-
         lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblTitulo.setText("Listado De Facturas");
 
@@ -283,6 +321,33 @@ public class FacturaCRUDPanel extends javax.swing.JPanel {
             }
         });
 
+        btnNuevo.setBackground(new java.awt.Color(0, 204, 102));
+        btnNuevo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnNuevo.setText("+ Nueva Factura");
+        btnNuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoActionPerformed(evt);
+            }
+        });
+
+        btnEditar.setBackground(new java.awt.Color(102, 102, 255));
+        btnEditar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
+
+        btnPagar.setBackground(new java.awt.Color(51, 204, 0));
+        btnPagar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnPagar.setText("Pagar");
+        btnPagar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPagarActionPerformed(evt);
+            }
+        });
+
         btnEliminar.setBackground(new java.awt.Color(255, 51, 51));
         btnEliminar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnEliminar.setText("Eliminar");
@@ -299,7 +364,9 @@ public class FacturaCRUDPanel extends javax.swing.JPanel {
             .addGroup(pnlListadoLayout.createSequentialGroup()
                 .addGap(273, 273, 273)
                 .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(176, 176, 176)
+                .addGap(40, 40, 40)
+                .addComponent(btnPagar, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39)
                 .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(pnlListadoLayout.createSequentialGroup()
@@ -341,7 +408,8 @@ public class FacturaCRUDPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlListadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEditar)
-                    .addComponent(btnEliminar))
+                    .addComponent(btnEliminar)
+                    .addComponent(btnPagar))
                 .addGap(16, 16, 16))
         );
 
@@ -387,12 +455,17 @@ public class FacturaCRUDPanel extends javax.swing.JPanel {
         eliminar();
     }//GEN-LAST:event_btnEliminarActionPerformed
 
+    private void btnPagarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPagarActionPerformed
+        pagar();
+    }//GEN-LAST:event_btnPagarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnNuevo;
+    private javax.swing.JButton btnPagar;
     private javax.swing.JLabel lblSubtitulo;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JPanel pnlListado;
