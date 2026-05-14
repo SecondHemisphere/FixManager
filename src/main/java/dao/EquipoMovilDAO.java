@@ -274,10 +274,7 @@ public class EquipoMovilDAO {
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(
-                    "Error al verificar equipos del cliente",
-                    e
-            );
+            throw new RuntimeException("Error al verificar equipos del cliente", e);
         }
     }
 }

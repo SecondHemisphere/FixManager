@@ -37,6 +37,29 @@ public class RecepcionEntregaController {
     }
 
     public ResultadoOperacion actualizarRecepcion(RecepcionEntrega r) {
+
+        if (r == null || r.getId() == 0) {
+            return ResultadoOperacion.error("Recepción inválida");
+        }
+
+        RecepcionEntrega actual = dao.obtenerPorId(r.getId());
+
+        if (actual == null) {
+            return ResultadoOperacion.error("Recepción no encontrada");
+        }
+
+        if (actual.getEstado() == RecepcionEntrega.Estado.LISTO) {
+            return ResultadoOperacion.error("No se puede modificar una recepción LISTA");
+        }
+
+        if (actual.getEstado() == RecepcionEntrega.Estado.ENTREGADO) {
+            return ResultadoOperacion.error("No se puede modificar una recepción ENTREGADA");
+        }
+
+        if (actual.getEstado() == RecepcionEntrega.Estado.ANULADO) {
+            return ResultadoOperacion.error("No se puede modificar una recepción ANULADA");
+        }
+
         String error = validar(r);
 
         if (error != null) {
