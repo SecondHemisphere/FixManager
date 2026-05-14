@@ -1,6 +1,7 @@
 package controlador;
 
 import dao.ClienteDAO;
+import dao.EquipoMovilDAO;
 import java.util.List;
 import java.util.regex.Pattern;
 import modelo.Cliente;
@@ -14,6 +15,8 @@ import util.ResultadoOperacion;
 public class ClienteController {
 
     private final ClienteDAO dao = new ClienteDAO();
+    private final EquipoMovilDAO equipoDao = new EquipoMovilDAO();
+
     private static final Pattern SOLO_NUMEROS = Pattern.compile("\\d+");
     private static final Pattern EMAIL = Pattern.compile("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
 
@@ -70,6 +73,16 @@ public class ClienteController {
     }
 
     public ResultadoOperacion eliminarCliente(int id) {
+        Cliente c = dao.obtenerPorId(id);
+
+        if (c == null) {
+            return ResultadoOperacion.error("Cliente no encontrado");
+        }
+
+        if (equipoDao.existePorCliente(id)) {
+            return ResultadoOperacion.error("No se puede eliminar un cliente con equipos móviles registrados");
+        }
+
         boolean ok = dao.eliminar(id);
 
         return ok

@@ -14,7 +14,8 @@ public class RecepcionEntrega {
 
         RECIBIDO("Recibido"),
         LISTO("Listo"),
-        ENTREGADO("Entregado");
+        ENTREGADO("Entregado"),
+        ANULADO("Anulado");
 
         private final String descripcion;
 

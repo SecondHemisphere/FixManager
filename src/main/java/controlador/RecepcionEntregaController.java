@@ -51,11 +51,29 @@ public class RecepcionEntregaController {
     }
 
     public ResultadoOperacion eliminarRecepcion(int id) {
+        RecepcionEntrega r = dao.obtenerPorId(id);
+
+        if (r == null) {
+            return ResultadoOperacion.error("Recepción no encontrada");
+        }
+
+        if (r.getEstado() == RecepcionEntrega.Estado.ENTREGADO) {
+            return ResultadoOperacion.error("No se puede anular una recepción ENTREGADA");
+        }
+
+        if (r.getEstado() == RecepcionEntrega.Estado.LISTO) {
+            return ResultadoOperacion.error("No se puede anular una recepción LISTA");
+        }
+
+        if (r.getEstado() == RecepcionEntrega.Estado.ANULADO) {
+            return ResultadoOperacion.error("La recepción ya está ANULADA");
+        }
+
         boolean ok = dao.eliminar(id);
 
         return ok
-                ? ResultadoOperacion.exito("Recepción eliminada correctamente")
-                : ResultadoOperacion.error("No se pudo eliminar la recepción");
+                ? ResultadoOperacion.exito("Recepción anulada correctamente")
+                : ResultadoOperacion.error("No se pudo anular la recepción");
     }
 
     public List<RecepcionEntrega> filtrarRecepciones(String texto) {

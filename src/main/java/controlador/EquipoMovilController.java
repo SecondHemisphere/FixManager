@@ -54,6 +54,20 @@ public class EquipoMovilController {
     }
 
     public ResultadoOperacion eliminarEquipo(int id) {
+        EquipoMovil e = dao.obtenerPorId(id);
+
+        if (e == null) {
+            return ResultadoOperacion.error("Equipo móvil no encontrado");
+        }
+
+        if (e.getEstado() == EquipoMovil.Estado.RECEPCIONADO) {
+            return ResultadoOperacion.error("No se puede eliminar un equipo RECEPCIONADO");
+        }
+
+        if (e.getEstado() == EquipoMovil.Estado.ENTREGADO) {
+            return ResultadoOperacion.error("No se puede eliminar un equipo ENTREGADO");
+        }
+
         boolean ok = dao.eliminar(id);
 
         return ok

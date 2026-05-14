@@ -123,8 +123,8 @@ public class EquipoMovilDAO {
 
         String sql = """
             INSERT INTO equipo_movil
-            (marca, modelo, imei, tipo, descripcion_danio, estado, cliente_id)
-            VALUES (?,?,?,?,?,?,?)
+            (marca, modelo, imei, tipo, descripcion_danio, cliente_id)
+            VALUES (?,?,?,?,?,?)
         """;
 
         try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
@@ -134,8 +134,7 @@ public class EquipoMovilDAO {
             pst.setString(3, e.getImei());
             pst.setString(4, e.getTipo());
             pst.setString(5, e.getDescripcionDanio());
-            pst.setString(6, e.getEstado().name());
-            pst.setInt(7, e.getCliente().getId());
+            pst.setInt(6, e.getCliente().getId());
 
             return pst.executeUpdate() > 0;
 
@@ -151,10 +150,9 @@ public class EquipoMovilDAO {
      * @return true si se actualizó correctamente
      */
     public boolean actualizar(EquipoMovil e) {
-
         String sql = """
             UPDATE equipo_movil
-            SET marca=?, modelo=?, imei=?, tipo=?, descripcion_danio=?, estado=?, cliente_id=?
+            SET marca=?, modelo=?, imei=?, tipo=?, descripcion_danio=?, cliente_id=?
             WHERE id=?
         """;
 
@@ -165,9 +163,8 @@ public class EquipoMovilDAO {
             pst.setString(3, e.getImei());
             pst.setString(4, e.getTipo());
             pst.setString(5, e.getDescripcionDanio());
-            pst.setString(6, e.getEstado().name());
-            pst.setInt(7, e.getCliente().getId());
-            pst.setInt(8, e.getId());
+            pst.setInt(6, e.getCliente().getId());
+            pst.setInt(7, e.getId());
 
             return pst.executeUpdate() > 0;
 
@@ -251,5 +248,36 @@ public class EquipoMovilDAO {
         }
 
         return lista;
+    }
+
+    /**
+     * Verifica si un cliente tiene equipos móviles registrados.
+     *
+     * @param idCliente ID del cliente
+     * @return true si el cliente tiene al menos un equipo registrado
+     */
+    public boolean existePorCliente(int idCliente) {
+
+        String sql = """
+            SELECT 1
+            FROM equipo_movil
+            WHERE cliente_id = ?
+            LIMIT 1
+        """;
+
+        try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setInt(1, idCliente);
+
+            try (ResultSet rs = pst.executeQuery()) {
+                return rs.next();
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(
+                    "Error al verificar equipos del cliente",
+                    e
+            );
+        }
     }
 }

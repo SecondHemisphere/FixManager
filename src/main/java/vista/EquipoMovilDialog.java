@@ -39,7 +39,7 @@ public class EquipoMovilDialog extends javax.swing.JDialog {
 
         if (equipo != null) {
             lblTitulo.setText("Editar Equipo Móvil");
-            btnGuardar.setText("Actualizar Equipo Móvil");
+            btnGuardar.setText("Actualizar");
             cargarDatos();
         } else {
             lblTitulo.setText("Nuevo Equipo Móvil");

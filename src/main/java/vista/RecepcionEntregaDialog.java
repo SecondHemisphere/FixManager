@@ -37,7 +37,6 @@ public class RecepcionEntregaDialog extends javax.swing.JDialog {
         this.recepcion = recepcion;
 
         cargarEquipos();
-        cargarEstados();
 
         if (recepcion != null) {
             lblTitulo.setText("Editar Recepción");
@@ -63,19 +62,11 @@ public class RecepcionEntregaDialog extends javax.swing.JDialog {
     }
 
     /**
-     * Carga combo de estados
-     */
-    private void cargarEstados() {
-        cbxEstado.setModel(new DefaultComboBoxModel<>(RecepcionEntrega.Estado.values()));
-    }
-
-    /**
      * Carga los datos de la recepción en el formulario (modo edición).
      */
     private void cargarDatos() {
         cbxEquipo.setSelectedItem(recepcion.getEquipoMovil());
         txtaProblema.setText(recepcion.getProblemaReportado());
-        cbxEstado.setSelectedItem(recepcion.getEstado());
     }
 
     /**
@@ -92,7 +83,6 @@ public class RecepcionEntregaDialog extends javax.swing.JDialog {
 
             r.setEquipoMovil((EquipoMovil) cbxEquipo.getSelectedItem());
             r.setProblemaReportado(txtaProblema.getText().trim());
-            r.setEstado((RecepcionEntrega.Estado) cbxEstado.getSelectedItem());
             r.setUsuario(Sesion.getUsuarioActual());
 
             ResultadoOperacion resultado = (recepcion == null)
@@ -129,8 +119,6 @@ public class RecepcionEntregaDialog extends javax.swing.JDialog {
         cbxEquipo = new javax.swing.JComboBox<EquipoMovil>();
         scrProblema = new javax.swing.JScrollPane();
         txtaProblema = new javax.swing.JTextArea();
-        lblEstado = new javax.swing.JLabel();
-        cbxEstado = new javax.swing.JComboBox<RecepcionEntrega.Estado>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -163,10 +151,6 @@ public class RecepcionEntregaDialog extends javax.swing.JDialog {
         txtaProblema.setWrapStyleWord(true);
         scrProblema.setViewportView(txtaProblema);
 
-        lblEstado.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lblEstado.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblEstado.setText("Estado *:");
-
         javax.swing.GroupLayout pnlFormularioLayout = new javax.swing.GroupLayout(pnlFormulario);
         pnlFormulario.setLayout(pnlFormularioLayout);
         pnlFormularioLayout.setHorizontalGroup(
@@ -178,17 +162,17 @@ public class RecepcionEntregaDialog extends javax.swing.JDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFormularioLayout.createSequentialGroup()
                 .addContainerGap(16, Short.MAX_VALUE)
                 .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(lblProblema, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblProblema, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblEquipo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cbxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cbxEquipo, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(scrProblema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(36, 36, 36))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFormularioLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(120, 120, 120))
         );
         pnlFormularioLayout.setVerticalGroup(
             pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -202,15 +186,10 @@ public class RecepcionEntregaDialog extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblProblema)
-                    .addGroup(pnlFormularioLayout.createSequentialGroup()
-                        .addComponent(scrProblema, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cbxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblEstado))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                    .addComponent(scrProblema, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addComponent(btnGuardar)
-                .addGap(11, 11, 11))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -234,9 +213,7 @@ public class RecepcionEntregaDialog extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;
     private javax.swing.JComboBox<EquipoMovil> cbxEquipo;
-    private javax.swing.JComboBox<RecepcionEntrega.Estado> cbxEstado;
     private javax.swing.JLabel lblEquipo;
-    private javax.swing.JLabel lblEstado;
     private javax.swing.JLabel lblProblema;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JPanel pnlFormulario;

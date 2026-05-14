@@ -150,20 +150,18 @@ public class RecepcionEntregaDAO {
      * @return true si se insertó correctamente
      */
     public boolean guardar(RecepcionEntrega r) {
-
         String sql = """
             INSERT INTO recepcion_entrega
-            (fecha_recepcion, problema_reportado, estado, equipo_id, usuario_id)
-            VALUES (?,?,?,?,?)
+            (fecha_recepcion, problema_reportado, equipo_id, usuario_id)
+            VALUES (?,?,?,?)
         """;
 
         try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
 
             pst.setTimestamp(1, Timestamp.valueOf(r.getFechaRecepcion()));
             pst.setString(2, r.getProblemaReportado());
-            pst.setString(3, r.getEstado().name());
-            pst.setInt(4, r.getEquipoMovil().getId());
-            pst.setInt(5, r.getUsuario().getId());
+            pst.setInt(3, r.getEquipoMovil().getId());
+            pst.setInt(4, r.getUsuario().getId());
 
             return pst.executeUpdate() > 0;
 
@@ -179,19 +177,17 @@ public class RecepcionEntregaDAO {
      * @return true si se actualizó correctamente
      */
     public boolean actualizar(RecepcionEntrega r) {
-
         String sql = """
             UPDATE recepcion_entrega
-            SET problema_reportado=?, estado=?, usuario_id=?
+            SET problema_reportado=?, usuario_id=?
             WHERE id=?
         """;
 
         try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
 
             pst.setString(1, r.getProblemaReportado());
-            pst.setString(2, r.getEstado().name());
-            pst.setInt(3, r.getUsuario().getId());
-            pst.setInt(4, r.getId());
+            pst.setInt(2, r.getUsuario().getId());
+            pst.setInt(3, r.getId());
 
             return pst.executeUpdate() > 0;
 
@@ -201,23 +197,27 @@ public class RecepcionEntregaDAO {
     }
 
     /**
-     * Elimina una recepción por su ID.
+     * Anula una recepción por su ID.
      *
-     * @param id ID de la recepción
-     * @return true si se eliminó correctamente
+     * @param idRecepcion ID de la recepción
+     * @return true si se anuló correctamente
      */
-    public boolean eliminar(int id) {
-
-        String sql = "DELETE FROM recepcion_entrega WHERE id=?";
+    public boolean eliminar(int idRecepcion) {
+        String sql = """
+            UPDATE recepcion_entrega
+            SET estado = 'ANULADO'
+            WHERE id = ?
+            AND estado = 'RECIBIDO'
+        """;
 
         try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
 
-            pst.setInt(1, id);
+            pst.setInt(1, idRecepcion);
 
             return pst.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error al eliminar recepción", e);
+            throw new RuntimeException("Error al anular recepción", e);
         }
     }
 
