@@ -1,9 +1,16 @@
 package vista;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Image;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.SwingConstants;
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import util.Sesion;
 
@@ -13,10 +20,18 @@ import util.Sesion;
  */
 public class FrmMenu extends javax.swing.JFrame {
 
+    private static final Color COLOR_MENU_PRINCIPAL = new Color(255, 255, 255);
+    private static final Color COLOR_MENU_ITEM = new Color(245, 246, 250);
+    private static final Color COLOR_TEXTO = new Color(45, 52, 54);
+
+    private static final Color COLOR_CERRAR_SESION = new Color(255, 230, 230);
+    private static final Color COLOR_CERRAR_SESION_HOVER = new Color(255, 175, 175);
+    private static final Color COLOR_TEXTO_CERRAR_SESION = new Color(214, 48, 49);
+
     public FrmMenu() {
         initComponents();
 
-        menuBar.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        menuBar.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 
         estilizarMenu(menuUsuario);
         estilizarMenu(menuCliente);
@@ -35,12 +50,38 @@ public class FrmMenu extends javax.swing.JFrame {
         estilizarItem(itemCerrarSesion);
 
         menuBar.setOpaque(true);
-        menuBar.setBackground(new Color(80, 80, 80));
-        menuBar.setForeground(Color.WHITE);
+        menuBar.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(45, 52, 54)),
+                BorderFactory.createEmptyBorder(3, 5, 3, 5)
+        ));
+        menuBar.setPreferredSize(new Dimension(900, 35));
+        menuBar.setBackground(COLOR_MENU_PRINCIPAL);
+        menuBar.setForeground(COLOR_TEXTO);
 
+        // Estilos específicos fijos y hover para el botón de Cerrar Sesión
         menuCerrarSesion.setOpaque(true);
-        menuCerrarSesion.setBackground(new Color(220, 53, 69));
-        menuCerrarSesion.setForeground(Color.WHITE);
+        menuCerrarSesion.setBackground(COLOR_CERRAR_SESION);
+        menuCerrarSesion.setForeground(COLOR_TEXTO_CERRAR_SESION);
+
+        menuCerrarSesion.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                menuCerrarSesion.setBackground(COLOR_CERRAR_SESION_HOVER);
+            }
+
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                menuCerrarSesion.setBackground(COLOR_CERRAR_SESION);
+            }
+        });
+
+        menuUsuario.setIcon(obtenerIcono("/img/usuario.png", 24, 24));
+        menuCliente.setIcon(obtenerIcono("/img/cliente.png", 24, 24));
+        menuEquipoMovil.setIcon(obtenerIcono("/img/equipo.png", 24, 24));
+        menuRecepcionEntrega.setIcon(obtenerIcono("/img/recepcion.png", 24, 24));
+        menuReparacion.setIcon(obtenerIcono("/img/reparacion.png", 24, 24));
+        menuFactura.setIcon(obtenerIcono("/img/factura.png", 24, 24));
+        menuCerrarSesion.setIcon(obtenerIcono("/img/logout.png", 24, 24));
 
         try {
             ImageIcon imagen = new ImageIcon(getClass().getResource("/img/fondo2.png"));
@@ -56,6 +97,10 @@ public class FrmMenu extends javax.swing.JFrame {
         }
 
         configurarPermisos();
+
+        menuBar.remove(menuCerrarSesion);
+        menuBar.add(Box.createHorizontalGlue());
+        menuBar.add(menuCerrarSesion);
     }
 
     private void configurarPermisos() {
@@ -75,23 +120,40 @@ public class FrmMenu extends javax.swing.JFrame {
         }
     }
 
-    private void estilizarMenu(javax.swing.JMenu menu) {
-        menu.setFont(new java.awt.Font("Tahoma", java.awt.Font.BOLD, 14));
-        menu.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 15, 5, 15));
+    private void estilizarMenu(JMenu menu) {
+        menu.setFont(new Font("Tahoma", Font.BOLD, 12));
+        menu.setBorder(BorderFactory.createEmptyBorder(3, 8, 3, 8));
 
         menu.setOpaque(true);
-        menu.setBackground(new java.awt.Color(80, 80, 80));
-        menu.setForeground(java.awt.Color.WHITE);
+        menu.setBackground(COLOR_MENU_PRINCIPAL);
+        menu.setForeground(COLOR_TEXTO);
+
+        menu.setHorizontalTextPosition(SwingConstants.RIGHT);
+        menu.setVerticalTextPosition(SwingConstants.CENTER);
+        menu.setIconTextGap(5);
+
+        if (menu.getPopupMenu() != null) {
+            menu.getPopupMenu().setBorder(BorderFactory.createLineBorder(new Color(220, 221, 225), 1));
+            menu.getPopupMenu().setBackground(COLOR_MENU_ITEM);
+        }
     }
 
-    private void estilizarItem(javax.swing.JMenuItem item) {
-        item.setFont(new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 12));
-        item.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 20, 8, 20));
-        item.setPreferredSize(new java.awt.Dimension(200, 30));
+    private void estilizarItem(JMenuItem item) {
+        item.setFont(new Font("Tahoma", java.awt.Font.PLAIN, 12));
+        item.setBorder(BorderFactory.createEmptyBorder(6, 12, 6, 12));
+        item.setPreferredSize(new Dimension(190, 32));
 
         item.setOpaque(true);
-        item.setBackground(new java.awt.Color(80, 80, 80));
-        item.setForeground(java.awt.Color.WHITE);
+        item.setBackground(COLOR_MENU_ITEM);
+        item.setForeground(COLOR_TEXTO);
+
+        item.setMargin(new java.awt.Insets(0, 0, 0, 0));
+    }
+
+    private ImageIcon obtenerIcono(String ruta, int ancho, int alto) {
+        ImageIcon icono = new ImageIcon(getClass().getResource(ruta));
+        Image img = icono.getImage().getScaledInstance(ancho, alto, Image.SCALE_SMOOTH);
+        return new ImageIcon(img);
     }
 
     @SuppressWarnings("unchecked")
@@ -298,7 +360,6 @@ public class FrmMenu extends javax.swing.JFrame {
 
         menuBar.add(menuFactura);
 
-        menuCerrarSesion.setText("Cerrar Sesión");
         menuCerrarSesion.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         menuCerrarSesion.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         menuCerrarSesion.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);

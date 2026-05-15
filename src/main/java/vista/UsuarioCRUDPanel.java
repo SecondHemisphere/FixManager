@@ -228,7 +228,6 @@ public class UsuarioCRUDPanel extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        tblUsuarios.setOpaque(false);
         tblUsuarios.setPreferredSize(null);
         tblUsuarios.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         pnlScroll.setViewportView(tblUsuarios);

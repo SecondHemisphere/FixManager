@@ -122,7 +122,6 @@
                     <Column editable="false" title="Title 4" type="java.lang.Object"/>
                   </Table>
                 </Property>
-                <Property name="opaque" type="boolean" value="false"/>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                   <Dimension value="null"/>
                 </Property>
