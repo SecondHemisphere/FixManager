@@ -183,23 +183,25 @@ public class FacturaDAO {
      * caso contrario
      */
     public boolean existePorReparacion(int reparacionId) {
-        String sql = "SELECT COUNT(*) FROM factura WHERE reparacion_id=?";
+        String sql = """
+            SELECT COUNT(*)
+            FROM factura
+            WHERE reparacion_id = ?
+              AND estado <> 'ANULADA'
+        """;
 
         try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
 
             pst.setInt(1, reparacionId);
 
             try (ResultSet rs = pst.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt(1) > 0;
-                }
+
+                return rs.next() && rs.getInt(1) > 0;
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error al verificar factura", e);
         }
-
-        return false;
     }
 
     /**

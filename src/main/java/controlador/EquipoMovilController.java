@@ -1,6 +1,7 @@
 package controlador;
 
 import dao.EquipoMovilDAO;
+import dao.RecepcionEntregaDAO;
 import java.util.List;
 import java.util.regex.Pattern;
 import modelo.EquipoMovil;
@@ -14,6 +15,7 @@ import util.ResultadoOperacion;
 public class EquipoMovilController {
 
     private final EquipoMovilDAO dao = new EquipoMovilDAO();
+    private final RecepcionEntregaDAO recepcionDao = new RecepcionEntregaDAO();
     private static final Pattern SOLO_NUMEROS = Pattern.compile("\\d+");
     private static final Pattern IMEI_PATTERN = Pattern.compile("\\d{15}");
 
@@ -60,12 +62,8 @@ public class EquipoMovilController {
             return ResultadoOperacion.error("Equipo móvil no encontrado");
         }
 
-        if (e.getEstado() == EquipoMovil.Estado.RECEPCIONADO) {
-            return ResultadoOperacion.error("No se puede eliminar un equipo RECEPCIONADO");
-        }
-
-        if (e.getEstado() == EquipoMovil.Estado.ENTREGADO) {
-            return ResultadoOperacion.error("No se puede eliminar un equipo ENTREGADO");
+        if (recepcionDao.existePorEquipo(e.getId())) {
+            return ResultadoOperacion.error("No se puede eliminar el equipo porque tiene recepciones registradas");
         }
 
         boolean ok = dao.eliminar(id);

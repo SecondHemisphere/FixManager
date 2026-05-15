@@ -59,7 +59,6 @@ public class EquipoMovilCRUDPanel extends javax.swing.JPanel {
                 e.getModelo(),
                 e.getImei(),
                 e.getTipo(),
-                e.getEstado() != null ? e.getEstado().name() : "",
                 clienteNombre
             });
         }
@@ -82,7 +81,7 @@ public class EquipoMovilCRUDPanel extends javax.swing.JPanel {
     private void cargarTabla() {
 
         DefaultTableModel model = new DefaultTableModel(
-                new String[]{"ID", "Marca", "Modelo", "IMEI", "Tipo", "Estado", "Cliente"}, 0
+                new String[]{"ID", "Marca", "Modelo", "IMEI", "Tipo", "Cliente"}, 0
         );
 
         for (EquipoMovil e : controlador.listarEquipos()) {
@@ -92,7 +91,6 @@ public class EquipoMovilCRUDPanel extends javax.swing.JPanel {
                 e.getModelo(),
                 e.getImei(),
                 e.getTipo(),
-                e.getEstado(),
                 e.getCliente().getNombre()
             });
         }

@@ -33,6 +33,21 @@ public class ReparacionController {
     }
 
     public ResultadoOperacion actualizar(Reparacion r) {
+
+        if (r == null || r.getId() == 0) {
+            return ResultadoOperacion.error("Reparación inválida");
+        }
+
+        Reparacion actual = dao.obtenerPorId(r.getId());
+
+        if (actual == null) {
+            return ResultadoOperacion.error("Reparación no encontrada");
+        }
+
+        if (dao.tieneFactura(r.getId())) {
+            return ResultadoOperacion.error("La reparación no se puede modificar porque tiene una factura generada");
+        }
+
         String error = validar(r);
 
         if (error != null) {
@@ -44,6 +59,28 @@ public class ReparacionController {
         return ok
                 ? ResultadoOperacion.exito("Reparación actualizada")
                 : ResultadoOperacion.error("No se pudo actualizar");
+    }
+
+    public ResultadoOperacion eliminar(int id) {
+        Reparacion r = dao.obtenerPorId(id);
+
+        if (r == null) {
+            return ResultadoOperacion.error("Reparación no encontrada");
+        }
+
+        if (r.getEstado() == Reparacion.Estado.EN_PROCESO) {
+            return ResultadoOperacion.error("No se puede eliminar una reparación EN PROCESO");
+        }
+
+        if (r.getEstado() == Reparacion.Estado.FINALIZADO) {
+            return ResultadoOperacion.error("No se puede eliminar una reparación FINALIZADA");
+        }
+
+        boolean ok = dao.eliminar(id);
+
+        return ok
+                ? ResultadoOperacion.exito("Reparación eliminada correctamente")
+                : ResultadoOperacion.error("No se pudo eliminar la reparación");
     }
 
     public List<Reparacion> filtrar(String texto) {

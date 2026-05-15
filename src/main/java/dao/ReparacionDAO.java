@@ -101,6 +101,34 @@ public class ReparacionDAO {
     }
 
     /**
+     * Verifica si la reparación tiene una factura válida asociada.
+     *
+     * @param reparacionId ID de la reparación
+     * @return true si existe una factura válida
+     */
+    public boolean tieneFactura(int reparacionId) {
+        String sql = """
+            SELECT COUNT(*)
+            FROM factura
+            WHERE reparacion_id = ?
+              AND estado <> 'ANULADA'
+        """;
+
+        try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setInt(1, reparacionId);
+
+            try (ResultSet rs = pst.executeQuery()) {
+
+                return rs.next() && rs.getInt(1) > 0;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al verificar factura", e);
+        }
+    }
+
+    /**
      * Guarda una reparación en la base de datos.
      *
      * @param r objeto reparación
@@ -243,5 +271,66 @@ public class ReparacionDAO {
         }
 
         return lista;
+    }
+
+    /**
+     * Elimina una reparación por su ID.
+     *
+     * @param idReparacion ID de la reparación
+     * @return true si se eliminó correctamente
+     */
+    public boolean eliminar(int idReparacion) {
+        String sql = "DELETE FROM reparacion WHERE id = ?";
+
+        try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setInt(1, idReparacion);
+
+            return pst.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al eliminar reparación", e);
+        }
+    }
+
+    /**
+     * Obtiene una reparación por su ID.
+     *
+     * @param id ID de la reparación
+     * @return reparación encontrada o null
+     */
+    public Reparacion obtenerPorId(int id) {
+        String sql = """
+            SELECT *
+            FROM reparacion
+            WHERE id = ?
+        """;
+
+        try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setInt(1, id);
+
+            try (ResultSet rs = pst.executeQuery()) {
+
+                if (rs.next()) {
+
+                    Reparacion r = new Reparacion();
+
+                    r.setId(rs.getInt("id"));
+                    r.setDiagnostico(rs.getString("diagnostico"));
+                    r.setSolucion(rs.getString("solucion"));
+                    r.setCostoRepuestos(rs.getDouble("costo_repuestos"));
+                    r.setPiezasUsadas(rs.getString("piezas_usadas"));
+                    r.setEstado(Reparacion.Estado.valueOf(rs.getString("estado")));
+
+                    return r;
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al obtener reparación", e);
+        }
+
+        return null;
     }
 }

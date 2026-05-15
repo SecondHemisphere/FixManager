@@ -30,7 +30,7 @@ public class RecepcionEntregaDAO {
 
         String sql = """
             SELECT r.*, 
-                   e.id AS equipo_id, e.marca, e.modelo, e.imei, e.tipo, e.descripcion_danio, e.estado AS estado_equipo,
+                   e.id AS equipo_id, e.marca, e.modelo, e.imei, e.tipo, e.descripcion_danio,
                    c.id AS cliente_id, c.nombre,
                    u.id AS usuario_id, u.nombre AS usuario_nombre
             FROM recepcion_entrega r
@@ -54,8 +54,6 @@ public class RecepcionEntregaDAO {
                 e.setImei(rs.getString("imei"));
                 e.setTipo(rs.getString("tipo"));
                 e.setDescripcionDanio(rs.getString("descripcion_danio"));
-                e.setEstado(EquipoMovil.Estado.valueOf(rs.getString("estado_equipo")));
-                e.setCliente(c);
 
                 Usuario u = new Usuario();
                 u.setId(rs.getInt("usuario_id"));
@@ -86,17 +84,18 @@ public class RecepcionEntregaDAO {
      * @return recepción encontrada o null si no existe
      */
     public RecepcionEntrega obtenerPorId(int idRecepcion) {
+
         String sql = """
-        SELECT r.*, 
-               e.id AS equipo_id, e.marca, e.modelo, e.imei, e.tipo, e.descripcion_danio, e.estado AS estado_equipo,
-               c.id AS cliente_id, c.nombre,
-               u.id AS usuario_id, u.nombre AS usuario_nombre
-        FROM recepcion_entrega r
-        INNER JOIN equipo_movil e ON r.equipo_id = e.id
-        INNER JOIN cliente c ON e.cliente_id = c.id
-        LEFT JOIN usuario u ON r.usuario_id = u.id
-        WHERE r.id = ?
-    """;
+            SELECT r.*, 
+                   e.id AS equipo_id, e.marca, e.modelo, e.imei, e.tipo, e.descripcion_danio,
+                   c.id AS cliente_id, c.nombre,
+                   u.id AS usuario_id, u.nombre AS usuario_nombre
+            FROM recepcion_entrega r
+            INNER JOIN equipo_movil e ON r.equipo_id = e.id
+            INNER JOIN cliente c ON e.cliente_id = c.id
+            LEFT JOIN usuario u ON r.usuario_id = u.id
+            WHERE r.id = ?
+        """;
 
         try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
 
@@ -117,8 +116,6 @@ public class RecepcionEntregaDAO {
                     e.setImei(rs.getString("imei"));
                     e.setTipo(rs.getString("tipo"));
                     e.setDescripcionDanio(rs.getString("descripcion_danio"));
-                    e.setEstado(EquipoMovil.Estado.valueOf(rs.getString("estado_equipo")));
-                    e.setCliente(c);
 
                     Usuario u = new Usuario();
                     u.setId(rs.getInt("usuario_id"));
@@ -150,6 +147,7 @@ public class RecepcionEntregaDAO {
      * @return true si se insertó correctamente
      */
     public boolean guardar(RecepcionEntrega r) {
+
         String sql = """
             INSERT INTO recepcion_entrega
             (fecha_recepcion, problema_reportado, equipo_id, usuario_id)
@@ -177,6 +175,7 @@ public class RecepcionEntregaDAO {
      * @return true si se actualizó correctamente
      */
     public boolean actualizar(RecepcionEntrega r) {
+
         String sql = """
             UPDATE recepcion_entrega
             SET problema_reportado=?, usuario_id=?
@@ -203,6 +202,7 @@ public class RecepcionEntregaDAO {
      * @return true si se anuló correctamente
      */
     public boolean eliminar(int idRecepcion) {
+
         String sql = """
             UPDATE recepcion_entrega
             SET estado = 'ANULADO'
@@ -228,6 +228,7 @@ public class RecepcionEntregaDAO {
      * @return lista de recepciones que coinciden
      */
     public List<RecepcionEntrega> filtrar(String texto) {
+
         List<RecepcionEntrega> lista = new ArrayList<>();
 
         String sql = """
@@ -264,7 +265,6 @@ public class RecepcionEntregaDAO {
                     e.setId(rs.getInt("equipo_id"));
                     e.setMarca(rs.getString("marca"));
                     e.setModelo(rs.getString("modelo"));
-                    e.setCliente(c);
 
                     Usuario u = new Usuario();
                     u.setId(rs.getInt("usuario_id"));
@@ -286,5 +286,33 @@ public class RecepcionEntregaDAO {
         }
 
         return lista;
+    }
+
+    /**
+     * Verifica si un equipo móvil tiene recepciones registradas.
+     *
+     * @param idEquipo ID del equipo
+     * @return true si el equipo móvil tiene al menos una recepción registrada
+     */
+    public boolean existePorEquipo(int idEquipo) {
+
+        String sql = """
+            SELECT 1
+            FROM recepcion_entrega
+            WHERE equipo_id = ?
+            LIMIT 1
+        """;
+
+        try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setInt(1, idEquipo);
+
+            try (ResultSet rs = pst.executeQuery()) {
+                return rs.next();
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al verificar recepciones del equipo", e);
+        }
     }
 }

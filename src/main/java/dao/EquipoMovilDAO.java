@@ -23,6 +23,7 @@ public class EquipoMovilDAO {
      * @return lista de equipos móviles
      */
     public List<EquipoMovil> listar() {
+
         List<EquipoMovil> lista = new ArrayList<>();
 
         String sql = """
@@ -49,8 +50,6 @@ public class EquipoMovilDAO {
                 e.setImei(rs.getString("imei"));
                 e.setTipo(rs.getString("tipo"));
                 e.setDescripcionDanio(rs.getString("descripcion_danio"));
-
-                e.setEstado(EquipoMovil.Estado.valueOf(rs.getString("estado")));
                 e.setCliente(c);
 
                 lista.add(e);
@@ -83,6 +82,7 @@ public class EquipoMovilDAO {
             pst.setInt(1, idEquipo);
 
             try (ResultSet rs = pst.executeQuery()) {
+
                 if (rs.next()) {
 
                     Cliente c = new Cliente();
@@ -99,7 +99,6 @@ public class EquipoMovilDAO {
                     e.setImei(rs.getString("imei"));
                     e.setTipo(rs.getString("tipo"));
                     e.setDescripcionDanio(rs.getString("descripcion_danio"));
-                    e.setEstado(EquipoMovil.Estado.valueOf(rs.getString("estado")));
                     e.setCliente(c);
 
                     return e;
@@ -150,6 +149,7 @@ public class EquipoMovilDAO {
      * @return true si se actualizó correctamente
      */
     public boolean actualizar(EquipoMovil e) {
+
         String sql = """
             UPDATE equipo_movil
             SET marca=?, modelo=?, imei=?, tipo=?, descripcion_danio=?, cliente_id=?
@@ -201,15 +201,16 @@ public class EquipoMovilDAO {
      * @return lista de equipos que coinciden
      */
     public List<EquipoMovil> filtrar(String texto) {
+
         List<EquipoMovil> lista = new ArrayList<>();
 
         String sql = """
-        SELECT e.*, c.id AS cliente_id, c.nombre, c.correo, c.telefono, c.direccion
-        FROM equipo_movil e
-        INNER JOIN cliente c ON e.cliente_id = c.id
-        WHERE LOWER(e.imei) LIKE ?
-           OR LOWER(c.nombre) LIKE ?
-    """;
+            SELECT e.*, c.id AS cliente_id, c.nombre, c.correo, c.telefono, c.direccion
+            FROM equipo_movil e
+            INNER JOIN cliente c ON e.cliente_id = c.id
+            WHERE LOWER(e.imei) LIKE ?
+               OR LOWER(c.nombre) LIKE ?
+        """;
 
         try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
 
@@ -236,7 +237,6 @@ public class EquipoMovilDAO {
                     e.setImei(rs.getString("imei"));
                     e.setTipo(rs.getString("tipo"));
                     e.setDescripcionDanio(rs.getString("descripcion_danio"));
-                    e.setEstado(EquipoMovil.Estado.valueOf(rs.getString("estado")));
                     e.setCliente(c);
 
                     lista.add(e);

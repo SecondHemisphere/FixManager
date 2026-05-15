@@ -7,6 +7,7 @@ import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 import modelo.Reparacion;
 import util.DialogUtil;
+import util.ResultadoOperacion;
 
 /**
  * Panel de gestión CRUD de reparaciones.
@@ -153,6 +154,33 @@ public class ReparacionCRUDPanel extends javax.swing.JPanel {
     }
 
     /**
+     * Elimina una reparación seleccionada previa confirmación.
+     */
+    private void eliminar() {
+        capturarSeleccion();
+
+        if (idReparacion == 0) {
+            DialogUtil.mostrarMensajeAdvertencia(this, "Seleccione una reparación");
+            return;
+        }
+
+        if (!DialogUtil.mostrarDialogoConfirmacion(this, "¿Eliminar esta reparación?")) {
+            return;
+        }
+
+        ResultadoOperacion r = controlador.eliminar(idReparacion);
+
+        if (!r.isExito()) {
+            DialogUtil.mostrarMensajeError(this, r.getMensaje());
+            return;
+        }
+
+        DialogUtil.mostrarMensajeInformacion(this, r.getMensaje());
+        cargarTabla();
+        idReparacion = 0;
+    }
+
+    /**
      * Abre el formulario para registrar una nueva reparación.
      */
     private void registrar() {
@@ -181,6 +209,7 @@ public class ReparacionCRUDPanel extends javax.swing.JPanel {
         lblSubtitulo = new javax.swing.JLabel();
         txtBuscar = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 204, 204));
 
@@ -259,6 +288,15 @@ public class ReparacionCRUDPanel extends javax.swing.JPanel {
             }
         });
 
+        btnEliminar.setBackground(new java.awt.Color(255, 51, 51));
+        btnEliminar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlListadoLayout = new javax.swing.GroupLayout(pnlListado);
         pnlListado.setLayout(pnlListadoLayout);
         pnlListadoLayout.setHorizontalGroup(
@@ -266,6 +304,8 @@ public class ReparacionCRUDPanel extends javax.swing.JPanel {
             .addGroup(pnlListadoLayout.createSequentialGroup()
                 .addGap(273, 273, 273)
                 .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(90, 90, 90)
+                .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(pnlListadoLayout.createSequentialGroup()
                 .addGap(27, 27, 27)
@@ -304,7 +344,9 @@ public class ReparacionCRUDPanel extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addComponent(pnlScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnEditar)
+                .addGroup(pnlListadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnEditar)
+                    .addComponent(btnEliminar))
                 .addGap(16, 16, 16))
         );
 
@@ -346,10 +388,15 @@ public class ReparacionCRUDPanel extends javax.swing.JPanel {
         buscar(txtBuscar.getText());
     }//GEN-LAST:event_btnBuscarActionPerformed
 
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        eliminar();
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnEditar;
+    private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnNuevo;
     private javax.swing.JLabel lblSubtitulo;
     private javax.swing.JLabel lblTitulo;
