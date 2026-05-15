@@ -126,14 +126,13 @@ public class UsuarioDAO {
     }
 
     /**
-     * Elimina un usuario por su ID.
+     * Desactiva un usuario por su ID.
      *
      * @param id ID del usuario
-     * @return true si se eliminó correctamente
+     * @return true si se desactivó correctamente
      */
-    public boolean eliminar(int id) {
-
-        String sql = "DELETE FROM usuario WHERE id=?";
+    public boolean desactivar(int id) {
+        String sql = "UPDATE usuario SET activo = FALSE WHERE id = ?";
 
         try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
 
@@ -142,7 +141,7 @@ public class UsuarioDAO {
             return pst.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error al eliminar usuario", e);
+            throw new RuntimeException("Error al desactivar usuario", e);
         }
     }
 
@@ -224,18 +223,13 @@ public class UsuarioDAO {
      *
      * @param correo correo ingresado por el usuario
      * @param contrasena contraseña ingresada
-     * @return objeto Usuario si las credenciales son correctas y está activo,
-     * null en caso contrario
+     * @return objeto Usuario si las credenciales son correctas null en caso
+     * contrario
      */
     public Usuario login(String correo, String contrasena) {
-
-        String sql = """
-            SELECT * FROM usuario
-            WHERE correo=? AND contrasena=? AND activo=1
-        """;
+        String sql = "SELECT * FROM usuario WHERE correo = ? AND contrasena = ?";
 
         try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
-
             pst.setString(1, correo);
             pst.setString(2, contrasena);
 
@@ -244,11 +238,9 @@ public class UsuarioDAO {
                     return mapear(rs);
                 }
             }
-
         } catch (SQLException e) {
             throw new RuntimeException("Error en login", e);
         }
-
         return null;
     }
 

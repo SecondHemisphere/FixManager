@@ -123,9 +123,9 @@ public class UsuarioDialog extends javax.swing.JDialog {
         txtContrasena = new javax.swing.JTextField();
         cbxRol = new javax.swing.JComboBox<Rol>();
         lblRol = new javax.swing.JLabel();
-        chkActivo = new javax.swing.JCheckBox();
         btnGuardar = new javax.swing.JButton();
         imagen = new javax.swing.JLabel();
+        chkActivo = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -157,10 +157,6 @@ public class UsuarioDialog extends javax.swing.JDialog {
         lblRol.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblRol.setText("Rol *:");
 
-        chkActivo.setBackground(new java.awt.Color(255, 255, 255));
-        chkActivo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        chkActivo.setText("Activo");
-
         btnGuardar.setBackground(new java.awt.Color(103, 201, 228));
         btnGuardar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnGuardar.setText("Guardar");
@@ -171,6 +167,11 @@ public class UsuarioDialog extends javax.swing.JDialog {
         });
 
         imagen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/favicon.png"))); // NOI18N
+
+        chkActivo.setBackground(new java.awt.Color(255, 255, 255));
+        chkActivo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        chkActivo.setText("Activo");
+        chkActivo.setOpaque(true);
 
         javax.swing.GroupLayout pnlFormularioLayout = new javax.swing.GroupLayout(pnlFormulario);
         pnlFormulario.setLayout(pnlFormularioLayout);
@@ -194,12 +195,13 @@ public class UsuarioDialog extends javax.swing.JDialog {
                     .addComponent(lblContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblRol, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(chkActivo)
-                    .addComponent(txtNombre)
-                    .addComponent(txtCorreo)
-                    .addComponent(txtContrasena)
-                    .addComponent(cbxRol, 0, 198, Short.MAX_VALUE))
+                    .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(txtNombre)
+                        .addComponent(txtCorreo)
+                        .addComponent(txtContrasena)
+                        .addComponent(cbxRol, 0, 198, Short.MAX_VALUE)))
                 .addContainerGap(43, Short.MAX_VALUE))
         );
         pnlFormularioLayout.setVerticalGroup(

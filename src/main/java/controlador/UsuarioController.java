@@ -61,26 +61,24 @@ public class UsuarioController {
                 : ResultadoOperacion.error("No se pudo actualizar el usuario");
     }
 
-    public ResultadoOperacion eliminarUsuario(int id) {
-        boolean ok = dao.eliminar(id);
+    public ResultadoOperacion desactivarUsuario(int id) {
+        boolean ok = dao.desactivar(id);
 
         return ok
-                ? ResultadoOperacion.exito("Usuario eliminado correctamente")
-                : ResultadoOperacion.error("No se pudo eliminar el usuario");
+                ? ResultadoOperacion.exito("Usuario desactivado correctamente")
+                : ResultadoOperacion.error("No se pudo desactivar el usuario");
     }
 
     public List<Usuario> filtrarUsuarios(String texto) {
         return dao.filtrar(texto);
     }
 
-    public Usuario login(String correo, String password) {
-        Usuario u = dao.login(correo, password);
+    public Usuario login(String correo, String contrasena) {
+        return dao.login(correo, contrasena);
+    }
 
-        if (u != null && !u.isActivo()) {
-            return null;
-        }
-
-        return u;
+    public boolean usuarioActivo(Usuario u) {
+        return u != null && u.isActivo();
     }
 
     public static String validar(Usuario u) {

@@ -131,9 +131,9 @@ public class UsuarioCRUDPanel extends javax.swing.JPanel {
     }
 
     /**
-     * Elimina un usuario seleccionado previa confirmación.
+     * Desactiva un usuario seleccionado previa confirmación.
      */
-    private void eliminar() {
+    private void desactivar() {
         capturarSeleccion();
 
         if (idUsuario == 0) {
@@ -145,7 +145,7 @@ public class UsuarioCRUDPanel extends javax.swing.JPanel {
             return;
         }
 
-        ResultadoOperacion r = controlador.eliminarUsuario(idUsuario);
+        ResultadoOperacion r = controlador.desactivarUsuario(idUsuario);
 
         if (!r.isExito()) {
             DialogUtil.mostrarMensajeError(this, r.getMensaje());
@@ -198,7 +198,7 @@ public class UsuarioCRUDPanel extends javax.swing.JPanel {
         pnlScroll = new javax.swing.JScrollPane();
         tblUsuarios = new javax.swing.JTable();
         btnEditar = new javax.swing.JButton();
-        btnEliminar = new javax.swing.JButton();
+        btnDesactivar = new javax.swing.JButton();
         btnNuevo = new javax.swing.JButton();
         lblTitulo = new javax.swing.JLabel();
         lblSubtitulo = new javax.swing.JLabel();
@@ -242,12 +242,12 @@ public class UsuarioCRUDPanel extends javax.swing.JPanel {
             }
         });
 
-        btnEliminar.setBackground(new java.awt.Color(255, 51, 51));
-        btnEliminar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        btnEliminar.setText("Eliminar");
-        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+        btnDesactivar.setBackground(new java.awt.Color(255, 51, 51));
+        btnDesactivar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnDesactivar.setText("Desactivar");
+        btnDesactivar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarActionPerformed(evt);
+                btnDesactivarActionPerformed(evt);
             }
         });
 
@@ -328,7 +328,7 @@ public class UsuarioCRUDPanel extends javax.swing.JPanel {
                         .addGap(183, 183, 183)
                         .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnDesactivar)
                         .addGap(63, 63, 63))))
         );
         pnlListadoLayout.setVerticalGroup(
@@ -350,7 +350,7 @@ public class UsuarioCRUDPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlListadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEditar)
-                    .addComponent(btnEliminar)
+                    .addComponent(btnDesactivar)
                     .addComponent(btnReiniciarContrasena))
                 .addGap(16, 16, 16))
         );
@@ -367,9 +367,9 @@ public class UsuarioCRUDPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        eliminar();
-    }//GEN-LAST:event_btnEliminarActionPerformed
+    private void btnDesactivarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesactivarActionPerformed
+        desactivar();
+    }//GEN-LAST:event_btnDesactivarActionPerformed
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         registrar();
@@ -404,8 +404,8 @@ public class UsuarioCRUDPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnDesactivar;
     private javax.swing.JButton btnEditar;
-    private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnNuevo;
     private javax.swing.JButton btnReiniciarContrasena;
     private javax.swing.JLabel lblSubtitulo;

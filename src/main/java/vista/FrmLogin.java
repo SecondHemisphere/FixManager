@@ -1,12 +1,12 @@
 package vista;
 
 import controlador.UsuarioController;
-import javax.swing.JOptionPane;
 import modelo.Usuario;
 import java.awt.Color;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import util.DialogUtil;
 import util.Sesion;
 
 /**
@@ -37,7 +37,7 @@ public class FrmLogin extends javax.swing.JFrame {
     private void login() {
 
         if (txtUsuario.getText().trim().isEmpty() || txtPass.getPassword().length == 0) {
-            JOptionPane.showMessageDialog(null, "Ingrese sus credenciales");
+            DialogUtil.mostrarMensajeAdvertencia(this, "Ingrese sus credenciales");
             return;
         }
 
@@ -48,14 +48,20 @@ public class FrmLogin extends javax.swing.JFrame {
 
         Usuario u = controlUsuario.login(correo, contrasena);
 
-        if (u != null) {
-            Sesion.setUsuarioActual(u);
-            FrmMenu menu = new FrmMenu();
-            menu.setVisible(true);
-            this.dispose();
-        } else {
-            JOptionPane.showMessageDialog(null, "El correo o la contraseña son incorrectos");
+        if (u == null) {
+            DialogUtil.mostrarMensajeError(this, "Credenciales incorrectas");
+            return;
         }
+
+        if (!u.isActivo()) {
+            DialogUtil.mostrarMensajeError(this, "Usuario desactivado");
+            return;
+        }
+
+        Sesion.setUsuarioActual(u);
+        FrmMenu menu = new FrmMenu();
+        menu.setVisible(true);
+        this.dispose();
     }
 
     /**
