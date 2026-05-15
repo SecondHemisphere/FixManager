@@ -59,10 +59,6 @@ public class FacturaController {
             return ResultadoOperacion.error("No se puede modificar una factura PAGADA");
         }
 
-        if (actual.getEstado() == Factura.Estado.ANULADA) {
-            return ResultadoOperacion.error("No se puede modificar una factura ANULADA");
-        }
-
         String error = validar(f);
         if (error != null) {
             return ResultadoOperacion.error(error);
@@ -89,18 +85,14 @@ public class FacturaController {
         }
 
         if (f.getEstado() == Factura.Estado.PAGADA) {
-            return ResultadoOperacion.error("No se puede anular una factura PAGADA");
-        }
-
-        if (f.getEstado() == Factura.Estado.ANULADA) {
-            return ResultadoOperacion.error("La factura ya está ANULADA");
+            return ResultadoOperacion.error("No se puede borrar una factura PAGADA");
         }
 
         boolean ok = dao.eliminar(id);
 
         return ok
-                ? ResultadoOperacion.exito("Factura anulada correctamente")
-                : ResultadoOperacion.error("No se pudo anular la factura");
+                ? ResultadoOperacion.exito("Factura borrada correctamente")
+                : ResultadoOperacion.error("No se pudo borrar la factura");
     }
 
     public List<Factura> filtrarFacturas(String texto) {

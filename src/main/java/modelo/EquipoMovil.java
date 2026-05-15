@@ -97,7 +97,11 @@ public class EquipoMovil {
 
     @Override
     public String toString() {
-        return String.format("%s %s [%s]", marca, modelo, imei);
+        String imeiResumido = (imei != null && imei.length() > 4)
+                ? imei.substring(imei.length() - 4)
+                : "S/N";
+
+        return String.format("%s %s (IMEI: ...%s)", marca, modelo, imeiResumido);
     }
 
     @Override

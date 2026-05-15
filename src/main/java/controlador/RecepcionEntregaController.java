@@ -56,10 +56,6 @@ public class RecepcionEntregaController {
             return ResultadoOperacion.error("No se puede modificar una recepción ENTREGADA");
         }
 
-        if (actual.getEstado() == RecepcionEntrega.Estado.ANULADO) {
-            return ResultadoOperacion.error("No se puede modificar una recepción ANULADA");
-        }
-
         String error = validar(r);
 
         if (error != null) {
@@ -86,10 +82,6 @@ public class RecepcionEntregaController {
 
         if (r.getEstado() == RecepcionEntrega.Estado.LISTO) {
             return ResultadoOperacion.error("No se puede anular una recepción LISTA");
-        }
-
-        if (r.getEstado() == RecepcionEntrega.Estado.ANULADO) {
-            return ResultadoOperacion.error("La recepción ya está ANULADA");
         }
 
         boolean ok = dao.eliminar(id);

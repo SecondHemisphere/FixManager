@@ -55,7 +55,9 @@ public class ReparacionDialog extends javax.swing.JDialog {
         DefaultComboBoxModel<RecepcionEntrega> model = new DefaultComboBoxModel<>();
 
         for (RecepcionEntrega r : recepcionController.listarRecepciones()) {
-            model.addElement(r);
+            if (r.getEstado() == RecepcionEntrega.Estado.RECIBIDO) {
+                model.addElement(r);
+            }
         }
 
         cbxRecepcion.setModel(model);

@@ -126,7 +126,6 @@ public class RecepcionEntregaCRUDPanel extends javax.swing.JPanel {
                 equipo,
                 r.getProblemaReportado(),
                 r.getEstado(),
-                r.getUsuario().getNombre(),
                 usuario
             });
         }

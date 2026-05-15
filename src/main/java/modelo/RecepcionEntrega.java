@@ -14,8 +14,7 @@ public class RecepcionEntrega {
 
         RECIBIDO("Recibido"),
         LISTO("Listo"),
-        ENTREGADO("Entregado"),
-        ANULADO("Anulado");
+        ENTREGADO("Entregado");
 
         private final String descripcion;
 
@@ -108,9 +107,17 @@ public class RecepcionEntrega {
 
     @Override
     public String toString() {
-        return "#" + id
-                + " - " + equipoMovil
-                + " - " + estado;
+        String cliente = "N/A";
+        String equipo = "Equipo";
+
+        if (equipoMovil != null) {
+            equipo = equipoMovil.getMarca() + " " + equipoMovil.getModelo();
+            if (equipoMovil.getCliente() != null) {
+                cliente = equipoMovil.getCliente().getNombre();
+            }
+        }
+
+        return String.format("#%d | %s | %s", id, cliente, equipo);
     }
 
     @Override

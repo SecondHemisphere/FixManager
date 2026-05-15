@@ -13,8 +13,7 @@ public class Factura {
     public enum Estado {
 
         PENDIENTE("Pendiente"),
-        PAGADA("Pagada"),
-        ANULADA("Anulada");
+        PAGADA("Pagada");
 
         private final String descripcion;
 

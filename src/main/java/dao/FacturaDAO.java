@@ -187,7 +187,6 @@ public class FacturaDAO {
             SELECT COUNT(*)
             FROM factura
             WHERE reparacion_id = ?
-              AND estado <> 'ANULADA'
         """;
 
         try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
@@ -273,21 +272,17 @@ public class FacturaDAO {
      * @return true si se eliminó correctamente
      */
     public boolean eliminar(int idFactura) {
-
-        String sql = """
-        UPDATE factura
-        SET estado = 'ANULADA'
-        WHERE id = ? AND estado != 'ANULADA' AND estado != 'PAGADA'
-    """;
+        String sql = "DELETE FROM factura WHERE id = ?";
 
         try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
 
             pst.setInt(1, idFactura);
+            int filasAfectadas = pst.executeUpdate();
 
-            return pst.executeUpdate() > 0;
+            return filasAfectadas > 0;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error al anular factura", e);
+            throw new RuntimeException("Error al eliminar factura: " + e.getMessage());
         }
     }
 

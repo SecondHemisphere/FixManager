@@ -31,7 +31,7 @@ public class RecepcionEntregaDAO {
         String sql = """
             SELECT r.*, 
                    e.id AS equipo_id, e.marca, e.modelo, e.imei, e.tipo, e.descripcion_danio,
-                   c.id AS cliente_id, c.nombre,
+                   c.id AS cliente_id, c.nombre AS cliente_nombre,
                    u.id AS usuario_id, u.nombre AS usuario_nombre
             FROM recepcion_entrega r
             INNER JOIN equipo_movil e ON r.equipo_id = e.id
@@ -45,7 +45,7 @@ public class RecepcionEntregaDAO {
 
                 Cliente c = new Cliente();
                 c.setId(rs.getInt("cliente_id"));
-                c.setNombre(rs.getString("nombre"));
+                c.setNombre(rs.getString("cliente_nombre"));
 
                 EquipoMovil e = new EquipoMovil();
                 e.setId(rs.getInt("equipo_id"));
@@ -54,6 +54,7 @@ public class RecepcionEntregaDAO {
                 e.setImei(rs.getString("imei"));
                 e.setTipo(rs.getString("tipo"));
                 e.setDescripcionDanio(rs.getString("descripcion_danio"));
+                e.setCliente(c);
 
                 Usuario u = new Usuario();
                 u.setId(rs.getInt("usuario_id"));
@@ -88,7 +89,7 @@ public class RecepcionEntregaDAO {
         String sql = """
             SELECT r.*, 
                    e.id AS equipo_id, e.marca, e.modelo, e.imei, e.tipo, e.descripcion_danio,
-                   c.id AS cliente_id, c.nombre,
+                   c.id AS cliente_id, c.nombre AS cliente_nombre,
                    u.id AS usuario_id, u.nombre AS usuario_nombre
             FROM recepcion_entrega r
             INNER JOIN equipo_movil e ON r.equipo_id = e.id
@@ -107,7 +108,7 @@ public class RecepcionEntregaDAO {
 
                     Cliente c = new Cliente();
                     c.setId(rs.getInt("cliente_id"));
-                    c.setNombre(rs.getString("nombre"));
+                    c.setNombre(rs.getString("cliente_nombre"));
 
                     EquipoMovil e = new EquipoMovil();
                     e.setId(rs.getInt("equipo_id"));
@@ -116,6 +117,7 @@ public class RecepcionEntregaDAO {
                     e.setImei(rs.getString("imei"));
                     e.setTipo(rs.getString("tipo"));
                     e.setDescripcionDanio(rs.getString("descripcion_danio"));
+                    e.setCliente(c);
 
                     Usuario u = new Usuario();
                     u.setId(rs.getInt("usuario_id"));
@@ -196,19 +198,13 @@ public class RecepcionEntregaDAO {
     }
 
     /**
-     * Anula una recepción por su ID.
+     * Elimina una recepción por su ID.
      *
      * @param idRecepcion ID de la recepción
-     * @return true si se anuló correctamente
+     * @return true si se eliminó correctamente
      */
     public boolean eliminar(int idRecepcion) {
-
-        String sql = """
-            UPDATE recepcion_entrega
-            SET estado = 'ANULADO'
-            WHERE id = ?
-            AND estado = 'RECIBIDO'
-        """;
+        String sql = "DELETE FROM recepcion_entrega WHERE id = ?";
 
         try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
 
@@ -217,7 +213,7 @@ public class RecepcionEntregaDAO {
             return pst.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error al anular recepción", e);
+            throw new RuntimeException("Error al eliminar la recepción", e);
         }
     }
 
@@ -234,7 +230,7 @@ public class RecepcionEntregaDAO {
         String sql = """
             SELECT r.*, 
                    e.id AS equipo_id, e.marca, e.modelo,
-                   c.id AS cliente_id, c.nombre,
+                   c.id AS cliente_id, c.nombre AS cliente_nombre,
                    u.id AS usuario_id, u.nombre AS usuario_nombre
             FROM recepcion_entrega r
             INNER JOIN equipo_movil e ON r.equipo_id = e.id
@@ -259,12 +255,13 @@ public class RecepcionEntregaDAO {
 
                     Cliente c = new Cliente();
                     c.setId(rs.getInt("cliente_id"));
-                    c.setNombre(rs.getString("nombre"));
+                    c.setNombre(rs.getString("cliente_nombre"));
 
                     EquipoMovil e = new EquipoMovil();
                     e.setId(rs.getInt("equipo_id"));
                     e.setMarca(rs.getString("marca"));
                     e.setModelo(rs.getString("modelo"));
+                    e.setCliente(c);
 
                     Usuario u = new Usuario();
                     u.setId(rs.getInt("usuario_id"));

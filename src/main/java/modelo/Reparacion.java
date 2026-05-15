@@ -127,7 +127,15 @@ public class Reparacion {
 
     @Override
     public String toString() {
-        return "Reparación #" + id + " - " + estado;
+        String cliente = "N/A";
+        String modelo = "Equipo";
+
+        if (recepcion != null && recepcion.getEquipoMovil() != null) {
+            cliente = recepcion.getEquipoMovil().getCliente().getNombre();
+            modelo = recepcion.getEquipoMovil().getModelo();
+        }
+
+        return String.format("%s | %s | #%d", cliente, modelo, id);
     }
 
     @Override
