@@ -4,6 +4,7 @@ import controlador.EquipoMovilController;
 import java.awt.Color;
 import java.awt.Image;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.table.DefaultTableModel;
 import modelo.EquipoMovil;
 import util.DialogUtil;
@@ -25,10 +26,34 @@ public class EquipoMovilCRUDPanel extends javax.swing.JPanel {
     public EquipoMovilCRUDPanel() {
         initComponents();
 
+        setOpaque(false);
+
         ImageIcon icon = new ImageIcon(getClass().getResource("/img/buscar.png"));
         Image img = icon.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH);
         btnBuscar.setIcon(new ImageIcon(img));
+
+        pnlListado.setOpaque(false);
+        pnlScroll.setOpaque(false);
+        pnlScroll.getViewport().setOpaque(false);
+
         cargarTabla();
+
+        JLabel fondo = new JLabel();
+
+        ImageIcon imagen = new ImageIcon(getClass().getResource("/img/fondo2.png"));
+        Image imgFondo = imagen.getImage().getScaledInstance(897, 424, Image.SCALE_SMOOTH);
+
+        fondo.setIcon(new ImageIcon(imgFondo));
+        fondo.setBounds(0, 0, 897, 424);
+
+        setLayout(null);
+
+        pnlListado.setBounds(0, 0, 897, 424);
+
+        add(fondo);
+        add(pnlListado);
+
+        setComponentZOrder(fondo, getComponentCount() - 1);
     }
 
     /**
@@ -181,9 +206,6 @@ public class EquipoMovilCRUDPanel extends javax.swing.JPanel {
         txtBuscar = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JButton();
 
-        setBackground(new java.awt.Color(255, 204, 102));
-
-        pnlListado.setBackground(new java.awt.Color(255, 204, 102));
         pnlListado.setOpaque(false);
 
         tblEquiposMoviles.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -210,7 +232,7 @@ public class EquipoMovilCRUDPanel extends javax.swing.JPanel {
         tblEquiposMoviles.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         pnlScroll.setViewportView(tblEquiposMoviles);
 
-        btnEditar.setBackground(new java.awt.Color(51, 204, 0));
+        btnEditar.setBackground(new java.awt.Color(102, 102, 255));
         btnEditar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnEditar.setText("Editar");
         btnEditar.addActionListener(new java.awt.event.ActionListener() {
@@ -228,7 +250,7 @@ public class EquipoMovilCRUDPanel extends javax.swing.JPanel {
             }
         });
 
-        btnNuevo.setBackground(new java.awt.Color(255, 153, 51));
+        btnNuevo.setBackground(new java.awt.Color(51, 204, 0));
         btnNuevo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnNuevo.setText("+ Nuevo Equipo Móvil");
         btnNuevo.addActionListener(new java.awt.event.ActionListener() {

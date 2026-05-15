@@ -32,8 +32,8 @@ public class ClienteCRUDPanel extends javax.swing.JPanel {
         Image img = icon.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH);
         btnBuscar.setIcon(new ImageIcon(img));
 
-        pnlCrud.setOpaque(false);
-        pnlListado.setOpaque(false);
+        pnlNorte.setOpaque(false);
+        pnlSur.setOpaque(false);
         pnlScroll.setOpaque(false);
         pnlScroll.getViewport().setOpaque(false);
 
@@ -49,12 +49,12 @@ public class ClienteCRUDPanel extends javax.swing.JPanel {
 
         setLayout(null);
 
-        pnlCrud.setBounds(0, 0, 897, 124);
-        pnlListado.setBounds(0, 124, 897, 300);
+        pnlNorte.setBounds(0, 0, 897, 124);
+        pnlSur.setBounds(0, 124, 897, 300);
 
         add(fondo);
-        add(pnlCrud);
-        add(pnlListado);
+        add(pnlNorte);
+        add(pnlSur);
 
         setComponentZOrder(fondo, getComponentCount() - 1);
     }
@@ -191,23 +191,23 @@ public class ClienteCRUDPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pnlCrud = new javax.swing.JPanel();
+        pnlNorte = new javax.swing.JPanel();
         lblTitulo = new javax.swing.JLabel();
         lblSubtitulo = new javax.swing.JLabel();
         btnBuscar = new javax.swing.JButton();
         txtBuscar = new javax.swing.JTextField();
         btnNuevo = new javax.swing.JButton();
-        pnlListado = new javax.swing.JPanel();
-        btnEliminar = new javax.swing.JButton();
-        btnEditar = new javax.swing.JButton();
+        pnlSur = new javax.swing.JPanel();
         pnlScroll = new javax.swing.JScrollPane();
         tblClientes = new javax.swing.JTable();
+        btnEditar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(897, 424));
 
-        pnlCrud.setOpaque(false);
-        pnlCrud.setPreferredSize(new java.awt.Dimension(897, 165));
-        pnlCrud.setRequestFocusEnabled(false);
+        pnlNorte.setOpaque(false);
+        pnlNorte.setPreferredSize(new java.awt.Dimension(897, 165));
+        pnlNorte.setRequestFocusEnabled(false);
 
         lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblTitulo.setText("Listado De Clientes");
@@ -248,19 +248,19 @@ public class ClienteCRUDPanel extends javax.swing.JPanel {
             }
         });
 
-        javax.swing.GroupLayout pnlCrudLayout = new javax.swing.GroupLayout(pnlCrud);
-        pnlCrud.setLayout(pnlCrudLayout);
-        pnlCrudLayout.setHorizontalGroup(
-            pnlCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlCrudLayout.createSequentialGroup()
+        javax.swing.GroupLayout pnlNorteLayout = new javax.swing.GroupLayout(pnlNorte);
+        pnlNorte.setLayout(pnlNorteLayout);
+        pnlNorteLayout.setHorizontalGroup(
+            pnlNorteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlNorteLayout.createSequentialGroup()
                 .addGap(25, 25, 25)
-                .addGroup(pnlCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlCrudLayout.createSequentialGroup()
-                        .addGroup(pnlCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlNorteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlNorteLayout.createSequentialGroup()
+                        .addGroup(pnlNorteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblSubtitulo)
                             .addComponent(lblTitulo))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(pnlCrudLayout.createSequentialGroup()
+                    .addGroup(pnlNorteLayout.createSequentialGroup()
                         .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(30, 30, 30)
                         .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -268,40 +268,22 @@ public class ClienteCRUDPanel extends javax.swing.JPanel {
                         .addComponent(btnNuevo)
                         .addGap(45, 45, 45))))
         );
-        pnlCrudLayout.setVerticalGroup(
-            pnlCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlCrudLayout.createSequentialGroup()
+        pnlNorteLayout.setVerticalGroup(
+            pnlNorteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlNorteLayout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addComponent(lblTitulo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblSubtitulo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(pnlCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlNorteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnNuevo, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(20, 20, 20))
         );
 
-        pnlListado.setOpaque(false);
-
-        btnEliminar.setBackground(new java.awt.Color(255, 51, 51));
-        btnEliminar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        btnEliminar.setText("Eliminar");
-        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarActionPerformed(evt);
-            }
-        });
-
-        btnEditar.setBackground(new java.awt.Color(102, 102, 255));
-        btnEditar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        btnEditar.setText("Editar");
-        btnEditar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditarActionPerformed(evt);
-            }
-        });
+        pnlSur.setOpaque(false);
 
         tblClientes.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         tblClientes.setModel(new javax.swing.table.DefaultTableModel(
@@ -327,28 +309,46 @@ public class ClienteCRUDPanel extends javax.swing.JPanel {
         tblClientes.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         pnlScroll.setViewportView(tblClientes);
 
-        javax.swing.GroupLayout pnlListadoLayout = new javax.swing.GroupLayout(pnlListado);
-        pnlListado.setLayout(pnlListadoLayout);
-        pnlListadoLayout.setHorizontalGroup(
-            pnlListadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlListadoLayout.createSequentialGroup()
+        btnEditar.setBackground(new java.awt.Color(102, 102, 255));
+        btnEditar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
+
+        btnEliminar.setBackground(new java.awt.Color(255, 51, 51));
+        btnEliminar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlSurLayout = new javax.swing.GroupLayout(pnlSur);
+        pnlSur.setLayout(pnlSurLayout);
+        pnlSurLayout.setHorizontalGroup(
+            pnlSurLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlSurLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(67, 67, 67)
                 .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(302, 302, 302))
-            .addGroup(pnlListadoLayout.createSequentialGroup()
+            .addGroup(pnlSurLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(pnlScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 857, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(20, Short.MAX_VALUE))
         );
-        pnlListadoLayout.setVerticalGroup(
-            pnlListadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlListadoLayout.createSequentialGroup()
+        pnlSurLayout.setVerticalGroup(
+            pnlSurLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlSurLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(pnlScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(pnlListadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlSurLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEditar)
                     .addComponent(btnEliminar))
                 .addGap(22, 22, 22))
@@ -358,15 +358,15 @@ public class ClienteCRUDPanel extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlListado, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(pnlCrud, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pnlSur, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pnlNorte, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(pnlCrud, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnlNorte, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(pnlListado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(pnlSur, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -408,9 +408,9 @@ public class ClienteCRUDPanel extends javax.swing.JPanel {
     private javax.swing.JButton btnNuevo;
     private javax.swing.JLabel lblSubtitulo;
     private javax.swing.JLabel lblTitulo;
-    private javax.swing.JPanel pnlCrud;
-    private javax.swing.JPanel pnlListado;
+    private javax.swing.JPanel pnlNorte;
     public static javax.swing.JScrollPane pnlScroll;
+    private javax.swing.JPanel pnlSur;
     public static javax.swing.JTable tblClientes;
     private javax.swing.JTextField txtBuscar;
     // End of variables declaration//GEN-END:variables

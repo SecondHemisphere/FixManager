@@ -39,48 +39,54 @@
     <Container class="javax.swing.JPanel" name="pnlFormulario">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="33" green="cc" red="ff" type="rgb"/>
+          <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
       </Properties>
 
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="1" attributes="0">
-                      <Component id="lblModelo" min="-2" pref="90" max="-2" attributes="0"/>
-                      <Component id="lblMarca" min="-2" pref="90" max="-2" attributes="0"/>
-                      <Component id="lblImei" alignment="1" min="-2" pref="90" max="-2" attributes="0"/>
-                      <Component id="lblTipo" alignment="1" min="-2" pref="90" max="-2" attributes="0"/>
-                      <Component id="lblCliente" alignment="1" min="-2" pref="90" max="-2" attributes="0"/>
-                      <Component id="lblDescripcion" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+              <Group type="102" attributes="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="txtModelo" min="-2" pref="170" max="-2" attributes="0"/>
-                      <Component id="txtMarca" min="-2" pref="170" max="-2" attributes="0"/>
-                      <Component id="scrDescripcion" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtImei" alignment="0" min="-2" pref="170" max="-2" attributes="0"/>
-                      <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                          <Component id="cbxCliente" alignment="0" pref="170" max="32767" attributes="0"/>
-                          <Component id="txtTipo" alignment="0" max="32767" attributes="0"/>
-                      </Group>
-                  </Group>
-                  <EmptySpace pref="17" max="32767" attributes="0"/>
-              </Group>
-              <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="1" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+                          <Component id="imagen" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="lblTitulo" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="94" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="102" alignment="1" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
+                                  <Component id="lblDescripcion" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="lblCliente" alignment="1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblTipo" alignment="1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblImei" alignment="1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblModelo" alignment="1" min="-2" pref="75" max="-2" attributes="0"/>
+                                      <Component id="lblMarca" alignment="1" min="-2" pref="69" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="txtMarca" max="32767" attributes="0"/>
+                              <Component id="cbxCliente" alignment="0" pref="198" max="32767" attributes="0"/>
+                              <Component id="txtTipo" alignment="0" max="32767" attributes="0"/>
+                              <Component id="scrDescripcion" alignment="0" pref="0" max="32767" attributes="0"/>
+                              <Component id="txtModelo" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtImei" alignment="0" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="142" max="-2" attributes="0"/>
                           <Component id="btnGuardar" min="-2" pref="160" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="135" max="-2" attributes="0"/>
                       </Group>
                   </Group>
+                  <EmptySpace pref="60" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -88,8 +94,11 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
-                  <Component id="lblTitulo" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="imagen" pref="44" max="32767" attributes="0"/>
+                      <Component id="lblTitulo" max="32767" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="lblMarca" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txtMarca" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -119,9 +128,9 @@
                       <Component id="scrDescripcion" min="-2" pref="50" max="-2" attributes="0"/>
                       <Component id="lblDescripcion" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="12" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
                   <Component id="btnGuardar" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -203,7 +212,7 @@
         <Component class="javax.swing.JButton" name="btnGuardar">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="33" green="99" red="ff" type="rgb"/>
+              <Color blue="ff" green="66" red="66" type="rgb"/>
             </Property>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="14" style="1"/>
@@ -255,6 +264,13 @@
             </Component>
           </SubComponents>
         </Container>
+        <Component class="javax.swing.JLabel" name="imagen">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/img/favicon.png"/>
+            </Property>
+          </Properties>
+        </Component>
       </SubComponents>
     </Container>
   </SubComponents>

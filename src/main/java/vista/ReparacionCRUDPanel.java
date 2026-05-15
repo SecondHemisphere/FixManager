@@ -4,6 +4,7 @@ import controlador.ReparacionController;
 import java.awt.Color;
 import java.awt.Image;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.table.DefaultTableModel;
 import modelo.Reparacion;
 import util.DialogUtil;
@@ -25,10 +26,34 @@ public class ReparacionCRUDPanel extends javax.swing.JPanel {
     public ReparacionCRUDPanel() {
         initComponents();
 
-        ImageIcon icon = new ImageIcon(getClass().getResource("/img/buscar.png"));
-        Image img = icon.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH);
-        btnBuscar.setIcon(new ImageIcon(img));
+        setOpaque(false);
+
+        ImageIcon iconBuscar = new ImageIcon(getClass().getResource("/img/buscar.png"));
+        Image imgBuscar = iconBuscar.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH);
+        btnBuscar.setIcon(new ImageIcon(imgBuscar));
+
+        pnlListado.setOpaque(false);
+        pnlScroll.setOpaque(false);
+        pnlScroll.getViewport().setOpaque(false);
+
         cargarTabla();
+
+        JLabel fondo = new JLabel();
+
+        ImageIcon imagen = new ImageIcon(getClass().getResource("/img/fondo2.png"));
+        Image imgFondo = imagen.getImage().getScaledInstance(897, 424, Image.SCALE_SMOOTH);
+
+        fondo.setIcon(new ImageIcon(imgFondo));
+        fondo.setBounds(0, 0, 897, 424);
+
+        setLayout(null);
+
+        pnlListado.setBounds(0, 0, 897, 424);
+
+        add(fondo);
+        add(pnlListado);
+
+        setComponentZOrder(fondo, getComponentCount() - 1);
     }
 
     /**
@@ -211,8 +236,6 @@ public class ReparacionCRUDPanel extends javax.swing.JPanel {
         btnBuscar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
 
-        setBackground(new java.awt.Color(255, 204, 204));
-
         pnlListado.setBackground(new java.awt.Color(255, 204, 102));
         pnlListado.setOpaque(false);
 
@@ -240,7 +263,7 @@ public class ReparacionCRUDPanel extends javax.swing.JPanel {
         tblReparaciones.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         pnlScroll.setViewportView(tblReparaciones);
 
-        btnEditar.setBackground(new java.awt.Color(51, 204, 0));
+        btnEditar.setBackground(new java.awt.Color(102, 102, 255));
         btnEditar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnEditar.setText("Editar");
         btnEditar.addActionListener(new java.awt.event.ActionListener() {
@@ -249,7 +272,7 @@ public class ReparacionCRUDPanel extends javax.swing.JPanel {
             }
         });
 
-        btnNuevo.setBackground(new java.awt.Color(255, 102, 153));
+        btnNuevo.setBackground(new java.awt.Color(51, 204, 0));
         btnNuevo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnNuevo.setText("+ Nueva Reparación");
         btnNuevo.addActionListener(new java.awt.event.ActionListener() {
