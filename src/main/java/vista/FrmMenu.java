@@ -5,7 +5,7 @@ import util.Sesion;
 
 /**
  *
- * @author Cagua Derek
+ * @author Mendoza Sebastian
  */
 public class FrmMenu extends javax.swing.JFrame {
 
@@ -48,6 +48,25 @@ public class FrmMenu extends javax.swing.JFrame {
         menuCerrarSesion.setOpaque(true);
         menuCerrarSesion.setBackground(new java.awt.Color(220, 53, 69));
         menuCerrarSesion.setForeground(java.awt.Color.WHITE);
+
+        configurarPermisos();
+    }
+
+    private void configurarPermisos() {
+        if (Sesion.getUsuarioActual() == null) {
+            return;
+        }
+
+        if (Sesion.esTecnico()) {
+            menuUsuario.setVisible(false);
+            menuFactura.setVisible(false);
+        } else if (Sesion.esCajero()) {
+            menuUsuario.setVisible(false);
+            menuCliente.setVisible(false);
+            menuEquipoMovil.setVisible(false);
+            menuRecepcionEntrega.setVisible(false);
+            menuReparacion.setVisible(false);
+        }
     }
 
     private void estilizarMenu(javax.swing.JMenu menu) {
@@ -298,11 +317,11 @@ public class FrmMenu extends javax.swing.JFrame {
 
     private void itemCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCerrarSesionActionPerformed
         Sesion.cerrarSesion();
-        
+
         FrmLogin login = new FrmLogin();
         login.setLocationRelativeTo(null);
         login.setVisible(true);
-        
+
         this.dispose();
     }//GEN-LAST:event_itemCerrarSesionActionPerformed
 
