@@ -1,6 +1,10 @@
 package vista;
 
-import javax.swing.Box;
+import java.awt.Color;
+import java.awt.Image;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import util.Sesion;
 
 /**
@@ -13,17 +17,6 @@ public class FrmMenu extends javax.swing.JFrame {
         initComponents();
 
         menuBar.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 10, 5, 10));
-
-        menuBar.add(menuUsuario);
-        menuBar.add(menuCliente);
-        menuBar.add(menuEquipoMovil);
-        menuBar.add(menuRecepcionEntrega);
-        menuBar.add(menuReparacion);
-        menuBar.add(menuFactura);
-
-        menuBar.add(Box.createHorizontalGlue());
-
-        menuBar.add(menuCerrarSesion);
 
         estilizarMenu(menuUsuario);
         estilizarMenu(menuCliente);
@@ -42,12 +35,25 @@ public class FrmMenu extends javax.swing.JFrame {
         estilizarItem(itemCerrarSesion);
 
         menuBar.setOpaque(true);
-        menuBar.setBackground(new java.awt.Color(80, 80, 80));
-        menuBar.setForeground(java.awt.Color.WHITE);
+        menuBar.setBackground(new Color(80, 80, 80));
+        menuBar.setForeground(Color.WHITE);
 
         menuCerrarSesion.setOpaque(true);
-        menuCerrarSesion.setBackground(new java.awt.Color(220, 53, 69));
-        menuCerrarSesion.setForeground(java.awt.Color.WHITE);
+        menuCerrarSesion.setBackground(new Color(220, 53, 69));
+        menuCerrarSesion.setForeground(Color.WHITE);
+
+        try {
+            ImageIcon imagen = new ImageIcon(getClass().getResource("/img/fondo2.png"));
+            Image img = imagen.getImage().getScaledInstance(897, 400, Image.SCALE_SMOOTH);
+
+            JLabel fondo = new JLabel(new ImageIcon(img));
+            fondo.setBounds(0, 0, 897, 400);
+
+            pnlPrincipal.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+            pnlPrincipal.add(fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 897, 400));
+            pnlPrincipal.setComponentZOrder(fondo, pnlPrincipal.getComponentCount() - 1);
+        } catch (Exception e) {
+        }
 
         configurarPermisos();
     }
@@ -93,8 +99,8 @@ public class FrmMenu extends javax.swing.JFrame {
     private void initComponents() {
 
         pnlPrincipal = new javax.swing.JPanel();
-        Imagen1 = new javax.swing.JLabel();
-        lblFavicon = new javax.swing.JLabel();
+        imagen1 = new javax.swing.JLabel();
+        favicon = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         menuUsuario = new javax.swing.JMenu();
         itemGestionarUsuario = new javax.swing.JMenuItem();
@@ -121,14 +127,38 @@ public class FrmMenu extends javax.swing.JFrame {
         pnlPrincipal.setBackground(new java.awt.Color(255, 255, 255));
         pnlPrincipal.setMinimumSize(new java.awt.Dimension(810, 390));
         pnlPrincipal.setPreferredSize(new java.awt.Dimension(810, 390));
-        pnlPrincipal.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        Imagen1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/favicon.png"))); // NOI18N
-        pnlPrincipal.add(Imagen1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, -1, -1));
+        imagen1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/favicon.png"))); // NOI18N
 
-        lblFavicon.setFont(new java.awt.Font("Roboto Black", 1, 24)); // NOI18N
-        lblFavicon.setText("Fix Manager");
-        pnlPrincipal.add(lblFavicon, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 30, -1, -1));
+        favicon.setFont(new java.awt.Font("Roboto Black", 1, 24)); // NOI18N
+        favicon.setText("Fix Manager");
+
+        javax.swing.GroupLayout pnlPrincipalLayout = new javax.swing.GroupLayout(pnlPrincipal);
+        pnlPrincipal.setLayout(pnlPrincipalLayout);
+        pnlPrincipalLayout.setHorizontalGroup(
+            pnlPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlPrincipalLayout.createSequentialGroup()
+                .addGroup(pnlPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlPrincipalLayout.createSequentialGroup()
+                        .addGap(440, 440, 440)
+                        .addComponent(imagen1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlPrincipalLayout.createSequentialGroup()
+                        .addGap(400, 400, 400)
+                        .addComponent(favicon, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(409, 409, 409))
+        );
+        pnlPrincipalLayout.setVerticalGroup(
+            pnlPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlPrincipalLayout.createSequentialGroup()
+                .addGroup(pnlPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlPrincipalLayout.createSequentialGroup()
+                        .addGap(170, 170, 170)
+                        .addComponent(favicon, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlPrincipalLayout.createSequentialGroup()
+                        .addGap(140, 140, 140)
+                        .addComponent(imagen1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(280, 280, 280))
+        );
 
         menuBar.setFocusable(false);
 
@@ -295,11 +325,11 @@ public class FrmMenu extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, 822, Short.MAX_VALUE)
+            .addComponent(pnlPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, 897, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlPrincipal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 396, Short.MAX_VALUE)
+            .addComponent(pnlPrincipal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
         );
 
         pack();
@@ -307,10 +337,8 @@ public class FrmMenu extends javax.swing.JFrame {
 
     private void itemGestionarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemGestionarClienteActionPerformed
         ClienteCRUDPanel v = new ClienteCRUDPanel();
-
         pnlPrincipal.removeAll();
-        pnlPrincipal.add(v, new org.netbeans.lib.awtextra.AbsoluteConstraints(
-                0, 0, pnlPrincipal.getWidth(), pnlPrincipal.getHeight()));
+        pnlPrincipal.add(v, new AbsoluteConstraints(0, 0, pnlPrincipal.getWidth(), pnlPrincipal.getHeight()));
         pnlPrincipal.revalidate();
         pnlPrincipal.repaint();
     }//GEN-LAST:event_itemGestionarClienteActionPerformed
@@ -327,56 +355,47 @@ public class FrmMenu extends javax.swing.JFrame {
 
     private void itemGestionarEquipoMovilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemGestionarEquipoMovilActionPerformed
         EquipoMovilCRUDPanel v = new EquipoMovilCRUDPanel();
-
         pnlPrincipal.removeAll();
-        pnlPrincipal.add(v, new org.netbeans.lib.awtextra.AbsoluteConstraints(
-                0, 0, pnlPrincipal.getWidth(), pnlPrincipal.getHeight()));
+        pnlPrincipal.add(v, new AbsoluteConstraints(0, 0, pnlPrincipal.getWidth(), pnlPrincipal.getHeight()));
         pnlPrincipal.revalidate();
         pnlPrincipal.repaint();
     }//GEN-LAST:event_itemGestionarEquipoMovilActionPerformed
 
     private void itemGestionarRecepcionEntregaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemGestionarRecepcionEntregaActionPerformed
         RecepcionEntregaCRUDPanel v = new RecepcionEntregaCRUDPanel();
-
         pnlPrincipal.removeAll();
-        pnlPrincipal.add(v, new org.netbeans.lib.awtextra.AbsoluteConstraints(
-                0, 0, pnlPrincipal.getWidth(), pnlPrincipal.getHeight()));
+        pnlPrincipal.add(v, new AbsoluteConstraints(0, 0, pnlPrincipal.getWidth(), pnlPrincipal.getHeight()));
         pnlPrincipal.revalidate();
         pnlPrincipal.repaint();
     }//GEN-LAST:event_itemGestionarRecepcionEntregaActionPerformed
 
     private void itemGestionarFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemGestionarFacturaActionPerformed
         FacturaCRUDPanel v = new FacturaCRUDPanel();
-
         pnlPrincipal.removeAll();
-        pnlPrincipal.add(v, new org.netbeans.lib.awtextra.AbsoluteConstraints(
-                0, 0, pnlPrincipal.getWidth(), pnlPrincipal.getHeight()));
+        pnlPrincipal.add(v, new AbsoluteConstraints(0, 0, pnlPrincipal.getWidth(), pnlPrincipal.getHeight()));
         pnlPrincipal.revalidate();
         pnlPrincipal.repaint();
     }//GEN-LAST:event_itemGestionarFacturaActionPerformed
 
     private void itemGestionarReparacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemGestionarReparacionActionPerformed
         ReparacionCRUDPanel v = new ReparacionCRUDPanel();
-
         pnlPrincipal.removeAll();
-        pnlPrincipal.add(v, new org.netbeans.lib.awtextra.AbsoluteConstraints(
-                0, 0, pnlPrincipal.getWidth(), pnlPrincipal.getHeight()));
+        pnlPrincipal.add(v, new AbsoluteConstraints(0, 0, pnlPrincipal.getWidth(), pnlPrincipal.getHeight()));
         pnlPrincipal.revalidate();
         pnlPrincipal.repaint();
     }//GEN-LAST:event_itemGestionarReparacionActionPerformed
 
     private void itemGestionarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemGestionarUsuarioActionPerformed
         UsuarioCRUDPanel v = new UsuarioCRUDPanel();
-
         pnlPrincipal.removeAll();
-        pnlPrincipal.add(v, new org.netbeans.lib.awtextra.AbsoluteConstraints(
-                0, 0, pnlPrincipal.getWidth(), pnlPrincipal.getHeight()));
+        pnlPrincipal.add(v, new AbsoluteConstraints(0, 0, pnlPrincipal.getWidth(), pnlPrincipal.getHeight()));
         pnlPrincipal.revalidate();
         pnlPrincipal.repaint();
     }//GEN-LAST:event_itemGestionarUsuarioActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel Imagen1;
+    private javax.swing.JLabel favicon;
+    private javax.swing.JLabel imagen1;
     private javax.swing.JMenuItem itemCerrarSesion;
     private javax.swing.JMenuItem itemGestionarCliente;
     private javax.swing.JMenuItem itemGestionarEquipoMovil;
@@ -384,7 +403,6 @@ public class FrmMenu extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemGestionarRecepcionEntrega;
     private javax.swing.JMenuItem itemGestionarReparacion;
     private javax.swing.JMenuItem itemGestionarUsuario;
-    private javax.swing.JLabel lblFavicon;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenu menuCerrarSesion;
     private javax.swing.JMenu menuCliente;

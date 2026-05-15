@@ -63,8 +63,8 @@
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="1" attributes="0">
                               <Group type="102" attributes="0">
-                                  <Component id="txtBuscar" min="-2" pref="407" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="txtBuscar" min="-2" pref="360" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
                                   <Component id="btnBuscar" min="-2" pref="36" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="205" max="-2" attributes="0"/>
                                   <Component id="btnNuevo" max="32767" attributes="0"/>

@@ -4,6 +4,9 @@ import controlador.UsuarioController;
 import javax.swing.JOptionPane;
 import modelo.Usuario;
 import java.awt.Color;
+import java.awt.Image;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import util.Sesion;
 
 /**
@@ -15,6 +18,17 @@ public class FrmLogin extends javax.swing.JFrame {
 
     public FrmLogin() {
         initComponents();
+
+        JLabel fondoDerecha = new JLabel();
+        ImageIcon icon = new ImageIcon(getClass().getResource("/img/fondo.png"));
+        Image img = icon.getImage().getScaledInstance(350, 510, java.awt.Image.SCALE_SMOOTH);
+
+        fondoDerecha.setIcon(new ImageIcon(img));
+        fondoDerecha.setBounds(460, 0, 350, 510);
+        bg.setLayout(null);
+        fondoDerecha.setOpaque(false);
+        bg.add(fondoDerecha);
+        bg.setComponentZOrder(fondoDerecha, bg.getComponentCount() - 1);
     }
 
     /**
@@ -65,7 +79,6 @@ public class FrmLogin extends javax.swing.JFrame {
         btnLogin = new javax.swing.JPanel();
         loginBtnTxt = new javax.swing.JLabel();
         Imagen1 = new javax.swing.JLabel();
-        Imagen2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setFocusable(false);
@@ -140,13 +153,7 @@ public class FrmLogin extends javax.swing.JFrame {
             .addComponent(loginBtnTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
         );
 
-        Imagen1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Imagen1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Gemini_Generated_Image_l24y06l24y06l24y.png"))); // NOI18N
-        Imagen1.setPreferredSize(new java.awt.Dimension(784, 800));
-        Imagen1.setRequestFocusEnabled(false);
-        Imagen1.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
-
-        Imagen2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/favicon.png"))); // NOI18N
+        Imagen1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/favicon.png"))); // NOI18N
 
         javax.swing.GroupLayout bgLayout = new javax.swing.GroupLayout(bg);
         bg.setLayout(bgLayout);
@@ -164,21 +171,20 @@ public class FrmLogin extends javax.swing.JFrame {
                     .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, bgLayout.createSequentialGroup()
-                            .addComponent(Imagen2)
+                            .addComponent(Imagen1)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(lblFavicon))
                         .addComponent(lblTitulo)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Imagen1, javax.swing.GroupLayout.PREFERRED_SIZE, 350, Short.MAX_VALUE))
+                .addContainerGap(350, Short.MAX_VALUE))
         );
         bgLayout.setVerticalGroup(
             bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(bgLayout.createSequentialGroup()
-                .addGap(60, 60, 60)
-                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(Imagen2)
-                    .addComponent(lblFavicon))
-                .addGap(48, 48, 48)
+                .addGap(63, 63, 63)
+                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblFavicon)
+                    .addComponent(Imagen1))
+                .addGap(27, 27, 27)
                 .addComponent(lblTitulo)
                 .addGap(38, 38, 38)
                 .addComponent(lblUsuario)
@@ -194,19 +200,18 @@ public class FrmLogin extends javax.swing.JFrame {
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
                 .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(Imagen1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addGap(69, 85, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, 816, Short.MAX_VALUE)
+            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, 512, Short.MAX_VALUE)
+            .addComponent(bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -248,7 +253,6 @@ public class FrmLogin extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Imagen1;
-    private javax.swing.JLabel Imagen2;
     private javax.swing.JPanel bg;
     private javax.swing.JPanel btnLogin;
     private javax.swing.JSeparator jSeparator1;
