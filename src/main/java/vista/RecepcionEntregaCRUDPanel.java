@@ -284,7 +284,7 @@ public class RecepcionEntregaCRUDPanel extends javax.swing.JPanel {
             }
         });
 
-        btnNuevo.setBackground(new java.awt.Color(51, 204, 0));
+        btnNuevo.setBackground(new java.awt.Color(103, 201, 228));
         btnNuevo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnNuevo.setText("+ Nueva Recepción");
         btnNuevo.addActionListener(new java.awt.event.ActionListener() {

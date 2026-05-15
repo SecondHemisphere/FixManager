@@ -370,7 +370,7 @@ public class FacturaCRUDPanel extends javax.swing.JPanel {
             }
         });
 
-        btnNuevo.setBackground(new java.awt.Color(51, 204, 0));
+        btnNuevo.setBackground(new java.awt.Color(103, 201, 228));
         btnNuevo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnNuevo.setText("+ Nueva Factura");
         btnNuevo.addActionListener(new java.awt.event.ActionListener() {
@@ -388,7 +388,7 @@ public class FacturaCRUDPanel extends javax.swing.JPanel {
             }
         });
 
-        btnPagar.setBackground(new java.awt.Color(0, 204, 102));
+        btnPagar.setBackground(new java.awt.Color(20, 184, 166));
         btnPagar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnPagar.setText("Pagar");
         btnPagar.addActionListener(new java.awt.event.ActionListener() {

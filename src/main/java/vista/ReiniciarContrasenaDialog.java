@@ -92,7 +92,7 @@ public class ReiniciarContrasenaDialog extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        pnlFormulario.setBackground(new java.awt.Color(204, 255, 255));
+        pnlFormulario.setBackground(new java.awt.Color(255, 255, 255));
 
         lblTitulo.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -106,7 +106,7 @@ public class ReiniciarContrasenaDialog extends javax.swing.JDialog {
         lblConfirmar.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblConfirmar.setText("Confirmar Contraseña *:");
 
-        btnGuardar.setBackground(new java.awt.Color(0, 204, 255));
+        btnGuardar.setBackground(new java.awt.Color(20, 184, 166));
         btnGuardar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {

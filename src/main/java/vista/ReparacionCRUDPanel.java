@@ -272,7 +272,7 @@ public class ReparacionCRUDPanel extends javax.swing.JPanel {
             }
         });
 
-        btnNuevo.setBackground(new java.awt.Color(51, 204, 0));
+        btnNuevo.setBackground(new java.awt.Color(103, 201, 228));
         btnNuevo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnNuevo.setText("+ Nueva Reparación");
         btnNuevo.addActionListener(new java.awt.event.ActionListener() {
@@ -327,7 +327,7 @@ public class ReparacionCRUDPanel extends javax.swing.JPanel {
             .addGroup(pnlListadoLayout.createSequentialGroup()
                 .addGap(273, 273, 273)
                 .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(90, 90, 90)
+                .addGap(169, 169, 169)
                 .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(pnlListadoLayout.createSequentialGroup()

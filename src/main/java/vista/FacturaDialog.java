@@ -2,6 +2,7 @@ package vista;
 
 import controlador.FacturaController;
 import controlador.ReparacionController;
+import java.awt.Color;
 import javax.swing.DefaultComboBoxModel;
 import modelo.Factura;
 import modelo.Factura.MetodoPago;
@@ -42,10 +43,12 @@ public class FacturaDialog extends javax.swing.JDialog {
         if (factura != null) {
             lblTitulo.setText("Editar Factura");
             btnGuardar.setText("Actualizar");
+            btnGuardar.setBackground(new Color(102, 102, 255));
             cargarDatos();
         } else {
             lblTitulo.setText("Nueva Factura");
             btnGuardar.setText("Guardar");
+            btnGuardar.setBackground(new Color(103, 201, 228));
         }
     }
 
@@ -173,7 +176,7 @@ public class FacturaDialog extends javax.swing.JDialog {
         lblMetodo.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblMetodo.setText("Método De Pago *:");
 
-        btnGuardar.setBackground(new java.awt.Color(102, 102, 255));
+        btnGuardar.setBackground(new java.awt.Color(103, 201, 228));
         btnGuardar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {

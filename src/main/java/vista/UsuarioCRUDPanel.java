@@ -4,6 +4,7 @@ import controlador.UsuarioController;
 import java.awt.Color;
 import java.awt.Image;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.table.DefaultTableModel;
 import modelo.Usuario;
 import util.DialogUtil;
@@ -29,6 +30,23 @@ public class UsuarioCRUDPanel extends javax.swing.JPanel {
         Image img = icon.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH);
         btnBuscar.setIcon(new ImageIcon(img));
         cargarTabla();
+
+        JLabel fondo = new javax.swing.JLabel();
+
+        ImageIcon imagen = new ImageIcon(getClass().getResource("/img/fondo2.png"));
+        Image imgFondo = imagen.getImage().getScaledInstance(897, 424, Image.SCALE_SMOOTH);
+
+        fondo.setIcon(new ImageIcon(imgFondo));
+        fondo.setBounds(0, 0, 897, 424);
+
+        setLayout(null);
+
+        pnlListado.setBounds(0, 0, 897, 424);
+
+        add(fondo);
+        add(pnlListado);
+
+        setComponentZOrder(fondo, getComponentCount() - 1);
     }
 
     /**
@@ -188,9 +206,6 @@ public class UsuarioCRUDPanel extends javax.swing.JPanel {
         btnBuscar = new javax.swing.JButton();
         btnReiniciarContrasena = new javax.swing.JButton();
 
-        setBackground(new java.awt.Color(204, 255, 255));
-
-        pnlListado.setBackground(new java.awt.Color(255, 204, 102));
         pnlListado.setOpaque(false);
 
         tblUsuarios.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -213,11 +228,12 @@ public class UsuarioCRUDPanel extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tblUsuarios.setOpaque(false);
         tblUsuarios.setPreferredSize(null);
         tblUsuarios.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         pnlScroll.setViewportView(tblUsuarios);
 
-        btnEditar.setBackground(new java.awt.Color(51, 204, 0));
+        btnEditar.setBackground(new java.awt.Color(102, 102, 255));
         btnEditar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnEditar.setText("Editar");
         btnEditar.addActionListener(new java.awt.event.ActionListener() {
@@ -235,7 +251,7 @@ public class UsuarioCRUDPanel extends javax.swing.JPanel {
             }
         });
 
-        btnNuevo.setBackground(new java.awt.Color(0, 204, 255));
+        btnNuevo.setBackground(new java.awt.Color(103, 201, 228));
         btnNuevo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnNuevo.setText("+ Nuevo Usuario");
         btnNuevo.addActionListener(new java.awt.event.ActionListener() {
@@ -274,7 +290,7 @@ public class UsuarioCRUDPanel extends javax.swing.JPanel {
             }
         });
 
-        btnReiniciarContrasena.setBackground(new java.awt.Color(102, 102, 255));
+        btnReiniciarContrasena.setBackground(new java.awt.Color(20, 184, 166));
         btnReiniciarContrasena.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnReiniciarContrasena.setText("Reiniciar Contraseña");
         btnReiniciarContrasena.addActionListener(new java.awt.event.ActionListener() {

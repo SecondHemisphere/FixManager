@@ -1,6 +1,7 @@
 package vista;
 
 import controlador.ClienteController;
+import java.awt.Color;
 import modelo.Cliente;
 import util.DialogUtil;
 import util.ResultadoOperacion;
@@ -32,10 +33,12 @@ public class ClienteDialog extends javax.swing.JDialog {
         if (cliente != null) {
             lblTitulo.setText("Editar Cliente");
             btnGuardar.setText("Actualizar");
+            btnGuardar.setBackground(new Color(102, 102, 255));
             cargarDatos();
         } else {
             lblTitulo.setText("Nuevo Cliente");
             btnGuardar.setText("Guardar");
+            btnGuardar.setBackground(new Color(103, 201, 228));
         }
     }
 
@@ -77,7 +80,7 @@ public class ClienteDialog extends javax.swing.JDialog {
 
             DialogUtil.mostrarMensajeInformacion(this, resultado.getMensaje());
             dispose();
-            
+
         } catch (Exception e) {
             DialogUtil.mostrarMensajeError(this, "Error: " + e.getMessage());
         }
@@ -147,7 +150,7 @@ public class ClienteDialog extends javax.swing.JDialog {
         txtaDireccion.setWrapStyleWord(true);
         scrDireccion.setViewportView(txtaDireccion);
 
-        btnGuardar.setBackground(new java.awt.Color(102, 102, 255));
+        btnGuardar.setBackground(new java.awt.Color(103, 201, 228));
         btnGuardar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {

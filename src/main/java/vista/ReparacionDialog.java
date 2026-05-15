@@ -2,6 +2,7 @@ package vista;
 
 import controlador.ReparacionController;
 import controlador.RecepcionEntregaController;
+import java.awt.Color;
 import javax.swing.DefaultComboBoxModel;
 import modelo.Reparacion;
 import modelo.RecepcionEntrega;
@@ -41,10 +42,12 @@ public class ReparacionDialog extends javax.swing.JDialog {
         if (reparacion != null) {
             lblTitulo.setText("Editar Reparación");
             btnGuardar.setText("Actualizar");
+            btnGuardar.setBackground(new Color(102, 102, 255));
             cargarDatos();
         } else {
             lblTitulo.setText("Nueva Reparación");
             btnGuardar.setText("Guardar");
+            btnGuardar.setBackground(new Color(103, 201, 228));
         }
     }
 
@@ -210,7 +213,7 @@ public class ReparacionDialog extends javax.swing.JDialog {
         lblEstado.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblEstado.setText("Estado *:");
 
-        btnGuardar.setBackground(new java.awt.Color(102, 102, 255));
+        btnGuardar.setBackground(new java.awt.Color(103, 201, 228));
         btnGuardar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
