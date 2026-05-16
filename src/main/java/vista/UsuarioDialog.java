@@ -19,11 +19,12 @@ public class UsuarioDialog extends javax.swing.JDialog {
     private Usuario usuario = null;
 
     /**
-     * Creates new form UsuarioDialog
+     * Inicializa el diálogo de gestión de usuarios. Configura el formulario
+     * para registrar o editar usuarios.
      *
-     * @param parent
-     * @param modal
-     * @param usuario
+     * @param parent ventana padre del diálogo
+     * @param modal indica si el diálogo será modal
+     * @param usuario usuario a editar; null para registrar uno nuevo
      */
     public UsuarioDialog(java.awt.Frame parent, boolean modal, Usuario usuario) {
         super(parent, modal);

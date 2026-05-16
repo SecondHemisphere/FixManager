@@ -23,11 +23,15 @@ public class FacturaDialog extends javax.swing.JDialog {
     private Factura factura = null;
 
     /**
-     * Creates new form FacturaDialog
+     * Inicializa los componentes gráficos, carga las reparaciones disponibles y
+     * los métodos de pago permitidos.
      *
-     * @param parent
-     * @param modal
-     * @param factura
+     * Si la factura recibida no es null, el formulario se configura en modo
+     * edición.
+     *
+     * @param parent ventana padre
+     * @param modal indica si el diálogo será modal
+     * @param factura factura a editar; null para registrar
      */
     public FacturaDialog(java.awt.Frame parent, boolean modal, Factura factura) {
         super(parent, modal);

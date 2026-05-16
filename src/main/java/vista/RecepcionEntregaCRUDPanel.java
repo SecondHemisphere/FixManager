@@ -22,7 +22,9 @@ public class RecepcionEntregaCRUDPanel extends javax.swing.JPanel {
     private int idRecepcion = 0;
 
     /**
-     * Creates new form RecepcionEntregaCRUDPanel
+     * Inicializa el panel de gestión de recepciones y entregas, configura los
+     * componentes visuales, carga la tabla de datos y establece el fondo
+     * personalizado del panel.
      */
     public RecepcionEntregaCRUDPanel() {
         initComponents();

@@ -22,11 +22,12 @@ public class ReparacionDialog extends javax.swing.JDialog {
     private Reparacion reparacion = null;
 
     /**
-     * Creates new form ReparacionDialog
+     * Crea el diálogo para registrar o editar reparaciones, inicializando
+     * componentes, controladores y datos necesarios del formulario.
      *
-     * @param parent
-     * @param modal
-     * @param reparacion
+     * @param parent ventana padre del diálogo
+     * @param modal indica si el diálogo será modal
+     * @param reparacion reparación a editar; si es null se crea una nueva
      */
     public ReparacionDialog(java.awt.Frame parent, boolean modal, Reparacion reparacion) {
         super(parent, modal);

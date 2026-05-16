@@ -21,7 +21,9 @@ public class ReparacionCRUDPanel extends javax.swing.JPanel {
     private int idReparacion = 0;
 
     /**
-     * Creates new form ReparacionCRUDPanel
+     * Crea el panel de gestión CRUD de reparaciones e inicializa sus
+     * componentes visuales, tabla de datos y configuraciones de diseño e
+     * interfaz.
      */
     public ReparacionCRUDPanel() {
         initComponents();
@@ -91,6 +93,12 @@ public class ReparacionCRUDPanel extends javax.swing.JPanel {
         }
     }
 
+    /**
+     * Obtiene el nombre del cliente asociado a una reparación.
+     *
+     * @param r reparación de la cual se desea obtener el cliente
+     * @return nombre del cliente asociado o "Sin cliente" si no existe
+     */
     private String obtenerCliente(Reparacion r) {
         if (r.getRecepcion() != null
                 && r.getRecepcion().getEquipoMovil() != null
@@ -101,6 +109,12 @@ public class ReparacionCRUDPanel extends javax.swing.JPanel {
         return "Sin cliente";
     }
 
+    /**
+     * Obtiene la información del equipo asociado a una reparación.
+     *
+     * @param r reparación de la cual se desea obtener el equipo
+     * @return marca y modelo del equipo o "Sin equipo" si no existe
+     */
     private String obtenerEquipo(Reparacion r) {
         if (r.getRecepcion() != null
                 && r.getRecepcion().getEquipoMovil() != null) {

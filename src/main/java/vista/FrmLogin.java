@@ -16,6 +16,11 @@ import util.Sesion;
  */
 public class FrmLogin extends javax.swing.JFrame {
 
+    /**
+     * Inicializa la ventana de inicio de sesión.
+     *
+     * Configura los componentes gráficos y la imagen de fondo del formulario.
+     */
     public FrmLogin() {
         initComponents();
 

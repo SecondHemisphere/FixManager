@@ -15,6 +15,10 @@ import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import util.Sesion;
 
 /**
+ * Ventana principal del sistema.
+ *
+ * Contiene el menú de navegación principal y permite acceder a los distintos
+ * módulos del sistema según el rol del usuario.
  *
  * @author Mendoza Sebastian
  */
@@ -28,6 +32,12 @@ public class FrmMenu extends javax.swing.JFrame {
     private static final Color COLOR_CERRAR_SESION_HOVER = new Color(255, 175, 175);
     private static final Color COLOR_TEXTO_CERRAR_SESION = new Color(214, 48, 49);
 
+    /**
+     * Inicializa la ventana principal del sistema.
+     *
+     * Configura estilos visuales, iconos, permisos por rol y eventos del menú
+     * principal.
+     */
     public FrmMenu() {
         initComponents();
 
@@ -58,7 +68,6 @@ public class FrmMenu extends javax.swing.JFrame {
         menuBar.setBackground(COLOR_MENU_PRINCIPAL);
         menuBar.setForeground(COLOR_TEXTO);
 
-        // Estilos específicos fijos y hover para el botón de Cerrar Sesión
         menuCerrarSesion.setOpaque(true);
         menuCerrarSesion.setBackground(COLOR_CERRAR_SESION);
         menuCerrarSesion.setForeground(COLOR_TEXTO_CERRAR_SESION);
@@ -103,6 +112,10 @@ public class FrmMenu extends javax.swing.JFrame {
         menuBar.add(menuCerrarSesion);
     }
 
+    /**
+     * Configura la visibilidad de los menús según el rol del usuario
+     * autenticado.
+     */
     private void configurarPermisos() {
         if (Sesion.getUsuarioActual() == null) {
             return;
@@ -120,6 +133,11 @@ public class FrmMenu extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Aplica estilos visuales personalizados a un menú.
+     *
+     * @param menu menú a estilizar
+     */
     private void estilizarMenu(JMenu menu) {
         menu.setFont(new Font("Tahoma", Font.BOLD, 12));
         menu.setBorder(BorderFactory.createEmptyBorder(3, 8, 3, 8));
@@ -138,6 +156,11 @@ public class FrmMenu extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Aplica estilos visuales a un item del menú.
+     *
+     * @param item item a estilizar
+     */
     private void estilizarItem(JMenuItem item) {
         item.setFont(new Font("Tahoma", java.awt.Font.PLAIN, 12));
         item.setBorder(BorderFactory.createEmptyBorder(6, 12, 6, 12));
@@ -150,6 +173,14 @@ public class FrmMenu extends javax.swing.JFrame {
         item.setMargin(new java.awt.Insets(0, 0, 0, 0));
     }
 
+    /**
+     * Obtiene un icono redimensionado.
+     *
+     * @param ruta ruta de la imagen
+     * @param ancho ancho deseado
+     * @param alto alto deseado
+     * @return icono escalado
+     */
     private ImageIcon obtenerIcono(String ruta, int ancho, int alto) {
         ImageIcon icono = new ImageIcon(getClass().getResource(ruta));
         Image img = icono.getImage().getScaledInstance(ancho, alto, Image.SCALE_SMOOTH);

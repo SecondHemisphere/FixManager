@@ -21,7 +21,10 @@ public class ClienteCRUDPanel extends javax.swing.JPanel {
     private int idCliente = 0;
 
     /**
-     * Creates new form ClienteCRUDPanel
+     * Inicializa el panel de gestión de clientes.
+     *
+     * Configura estilos visuales, carga los registros y establece la imagen de
+     * fondo del panel.
      */
     public ClienteCRUDPanel() {
         initComponents();

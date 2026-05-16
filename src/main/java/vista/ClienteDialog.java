@@ -17,14 +17,16 @@ public class ClienteDialog extends javax.swing.JDialog {
     private Cliente cliente = null;
 
     /**
-     * Creates new form ClienteDialog
+     * Inicializa el diálogo de clientes.
      *
-     * @param parent
-     * @param modal
-     * @param cliente
+     * Permite registrar un nuevo cliente o editar uno existente dependiendo del
+     * valor recibido en el parámetro cliente.
+     *
+     * @param parent ventana padre del diálogo
+     * @param modal indica si el diálogo será modal
+     * @param cliente cliente a editar; si es null se crea un nuevo registro
      */
     public ClienteDialog(java.awt.Frame parent, boolean modal, Cliente cliente) {
-
         super(parent, modal);
         initComponents();
         controlador = new ClienteController();
@@ -80,7 +82,6 @@ public class ClienteDialog extends javax.swing.JDialog {
 
             DialogUtil.mostrarMensajeInformacion(this, resultado.getMensaje());
             dispose();
-
         } catch (Exception e) {
             DialogUtil.mostrarMensajeError(this, "Error: " + e.getMessage());
         }

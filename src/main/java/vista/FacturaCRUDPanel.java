@@ -26,7 +26,11 @@ public class FacturaCRUDPanel extends javax.swing.JPanel {
     private final ImageIcon iconPago;
 
     /**
-     * Creates new form FacturaCRUDPanel
+     * Constructor del panel de facturas. Inicializa los componentes gráficos,
+     * configura estilos, carga íconos, prepara la tabla y establece el fondo
+     * personalizado del panel.
+     *
+     * @author Mendoza Sebastian
      */
     public FacturaCRUDPanel() {
         initComponents();

@@ -22,11 +22,13 @@ public class RecepcionEntregaDialog extends javax.swing.JDialog {
     private RecepcionEntrega recepcion = null;
 
     /**
-     * Creates new form RecepcionEntregaDialog
+     * Inicializa el diálogo de recepción y entrega, configura los
+     * controladores, carga los equipos móviles disponibles y prepara el
+     * formulario en modo registro o edición según la recepción recibida.
      *
-     * @param parent
-     * @param modal
-     * @param recepcion
+     * @param parent ventana padre del diálogo
+     * @param modal indica si el diálogo será modal
+     * @param recepcion recepción a editar; si es null se crea una nueva
      */
     public RecepcionEntregaDialog(java.awt.Frame parent, boolean modal, RecepcionEntrega recepcion) {
         super(parent, modal);

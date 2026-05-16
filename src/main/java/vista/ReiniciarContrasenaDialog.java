@@ -16,11 +16,12 @@ public class ReiniciarContrasenaDialog extends javax.swing.JDialog {
     private Usuario usuario = null;
 
     /**
-     * Creates new form ReiniciarContrasenaDialog
+     * Inicializa el diálogo para reiniciar la contraseña de un usuario y
+     * configura los componentes necesarios para el proceso.
      *
-     * @param parent
-     * @param modal
-     * @param usuario
+     * @param parent ventana padre del diálogo
+     * @param modal indica si el diálogo será modal
+     * @param usuario usuario al que se le reiniciará la contraseña
      */
     public ReiniciarContrasenaDialog(java.awt.Frame parent, boolean modal, Usuario usuario) {
         super(parent, modal);

@@ -21,7 +21,10 @@ public class EquipoMovilCRUDPanel extends javax.swing.JPanel {
     private int idEquipoMovil = 0;
 
     /**
-     * Creates new form EquipoMovilCRUDPanel
+     * Inicializa el panel de gestión de equipos móviles.
+     *
+     * Configura los componentes visuales, establece estilos, carga los
+     * registros en la tabla y asigna la imagen de fondo.
      */
     public EquipoMovilCRUDPanel() {
         initComponents();

@@ -21,11 +21,16 @@ public class EquipoMovilDialog extends javax.swing.JDialog {
     private EquipoMovil equipo = null;
 
     /**
-     * Creates new form EquipoMovilDialog
+     * Inicializa el diálogo de gestión de equipos móviles.
      *
-     * @param parent
-     * @param modal
-     * @param equipo
+     * Configura los controladores, carga el listado de clientes y establece el
+     * comportamiento visual del formulario dependiendo si se encuentra en modo
+     * registro o edición.
+     *
+     * @param parent ventana padre del diálogo
+     * @param modal indica si el diálogo será modal
+     * @param equipo equipo móvil a editar; si es null, se crea un nuevo
+     * registro
      */
     public EquipoMovilDialog(java.awt.Frame parent, boolean modal, EquipoMovil equipo) {
         super(parent, modal);

@@ -21,7 +21,8 @@ public class UsuarioCRUDPanel extends javax.swing.JPanel {
     private int idUsuario = 0;
 
     /**
-     * Creates new form UsuarioCRUDPanel
+     * Inicializa el panel de gestión de usuarios y configura sus componentes.
+     * Carga los íconos, la tabla de usuarios y el fondo del panel.
      */
     public UsuarioCRUDPanel() {
         initComponents();
