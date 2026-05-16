@@ -41,7 +41,7 @@ public class FacturaCRUDPanel extends javax.swing.JPanel {
         Image imgBuscar = iconBuscar.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH);
         btnBuscar.setIcon(new ImageIcon(imgBuscar));
 
-        ImageIcon iconDinero = new ImageIcon(getClass().getResource("/img/coin.png"));
+        ImageIcon iconDinero = new ImageIcon(getClass().getResource("/img/moneda.png"));
         Image imgDinero = iconDinero.getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH);
         this.iconPago = new ImageIcon(imgDinero);
 
