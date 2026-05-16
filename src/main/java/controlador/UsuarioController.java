@@ -18,7 +18,7 @@ import util.ResultadoOperacion;
 public class UsuarioController {
 
     private final UsuarioDAO dao = new UsuarioDAO();
-    
+
     private static final Pattern EMAIL = Pattern.compile("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
 
     /**
@@ -179,7 +179,7 @@ public class UsuarioController {
      * @param nombre nombre del usuario a validar
      * @return mensaje de error si es inválido, null si es válido
      */
-    private static String validarNombre(String nombre) {
+    public static String validarNombre(String nombre) {
 
         if (nombre == null || nombre.trim().isEmpty()) {
             return "El nombre es obligatorio";
@@ -204,7 +204,7 @@ public class UsuarioController {
      * @param correo correo a validar
      * @return mensaje de error si es inválido, null si es válido
      */
-    private static String validarCorreo(String correo) {
+    public static String validarCorreo(String correo) {
 
         if (correo == null || correo.trim().isEmpty()) {
             return "El correo es obligatorio";
@@ -225,7 +225,7 @@ public class UsuarioController {
      * @param password contraseña a validar
      * @return mensaje de error si es inválido, null si es válido
      */
-    private static String validarPassword(String password) {
+    public static String validarPassword(String password) {
 
         if (password == null || password.trim().isEmpty()) {
             return "La contraseña es obligatoria";
@@ -246,7 +246,7 @@ public class UsuarioController {
      * @param rol rol del usuario a validar
      * @return mensaje de error si es inválido, null si es válido
      */
-    private static String validarRol(Rol rol) {
+    public static String validarRol(Rol rol) {
 
         if (rol == null) {
             return "El rol es obligatorio";

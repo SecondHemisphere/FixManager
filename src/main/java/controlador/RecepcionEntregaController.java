@@ -182,7 +182,7 @@ public class RecepcionEntregaController {
      * @param r objeto RecepcionEntrega
      * @return mensaje de error o null si es válido
      */
-    private static String validarEquipo(RecepcionEntrega r) {
+    public static String validarEquipo(RecepcionEntrega r) {
 
         if (r.getEquipoMovil() == null) {
             return "Debe seleccionar un equipo móvil";
@@ -197,7 +197,7 @@ public class RecepcionEntregaController {
      * @param problema descripción del problema
      * @return mensaje de error o null si es válido
      */
-    private static String validarProblema(String problema) {
+    public static String validarProblema(String problema) {
 
         if (problema == null || problema.trim().isEmpty()) {
             return "El problema reportado es obligatorio";
@@ -222,7 +222,7 @@ public class RecepcionEntregaController {
      * @param estado estado de la recepción
      * @return mensaje de error o null si es válido
      */
-    private static String validarEstado(RecepcionEntrega.Estado estado) {
+    public static String validarEstado(RecepcionEntrega.Estado estado) {
 
         if (estado == null) {
             return "El estado es obligatorio";

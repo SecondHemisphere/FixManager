@@ -170,7 +170,7 @@ public class EquipoMovilController {
      * @param marca nombre de la marca
      * @return error o null si es válida
      */
-    private static String validarMarca(String marca) {
+    public static String validarMarca(String marca) {
 
         if (marca == null || marca.trim().isEmpty()) {
             return "La marca es obligatoria";
@@ -195,7 +195,7 @@ public class EquipoMovilController {
      * @param modelo nombre del modelo
      * @return error o null si es válido
      */
-    private static String validarModelo(String modelo) {
+    public static String validarModelo(String modelo) {
 
         if (modelo == null || modelo.trim().isEmpty()) {
             return "El modelo es obligatorio";
@@ -220,7 +220,7 @@ public class EquipoMovilController {
      * @param imei código IMEI
      * @return error o null si es válido
      */
-    private static String validarImei(String imei) {
+    public static String validarImei(String imei) {
 
         if (imei == null || imei.trim().isEmpty()) {
             return "El IMEI es obligatorio";
@@ -245,7 +245,7 @@ public class EquipoMovilController {
      * @param tipo tipo del equipo
      * @return error o null si es válido
      */
-    private static String validarTipo(String tipo) {
+    public static String validarTipo(String tipo) {
 
         if (tipo == null || tipo.trim().isEmpty()) {
             return "El tipo es obligatorio";
@@ -270,7 +270,7 @@ public class EquipoMovilController {
      * @param desc descripción del daño
      * @return error o null si es válida
      */
-    private static String validarDescripcionDanio(String desc) {
+    public static String validarDescripcionDanio(String desc) {
 
         if (desc == null || desc.trim().isEmpty()) {
             return "La descripción del daño es obligatoria";
@@ -295,7 +295,7 @@ public class EquipoMovilController {
      * @param e equipo móvil
      * @return error o null si es válido
      */
-    private static String validarCliente(EquipoMovil e) {
+    public static String validarCliente(EquipoMovil e) {
 
         if (e.getCliente() == null) {
             return "Debe seleccionar un cliente";

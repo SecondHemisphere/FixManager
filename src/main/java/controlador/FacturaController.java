@@ -213,7 +213,7 @@ public class FacturaController {
      * @param f factura a validar
      * @return mensaje de error o null si es válida
      */
-    private static String validarReparacion(Factura f) {
+    public static String validarReparacion(Factura f) {
 
         if (f.getReparacion() == null) {
             return "Debe seleccionar una reparación";
@@ -228,7 +228,7 @@ public class FacturaController {
      * @param costo valor del costo total
      * @return mensaje de error o null si es válido
      */
-    private static String validarCosto(double costo) {
+    public static String validarCosto(double costo) {
 
         if (costo <= 0) {
             return "El costo total debe ser mayor a 0";
@@ -243,7 +243,7 @@ public class FacturaController {
      * @param obs texto de observaciones
      * @return mensaje de error o null si es válido
      */
-    private static String validarObservaciones(String obs) {
+    public static String validarObservaciones(String obs) {
 
         if (obs != null) {
 
@@ -263,7 +263,7 @@ public class FacturaController {
      * @param estado estado actual de la factura
      * @return mensaje de error o null si es válido
      */
-    private static String validarEstado(Factura.Estado estado) {
+    public static String validarEstado(Factura.Estado estado) {
 
         if (estado == null) {
             return "El estado es obligatorio";

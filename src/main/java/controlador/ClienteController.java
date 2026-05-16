@@ -176,7 +176,7 @@ public class ClienteController {
      * @param nombre nombre del cliente
      * @return error o null si es válido
      */
-    private static String validarNombre(String nombre) {
+    public static String validarNombre(String nombre) {
 
         if (nombre == null || nombre.trim().isEmpty()) {
             return "El nombre es obligatorio";
@@ -201,7 +201,7 @@ public class ClienteController {
      * @param correo correo del cliente
      * @return error o null si es válido
      */
-    private static String validarCorreo(String correo) {
+    public static String validarCorreo(String correo) {
 
         if (correo == null || correo.trim().isEmpty()) {
             return "El correo es obligatorio";
@@ -226,7 +226,7 @@ public class ClienteController {
      * @param telefono número telefónico
      * @return error o null si es válido
      */
-    private static String validarTelefono(String telefono) {
+    public static String validarTelefono(String telefono) {
 
         if (telefono == null || telefono.trim().isEmpty()) {
             return "El teléfono es obligatorio";
@@ -255,7 +255,7 @@ public class ClienteController {
      * @param direccion dirección del cliente
      * @return error o null si es válida
      */
-    private static String validarDireccion(String direccion) {
+    public static String validarDireccion(String direccion) {
 
         if (direccion == null || direccion.trim().isEmpty()) {
             return null;

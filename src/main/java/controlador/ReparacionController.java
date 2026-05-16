@@ -173,7 +173,7 @@ public class ReparacionController {
      * @param r objeto reparación
      * @return mensaje de error si es inválido
      */
-    private static String validarRecepcion(Reparacion r) {
+    public static String validarRecepcion(Reparacion r) {
 
         if (r.getRecepcion() == null) {
             return "Debe seleccionar una recepción";
@@ -188,7 +188,7 @@ public class ReparacionController {
      * @param diagnostico texto del diagnóstico
      * @return mensaje de error si es inválido
      */
-    private static String validarDiagnostico(String diagnostico) {
+    public static String validarDiagnostico(String diagnostico) {
 
         if (diagnostico == null || diagnostico.trim().isEmpty()) {
             return "El diagnóstico es obligatorio";
@@ -213,7 +213,7 @@ public class ReparacionController {
      * @param solucion texto de la solución
      * @return mensaje de error si es inválido
      */
-    private static String validarSolucion(String solucion) {
+    public static String validarSolucion(String solucion) {
 
         if (solucion == null || solucion.trim().isEmpty()) {
             return "La solución es obligatoria";
@@ -238,7 +238,7 @@ public class ReparacionController {
      * @param costo valor del costo
      * @return mensaje de error si es inválido
      */
-    private static String validarCosto(double costo) {
+    public static String validarCosto(double costo) {
 
         if (costo < 0) {
             return "El costo debe ser un valor positivo";
@@ -253,7 +253,7 @@ public class ReparacionController {
      * @param piezas texto de piezas utilizadas
      * @return mensaje de error si es inválido
      */
-    private static String validarPiezas(String piezas) {
+    public static String validarPiezas(String piezas) {
 
         if (piezas == null || piezas.trim().isEmpty()) {
             return "Debe especificar las piezas usadas";
@@ -278,7 +278,7 @@ public class ReparacionController {
      * @param estado estado de la reparación
      * @return mensaje de error si es inválido
      */
-    private static String validarEstado(Reparacion.Estado estado) {
+    public static String validarEstado(Reparacion.Estado estado) {
 
         if (estado == null) {
             return "El estado es obligatorio";
