@@ -18,12 +18,16 @@ import modelo.Usuario;
 /**
  * DAO encargado de las operaciones CRUD de la entidad Factura.
  *
+ * Permite gestionar la creación, consulta, actualización, eliminación y
+ * filtrado de facturas generadas a partir de reparaciones realizadas en el
+ * sistema.
+ *
  * @author Mendoza Sebastian
  */
 public class FacturaDAO {
 
     /**
-     * Lista todas las facturas.
+     * Lista todas las facturas registradas en el sistema.
      *
      * @return lista de facturas
      */
@@ -97,9 +101,9 @@ public class FacturaDAO {
     }
 
     /**
-     * Busca una factura por su ID.
+     * Obtiene una factura por su identificador.
      *
-     * @param idFactura ID de la factura
+     * @param idFactura identificador de la factura
      * @return factura encontrada o null si no existe
      */
     public Factura obtenerPorId(int idFactura) {
@@ -176,38 +180,10 @@ public class FacturaDAO {
     }
 
     /**
-     * Verifica si ya existe una factura para una reparación.
+     * Registra una nueva factura en la base de datos.
      *
-     * @param reparacionId ID de la reparación
-     * @return true si la reparación ya tiene una factura registrada, false en
-     * caso contrario
-     */
-    public boolean existePorReparacion(int reparacionId) {
-        String sql = """
-            SELECT COUNT(*)
-            FROM factura
-            WHERE reparacion_id = ?
-        """;
-
-        try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
-
-            pst.setInt(1, reparacionId);
-
-            try (ResultSet rs = pst.executeQuery()) {
-
-                return rs.next() && rs.getInt(1) > 0;
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException("Error al verificar factura", e);
-        }
-    }
-
-    /**
-     * Guarda una factura en la base de datos.
-     *
-     * @param f objeto factura
-     * @return true si se insertó correctamente
+     * @param f factura a registrar
+     * @return true si se guardó correctamente
      */
     public boolean guardar(Factura f) {
 
@@ -238,9 +214,9 @@ public class FacturaDAO {
     }
 
     /**
-     * Actualiza los datos de una factura existente.
+     * Actualiza una factura existente.
      *
-     * @param f objeto con datos actualizados
+     * @param f factura con datos actualizados
      * @return true si se actualizó correctamente
      */
     public boolean actualizar(Factura f) {
@@ -268,7 +244,7 @@ public class FacturaDAO {
     /**
      * Elimina una factura por su ID.
      *
-     * @param idFactura ID de la factura
+     * @param idFactura identificador de la factura
      * @return true si se eliminó correctamente
      */
     public boolean eliminar(int idFactura) {
@@ -289,8 +265,8 @@ public class FacturaDAO {
     /**
      * Filtra facturas por cliente o estado.
      *
-     * @param texto texto a buscar
-     * @return lista de facturas que coinciden
+     * @param texto texto de búsqueda
+     * @return lista de facturas coincidentes
      */
     public List<Factura> filtrar(String texto) {
         List<Factura> lista = new ArrayList<>();
@@ -366,5 +342,32 @@ public class FacturaDAO {
         }
 
         return lista;
+    }
+
+    /**
+     * Verifica si ya existe una factura asociada a una reparación.
+     *
+     * @param reparacionId identificador de la reparación
+     * @return true si ya existe factura, false en caso contrario
+     */
+    public boolean existePorReparacion(int reparacionId) {
+        String sql = """
+            SELECT COUNT(*)
+            FROM factura
+            WHERE reparacion_id = ?
+        """;
+
+        try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setInt(1, reparacionId);
+
+            try (ResultSet rs = pst.executeQuery()) {
+
+                return rs.next() && rs.getInt(1) > 0;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al verificar factura", e);
+        }
     }
 }

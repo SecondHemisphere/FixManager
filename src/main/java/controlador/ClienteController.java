@@ -10,6 +10,10 @@ import util.ResultadoOperacion;
 /**
  * Controlador de la entidad Cliente.
  *
+ * Encargado de aplicar validaciones y reglas de negocio antes de acceder a la
+ * capa DAO. También controla restricciones de eliminación cuando el cliente
+ * tiene equipos asociados.
+ *
  * @author Cagua Derek
  */
 public class ClienteController {
@@ -20,14 +24,31 @@ public class ClienteController {
     private static final Pattern SOLO_NUMEROS = Pattern.compile("\\d+");
     private static final Pattern EMAIL = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
 
+    /**
+     * Obtiene la lista de todos los clientes.
+     *
+     * @return lista de clientes registrados
+     */
     public List<Cliente> listarClientes() {
         return dao.listar();
     }
 
+    /**
+     * Obtiene un cliente por su ID.
+     *
+     * @param id identificador del cliente
+     * @return cliente encontrado o null si no existe
+     */
     public Cliente obtenerCliente(int id) {
         return dao.obtenerPorId(id);
     }
 
+    /**
+     * Guarda un nuevo cliente.
+     *
+     * @param c cliente a registrar
+     * @return resultado de la operación
+     */
     public ResultadoOperacion guardarCliente(Cliente c) {
         String error = validar(c);
 
@@ -50,6 +71,12 @@ public class ClienteController {
                 : ResultadoOperacion.error("No se pudo guardar el cliente");
     }
 
+    /**
+     * Actualiza un cliente existente.
+     *
+     * @param c cliente con datos actualizados
+     * @return resultado de la operación
+     */
     public ResultadoOperacion actualizarCliente(Cliente c) {
         String error = validar(c);
 
@@ -72,6 +99,12 @@ public class ClienteController {
                 : ResultadoOperacion.error("No se pudo actualizar el cliente");
     }
 
+    /**
+     * Elimina un cliente si no tiene equipos móviles asociados.
+     *
+     * @param id identificador del cliente
+     * @return resultado de la operación
+     */
     public ResultadoOperacion eliminarCliente(int id) {
         Cliente c = dao.obtenerPorId(id);
 
@@ -80,7 +113,9 @@ public class ClienteController {
         }
 
         if (equipoDao.existePorCliente(id)) {
-            return ResultadoOperacion.error("No se puede eliminar un cliente con equipos móviles registrados");
+            return ResultadoOperacion.error(
+                    "No se puede eliminar un cliente con equipos móviles registrados"
+            );
         }
 
         boolean ok = dao.eliminar(id);
@@ -90,10 +125,22 @@ public class ClienteController {
                 : ResultadoOperacion.error("No se pudo eliminar el cliente");
     }
 
+    /**
+     * Filtra clientes por nombre.
+     *
+     * @param texto texto de búsqueda
+     * @return lista de clientes que coinciden
+     */
     public List<Cliente> filtrarClientes(String texto) {
         return dao.filtrarPorNombre(texto);
     }
 
+    /**
+     * Valida un cliente antes de guardarlo o actualizarlo.
+     *
+     * @param c cliente a validar
+     * @return mensaje de error o null si es válido
+     */
     public static String validar(Cliente c) {
 
         if (c == null) {
@@ -101,25 +148,21 @@ public class ClienteController {
         }
 
         String error = validarNombre(c.getNombre());
-
         if (error != null) {
             return error;
         }
 
         error = validarCorreo(c.getCorreo());
-
         if (error != null) {
             return error;
         }
 
         error = validarTelefono(c.getTelefono());
-
         if (error != null) {
             return error;
         }
 
         error = validarDireccion(c.getDireccion());
-
         if (error != null) {
             return error;
         }
@@ -129,6 +172,9 @@ public class ClienteController {
 
     /**
      * Valida el nombre del cliente.
+     *
+     * @param nombre nombre del cliente
+     * @return error o null si es válido
      */
     private static String validarNombre(String nombre) {
 
@@ -151,6 +197,9 @@ public class ClienteController {
 
     /**
      * Valida el correo electrónico del cliente.
+     *
+     * @param correo correo del cliente
+     * @return error o null si es válido
      */
     private static String validarCorreo(String correo) {
 
@@ -172,7 +221,10 @@ public class ClienteController {
     }
 
     /**
-     * Valida el número de teléfono del cliente.
+     * Valida el teléfono del cliente.
+     *
+     * @param telefono número telefónico
+     * @return error o null si es válido
      */
     private static String validarTelefono(String telefono) {
 
@@ -199,6 +251,9 @@ public class ClienteController {
 
     /**
      * Valida la dirección del cliente.
+     *
+     * @param direccion dirección del cliente
+     * @return error o null si es válida
      */
     private static String validarDireccion(String direccion) {
 

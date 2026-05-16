@@ -8,17 +8,33 @@ import util.ResultadoOperacion;
 /**
  * Controlador de la entidad Reparacion.
  *
+ * Encargado de aplicar la lógica de negocio antes de interactuar con la capa
+ * DAO. Valida datos, controla restricciones de estado y gestiona resultados de
+ * operaciones.
+ *
  * @author Pluas Kevin
  */
 public class ReparacionController {
 
     private final ReparacionDAO dao = new ReparacionDAO();
 
+    /**
+     * Lista todas las reparaciones registradas.
+     *
+     * @return lista de reparaciones
+     */
     public List<Reparacion> listar() {
         return dao.listar();
     }
 
+    /**
+     * Registra una nueva reparación en el sistema.
+     *
+     * @param r objeto reparación a guardar
+     * @return resultado de la operación
+     */
     public ResultadoOperacion guardar(Reparacion r) {
+
         String error = validar(r);
 
         if (error != null) {
@@ -32,6 +48,12 @@ public class ReparacionController {
                 : ResultadoOperacion.error("No se pudo registrar");
     }
 
+    /**
+     * Actualiza una reparación existente.
+     *
+     * @param r objeto con datos actualizados
+     * @return resultado de la operación
+     */
     public ResultadoOperacion actualizar(Reparacion r) {
 
         if (r == null || r.getId() == 0) {
@@ -45,7 +67,7 @@ public class ReparacionController {
         }
 
         if (dao.tieneFactura(r.getId())) {
-            return ResultadoOperacion.error("La reparación no se puede modificar porque tiene una factura generada");
+            return ResultadoOperacion.error("No se puede modificar porque ya tiene factura generada");
         }
 
         String error = validar(r);
@@ -57,11 +79,18 @@ public class ReparacionController {
         boolean ok = dao.actualizar(r);
 
         return ok
-                ? ResultadoOperacion.exito("Reparación actualizada")
-                : ResultadoOperacion.error("No se pudo actualizar");
+                ? ResultadoOperacion.exito("Reparación actualizada correctamente")
+                : ResultadoOperacion.error("No se pudo actualizar la reparación");
     }
 
+    /**
+     * Elimina una reparación por su ID.
+     *
+     * @param id identificador de la reparación
+     * @return resultado de la operación
+     */
     public ResultadoOperacion eliminar(int id) {
+
         Reparacion r = dao.obtenerPorId(id);
 
         if (r == null) {
@@ -83,10 +112,22 @@ public class ReparacionController {
                 : ResultadoOperacion.error("No se pudo eliminar la reparación");
     }
 
+    /**
+     * Filtra reparaciones por cliente o estado.
+     *
+     * @param texto texto de búsqueda
+     * @return lista de reparaciones que coinciden
+     */
     public List<Reparacion> filtrar(String texto) {
         return dao.filtrar(texto);
     }
 
+    /**
+     * Valida una reparación completa.
+     *
+     * @param r objeto reparación a validar
+     * @return mensaje de error si existe, null si es válida
+     */
     public static String validar(Reparacion r) {
 
         if (r == null) {
@@ -94,37 +135,31 @@ public class ReparacionController {
         }
 
         String error = validarRecepcion(r);
-
         if (error != null) {
             return error;
         }
 
         error = validarDiagnostico(r.getDiagnostico());
-
         if (error != null) {
             return error;
         }
 
         error = validarSolucion(r.getSolucion());
-
         if (error != null) {
             return error;
         }
 
         error = validarCosto(r.getCostoRepuestos());
-
         if (error != null) {
             return error;
         }
 
         error = validarPiezas(r.getPiezasUsadas());
-
         if (error != null) {
             return error;
         }
 
         error = validarEstado(r.getEstado());
-
         if (error != null) {
             return error;
         }
@@ -133,7 +168,10 @@ public class ReparacionController {
     }
 
     /**
-     * Valida la recepción asociada.
+     * Valida la recepción asociada a la reparación.
+     *
+     * @param r objeto reparación
+     * @return mensaje de error si es inválido
      */
     private static String validarRecepcion(Reparacion r) {
 
@@ -146,6 +184,9 @@ public class ReparacionController {
 
     /**
      * Valida el diagnóstico.
+     *
+     * @param diagnostico texto del diagnóstico
+     * @return mensaje de error si es inválido
      */
     private static String validarDiagnostico(String diagnostico) {
 
@@ -168,6 +209,9 @@ public class ReparacionController {
 
     /**
      * Valida la solución.
+     *
+     * @param solucion texto de la solución
+     * @return mensaje de error si es inválido
      */
     private static String validarSolucion(String solucion) {
 
@@ -190,6 +234,9 @@ public class ReparacionController {
 
     /**
      * Valida el costo de repuestos.
+     *
+     * @param costo valor del costo
+     * @return mensaje de error si es inválido
      */
     private static String validarCosto(double costo) {
 
@@ -202,6 +249,9 @@ public class ReparacionController {
 
     /**
      * Valida las piezas usadas.
+     *
+     * @param piezas texto de piezas utilizadas
+     * @return mensaje de error si es inválido
      */
     private static String validarPiezas(String piezas) {
 
@@ -224,6 +274,9 @@ public class ReparacionController {
 
     /**
      * Valida el estado de la reparación.
+     *
+     * @param estado estado de la reparación
+     * @return mensaje de error si es inválido
      */
     private static String validarEstado(Reparacion.Estado estado) {
 

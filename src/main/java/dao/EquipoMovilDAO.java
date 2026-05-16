@@ -13,17 +13,19 @@ import modelo.EquipoMovil;
 /**
  * DAO encargado de las operaciones CRUD de la entidad EquipoMovil.
  *
+ * Permite gestionar el registro, consulta, actualización, eliminación y
+ * filtrado de equipos móviles asociados a clientes dentro del sistema.
+ *
  * @author Gelves Jonathan
  */
 public class EquipoMovilDAO {
 
     /**
-     * Lista todos los equipos móviles registrados.
+     * Lista todos los equipos móviles registrados en la base de datos.
      *
      * @return lista de equipos móviles
      */
     public List<EquipoMovil> listar() {
-
         List<EquipoMovil> lista = new ArrayList<>();
 
         String sql = """
@@ -63,13 +65,12 @@ public class EquipoMovilDAO {
     }
 
     /**
-     * Busca un equipo móvil por su ID.
+     * Obtiene un equipo móvil por su identificador.
      *
-     * @param idEquipo ID del equipo móvil
+     * @param idEquipo identificador del equipo
      * @return equipo móvil encontrado o null si no existe
      */
     public EquipoMovil obtenerPorId(int idEquipo) {
-
         String sql = """
             SELECT e.*, c.id AS cliente_id, c.nombre, c.correo, c.telefono, c.direccion
             FROM equipo_movil e
@@ -113,13 +114,12 @@ public class EquipoMovilDAO {
     }
 
     /**
-     * Guarda un equipo móvil en la base de datos.
+     * Registra un nuevo equipo móvil en la base de datos.
      *
-     * @param e objeto equipo móvil
-     * @return true si se insertó correctamente
+     * @param e objeto equipo móvil a guardar
+     * @return true si se guardó correctamente
      */
     public boolean guardar(EquipoMovil e) {
-
         String sql = """
             INSERT INTO equipo_movil
             (marca, modelo, imei, tipo, descripcion_danio, cliente_id)
@@ -143,13 +143,12 @@ public class EquipoMovilDAO {
     }
 
     /**
-     * Actualiza los datos de un equipo móvil existente.
+     * Actualiza un equipo móvil existente.
      *
      * @param e objeto con datos actualizados
      * @return true si se actualizó correctamente
      */
     public boolean actualizar(EquipoMovil e) {
-
         String sql = """
             UPDATE equipo_movil
             SET marca=?, modelo=?, imei=?, tipo=?, descripcion_danio=?, cliente_id=?
@@ -176,17 +175,15 @@ public class EquipoMovilDAO {
     /**
      * Elimina un equipo móvil por su ID.
      *
-     * @param idEquipo ID del equipo móvil
+     * @param idEquipo identificador del equipo
      * @return true si se eliminó correctamente
      */
     public boolean eliminar(int idEquipo) {
-
         String sql = "DELETE FROM equipo_movil WHERE id=?";
 
         try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
 
             pst.setInt(1, idEquipo);
-
             return pst.executeUpdate() > 0;
 
         } catch (SQLException e) {
@@ -197,11 +194,10 @@ public class EquipoMovilDAO {
     /**
      * Filtra equipos móviles por IMEI o nombre del cliente.
      *
-     * @param texto texto a buscar
-     * @return lista de equipos que coinciden
+     * @param texto texto de búsqueda
+     * @return lista de equipos coincidentes
      */
     public List<EquipoMovil> filtrar(String texto) {
-
         List<EquipoMovil> lista = new ArrayList<>();
 
         String sql = """
@@ -253,11 +249,10 @@ public class EquipoMovilDAO {
     /**
      * Verifica si un cliente tiene equipos móviles registrados.
      *
-     * @param idCliente ID del cliente
-     * @return true si el cliente tiene al menos un equipo registrado
+     * @param idCliente identificador del cliente
+     * @return true si tiene al menos un equipo registrado
      */
     public boolean existePorCliente(int idCliente) {
-
         String sql = """
             SELECT 1
             FROM equipo_movil

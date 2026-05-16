@@ -5,10 +5,16 @@ import java.util.Objects;
 /**
  * Representa un usuario del sistema.
  *
+ * Contiene información personal, credenciales de acceso, rol dentro del sistema
+ * y estado de activación.
+ *
  * @author Mendoza Sebastian
  */
 public class Usuario {
 
+    /**
+     * Enumeración que define los roles disponibles en el sistema.
+     */
     public enum Rol {
 
         ADMIN("Administrador"),
@@ -17,6 +23,11 @@ public class Usuario {
 
         private final String descripcion;
 
+        /**
+         * Constructor del rol con su descripción.
+         *
+         * @param descripcion nombre legible del rol
+         */
         Rol(String descripcion) {
             this.descripcion = descripcion;
         }
@@ -26,7 +37,7 @@ public class Usuario {
             return descripcion;
         }
     }
-    
+
     private int id;
     private String nombre;
     private String correo;
@@ -34,9 +45,22 @@ public class Usuario {
     private Rol rol;
     private boolean activo;
 
+    /**
+     * Constructor vacío.
+     */
     public Usuario() {
     }
 
+    /**
+     * Constructor con todos los atributos.
+     *
+     * @param id identificador del usuario
+     * @param nombre nombre del usuario
+     * @param correo correo electrónico
+     * @param contrasena contraseña del usuario
+     * @param rol rol asignado al usuario
+     * @param activo estado del usuario
+     */
     public Usuario(int id, String nombre, String correo, String contrasena, Rol rol, boolean activo) {
         this.id = id;
         this.nombre = nombre;
@@ -46,6 +70,15 @@ public class Usuario {
         this.activo = activo;
     }
 
+    /**
+     * Constructor sin ID (usado para creación de nuevos usuarios).
+     *
+     * @param nombre nombre del usuario
+     * @param correo correo electrónico
+     * @param contrasena contraseña del usuario
+     * @param rol rol asignado
+     * @param activo estado del usuario
+     */
     public Usuario(String nombre, String correo, String contrasena, Rol rol, boolean activo) {
         this.nombre = nombre;
         this.correo = correo;

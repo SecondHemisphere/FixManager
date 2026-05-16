@@ -12,12 +12,15 @@ import modelo.Usuario;
 /**
  * DAO encargado de las operaciones CRUD de la entidad Usuario.
  *
+ * Permite gestionar el registro, consulta, actualización, desactivación,
+ * filtrado y autenticación de usuarios dentro del sistema.
+ *
  * @author Mendoza Sebastian
  */
 public class UsuarioDAO {
 
     /**
-     * Obtiene todos los usuarios registrados en la base de datos.
+     * Lista todos los usuarios registrados en el sistema.
      *
      * @return lista de usuarios
      */
@@ -41,9 +44,9 @@ public class UsuarioDAO {
     }
 
     /**
-     * Busca un usuario por su ID.
+     * Obtiene un usuario por su ID.
      *
-     * @param id ID del usuario
+     * @param id identificador del usuario
      * @return usuario encontrado o null si no existe
      */
     public Usuario obtenerPorId(int id) {
@@ -68,9 +71,9 @@ public class UsuarioDAO {
     }
 
     /**
-     * Guarda un nuevo usuario en la base de datos.
+     * Registra un nuevo usuario en la base de datos.
      *
-     * @param u objeto usuario
+     * @param u objeto usuario a guardar
      * @return true si se insertó correctamente
      */
     public boolean guardar(Usuario u) {
@@ -96,7 +99,7 @@ public class UsuarioDAO {
     }
 
     /**
-     * Actualiza los datos de un usuario existente.
+     * Actualiza un usuario existente.
      *
      * @param u objeto con datos actualizados
      * @return true si se actualizó correctamente
@@ -126,9 +129,9 @@ public class UsuarioDAO {
     }
 
     /**
-     * Desactiva un usuario por su ID.
+     * Desactiva un usuario del sistema (borrado lógico).
      *
-     * @param id ID del usuario
+     * @param id identificador del usuario
      * @return true si se desactivó correctamente
      */
     public boolean desactivar(int id) {
@@ -146,12 +149,10 @@ public class UsuarioDAO {
     }
 
     /**
-     * Verifica si existe un usuario con cierto correo en la base de datos. Si
-     * idExcluido es null, valida para INSERT. Si tiene valor, valida para
-     * UPDATE.
+     * Verifica si existe un usuario con un correo específico.
      *
      * @param correo correo a verificar
-     * @param idExcluido ID a excluir (puede ser null)
+     * @param idExcluido ID a excluir en caso de actualización (puede ser null)
      * @return true si el correo ya existe
      */
     public boolean existeCorreo(String correo, Integer idExcluido) {
@@ -184,8 +185,8 @@ public class UsuarioDAO {
     /**
      * Filtra usuarios por nombre o correo.
      *
-     * @param texto texto a buscar
-     * @return lista de usuarios que coinciden
+     * @param texto texto de búsqueda
+     * @return lista de usuarios coincidentes
      */
     public List<Usuario> filtrar(String texto) {
 
@@ -219,12 +220,11 @@ public class UsuarioDAO {
     }
 
     /**
-     * Realiza el proceso de autenticación de un usuario.
+     * Autentica un usuario por correo y contraseña.
      *
-     * @param correo correo ingresado por el usuario
-     * @param contrasena contraseña ingresada
-     * @return objeto Usuario si las credenciales son correctas null en caso
-     * contrario
+     * @param correo correo del usuario
+     * @param contrasena contraseña del usuario
+     * @return usuario autenticado o null si no coincide
      */
     public Usuario login(String correo, String contrasena) {
         String sql = "SELECT * FROM usuario WHERE correo = ? AND contrasena = ?";
@@ -248,7 +248,7 @@ public class UsuarioDAO {
      * Convierte una fila del ResultSet en un objeto Usuario.
      *
      * @param rs resultado de la consulta SQL
-     * @return objeto Usuario con los datos de la BD
+     * @return objeto Usuario
      * @throws SQLException si ocurre un error al leer datos
      */
     private Usuario mapear(ResultSet rs) throws SQLException {

@@ -4,17 +4,20 @@ import javax.swing.JOptionPane;
 import java.awt.Component;
 
 /**
- * Clase para mostrar los mensajes en pantalla del sistema.
+ * Clase utilitaria para mostrar mensajes en pantalla dentro del sistema.
+ *
+ * Proporciona métodos centralizados para información, errores, advertencias y
+ * diálogos de confirmación usando JOptionPane.
  *
  * @author Mendoza Sebastian
  */
 public class DialogUtil {
 
     /**
-     * Muestra mensaje de información.
+     * Muestra un mensaje informativo en pantalla.
      *
-     * @param parent
-     * @param mensaje
+     * @param parent componente padre del diálogo
+     * @param mensaje texto del mensaje a mostrar
      */
     public static void mostrarMensajeInformacion(Component parent, String mensaje) {
         JOptionPane.showMessageDialog(parent, mensaje, "Información",
@@ -22,10 +25,10 @@ public class DialogUtil {
     }
 
     /**
-     * Muestra mensaje de error.
+     * Muestra un mensaje de error en pantalla.
      *
-     * @param parent
-     * @param mensaje
+     * @param parent componente padre del diálogo
+     * @param mensaje texto del mensaje de error
      */
     public static void mostrarMensajeError(Component parent, String mensaje) {
         JOptionPane.showMessageDialog(parent, mensaje, "Error",
@@ -33,10 +36,10 @@ public class DialogUtil {
     }
 
     /**
-     * Muestra mensaje de advertencia.
+     * Muestra un mensaje de advertencia en pantalla.
      *
-     * @param parent
-     * @param mensaje
+     * @param parent componente padre del diálogo
+     * @param mensaje texto del mensaje de advertencia
      */
     public static void mostrarMensajeAdvertencia(Component parent, String mensaje) {
         JOptionPane.showMessageDialog(parent, mensaje, "Advertencia",
@@ -44,11 +47,11 @@ public class DialogUtil {
     }
 
     /**
-     * Confirmación Sí / No.
+     * Muestra un diálogo de confirmación con opciones Sí y No.
      *
-     * @param parent
-     * @param mensaje
-     * @return true si el usuario confirma
+     * @param parent componente padre del diálogo
+     * @param mensaje mensaje a confirmar
+     * @return true si el usuario selecciona "Sí", false en caso contrario
      */
     public static boolean mostrarDialogoConfirmacion(Component parent, String mensaje) {
 

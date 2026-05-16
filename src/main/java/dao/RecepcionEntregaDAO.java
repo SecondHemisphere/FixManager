@@ -16,14 +16,17 @@ import modelo.Usuario;
 /**
  * DAO encargado de las operaciones CRUD de la entidad RecepcionEntrega.
  *
+ * Permite gestionar el registro, consulta, actualización, eliminación y
+ * filtrado de las recepciones de equipos móviles dentro del sistema.
+ *
  * @author Baque Diego
  */
 public class RecepcionEntregaDAO {
 
     /**
-     * Lista todos las recepciones.
+     * Lista todas las recepciones registradas en el sistema.
      *
-     * @return lista de recepciones
+     * @return lista de recepciones con datos de equipo, cliente y usuario
      */
     public List<RecepcionEntrega> listar() {
         List<RecepcionEntrega> lista = new ArrayList<>();
@@ -79,10 +82,10 @@ public class RecepcionEntregaDAO {
     }
 
     /**
-     * Busca una recepción por su ID.
+     * Obtiene una recepción específica por su ID.
      *
-     * @param idRecepcion ID de la recepción
-     * @return recepción encontrada o null si no existe
+     * @param idRecepcion identificador de la recepción
+     * @return objeto RecepcionEntrega si existe, caso contrario null
      */
     public RecepcionEntrega obtenerPorId(int idRecepcion) {
 
@@ -143,9 +146,9 @@ public class RecepcionEntregaDAO {
     }
 
     /**
-     * Guarda una recepción en la base de datos.
+     * Guarda una nueva recepción en la base de datos.
      *
-     * @param r objeto recepción
+     * @param r objeto RecepcionEntrega a registrar
      * @return true si se insertó correctamente
      */
     public boolean guardar(RecepcionEntrega r) {
@@ -171,10 +174,10 @@ public class RecepcionEntregaDAO {
     }
 
     /**
-     * Actualiza los datos de una recepción existente.
+     * Actualiza una recepción existente.
      *
-     * @param r objeto con datos actualizados
-     * @return true si se actualizó correctamente
+     * @param r objeto RecepcionEntrega con datos actualizados
+     * @return true si la actualización fue exitosa
      */
     public boolean actualizar(RecepcionEntrega r) {
 
@@ -200,8 +203,8 @@ public class RecepcionEntregaDAO {
     /**
      * Elimina una recepción por su ID.
      *
-     * @param idRecepcion ID de la recepción
-     * @return true si se eliminó correctamente
+     * @param idRecepcion identificador de la recepción
+     * @return true si fue eliminada correctamente
      */
     public boolean eliminar(int idRecepcion) {
         String sql = "DELETE FROM recepcion_entrega WHERE id = ?";
@@ -218,10 +221,10 @@ public class RecepcionEntregaDAO {
     }
 
     /**
-     * Filtra recepciones por cliente o equipo.
+     * Filtra recepciones por cliente, marca o modelo del equipo.
      *
-     * @param texto texto a buscar
-     * @return lista de recepciones que coinciden
+     * @param texto texto de búsqueda
+     * @return lista de recepciones que coinciden con el filtro
      */
     public List<RecepcionEntrega> filtrar(String texto) {
 
@@ -286,10 +289,10 @@ public class RecepcionEntregaDAO {
     }
 
     /**
-     * Verifica si un equipo móvil tiene recepciones registradas.
+     * Verifica si un equipo móvil ya tiene recepciones registradas.
      *
-     * @param idEquipo ID del equipo
-     * @return true si el equipo móvil tiene al menos una recepción registrada
+     * @param idEquipo identificador del equipo móvil
+     * @return true si existe al menos una recepción asociada
      */
     public boolean existePorEquipo(int idEquipo) {
 

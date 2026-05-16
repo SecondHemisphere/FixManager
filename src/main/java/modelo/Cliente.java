@@ -3,7 +3,11 @@ package modelo;
 import java.util.Objects;
 
 /**
- * Representa un cliente en el sistema.
+ * Representa un cliente del sistema.
+ *
+ * Contiene la información básica del cliente, quien es el propietario de los
+ * equipos móviles registrados en el sistema. Estos datos se utilizan
+ * principalmente para el registro de equipos y la emisión de facturas.
  *
  * @author Cagua Derek
  */
@@ -15,9 +19,21 @@ public class Cliente {
     private String telefono;
     private String direccion;
 
+    /**
+     * Constructor vacío.
+     */
     public Cliente() {
     }
 
+    /**
+     * Constructor completo con ID.
+     *
+     * @param id identificador del cliente
+     * @param nombre nombre del cliente
+     * @param correo correo electrónico
+     * @param telefono número de teléfono
+     * @param direccion dirección del cliente
+     */
     public Cliente(int id, String nombre, String correo, String telefono, String direccion) {
         this.id = id;
         this.nombre = nombre;
@@ -26,6 +42,14 @@ public class Cliente {
         this.direccion = direccion;
     }
 
+    /**
+     * Constructor sin ID (para nuevos registros).
+     *
+     * @param nombre nombre del cliente
+     * @param correo correo electrónico
+     * @param telefono teléfono del cliente
+     * @param direccion dirección del cliente
+     */
     public Cliente(String nombre, String correo, String telefono, String direccion) {
         this.nombre = nombre;
         this.correo = correo;

@@ -9,21 +9,43 @@ import util.ResultadoOperacion;
 /**
  * Controlador de la entidad Factura.
  *
+ * Encargado de aplicar la lógica de negocio antes de interactuar con la capa
+ * DAO. Maneja validaciones, control de estados (PENDIENTE, PAGADA) y
+ * operaciones de pago.
+ *
  * @author Mendoza Sebastian
  */
 public class FacturaController {
 
     private final FacturaDAO dao = new FacturaDAO();
 
+    /**
+     * Lista todas las facturas registradas.
+     *
+     * @return lista de facturas
+     */
     public List<Factura> listarFacturas() {
         return dao.listar();
     }
 
+    /**
+     * Obtiene una factura por su ID.
+     *
+     * @param id identificador de la factura
+     * @return objeto Factura o null si no existe
+     */
     public Factura obtenerFactura(int id) {
         return dao.obtenerPorId(id);
     }
 
+    /**
+     * Registra una nueva factura en el sistema.
+     *
+     * @param f factura a guardar
+     * @return resultado de la operación
+     */
     public ResultadoOperacion guardarFactura(Factura f) {
+
         String error = validar(f);
 
         if (error != null) {
@@ -31,7 +53,6 @@ public class FacturaController {
         }
 
         try {
-
             boolean ok = dao.guardar(f);
 
             return ok
@@ -43,6 +64,14 @@ public class FacturaController {
         }
     }
 
+    /**
+     * Actualiza una factura existente.
+     *
+     * No permite modificar facturas en estado PAGADA.
+     *
+     * @param f factura con datos actualizados
+     * @return resultado de la operación
+     */
     public ResultadoOperacion actualizarFactura(Factura f) {
 
         if (f == null || f.getId() == 0) {
@@ -60,6 +89,7 @@ public class FacturaController {
         }
 
         String error = validar(f);
+
         if (error != null) {
             return ResultadoOperacion.error(error);
         }
@@ -76,6 +106,14 @@ public class FacturaController {
         }
     }
 
+    /**
+     * Elimina una factura del sistema.
+     *
+     * No permite eliminar facturas ya pagadas.
+     *
+     * @param id identificador de la factura
+     * @return resultado de la operación
+     */
     public ResultadoOperacion eliminarFactura(int id) {
 
         Factura f = dao.obtenerPorId(id);
@@ -95,11 +133,25 @@ public class FacturaController {
                 : ResultadoOperacion.error("No se pudo borrar la factura");
     }
 
+    /**
+     * Filtra facturas por texto (cliente, estado u otros campos).
+     *
+     * @param texto texto de búsqueda
+     * @return lista de facturas filtradas
+     */
     public List<Factura> filtrarFacturas(String texto) {
         return dao.filtrar(texto);
     }
 
+    /**
+     * Marca una factura como pagada y asigna el método de pago.
+     *
+     * @param id identificador de la factura
+     * @param metodo método de pago utilizado
+     * @return resultado de la operación
+     */
     public ResultadoOperacion pagarFactura(int id, MetodoPago metodo) {
+
         Factura f = dao.obtenerPorId(id);
 
         if (f == null) {
@@ -120,6 +172,12 @@ public class FacturaController {
                 : ResultadoOperacion.error("No se pudo procesar el pago");
     }
 
+    /**
+     * Valida una factura antes de ser guardada o actualizada.
+     *
+     * @param f factura a validar
+     * @return mensaje de error o null si es válida
+     */
     public static String validar(Factura f) {
 
         if (f == null) {
@@ -127,33 +185,21 @@ public class FacturaController {
         }
 
         String error = validarReparacion(f);
-
-        if (error != null) {
-            return error;
-        }
-
-        if (error != null) {
-            return error;
-        }
-
         if (error != null) {
             return error;
         }
 
         error = validarCosto(f.getCostoTotal());
-
         if (error != null) {
             return error;
         }
 
         error = validarObservaciones(f.getObservaciones());
-
         if (error != null) {
             return error;
         }
 
         error = validarEstado(f.getEstado());
-
         if (error != null) {
             return error;
         }
@@ -162,7 +208,10 @@ public class FacturaController {
     }
 
     /**
-     * Valida que exista una reparación asociada.
+     * Valida que exista una reparación asociada a la factura.
+     *
+     * @param f factura a validar
+     * @return mensaje de error o null si es válida
      */
     private static String validarReparacion(Factura f) {
 
@@ -174,7 +223,10 @@ public class FacturaController {
     }
 
     /**
-     * Valida el costo total.
+     * Valida el costo total de la factura.
+     *
+     * @param costo valor del costo total
+     * @return mensaje de error o null si es válido
      */
     private static String validarCosto(double costo) {
 
@@ -186,7 +238,10 @@ public class FacturaController {
     }
 
     /**
-     * Valida las observaciones.
+     * Valida las observaciones de la factura.
+     *
+     * @param obs texto de observaciones
+     * @return mensaje de error o null si es válido
      */
     private static String validarObservaciones(String obs) {
 
@@ -204,6 +259,9 @@ public class FacturaController {
 
     /**
      * Valida el estado de la factura.
+     *
+     * @param estado estado actual de la factura
+     * @return mensaje de error o null si es válido
      */
     private static String validarEstado(Factura.Estado estado) {
 
@@ -213,5 +271,4 @@ public class FacturaController {
 
         return null;
     }
-
 }

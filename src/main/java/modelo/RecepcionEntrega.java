@@ -4,12 +4,18 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
- * Representa una recepción o una entrega de un equipo móvi en el sistema.
+ * Representa una recepción o entrega de un equipo móvil en el sistema.
+ *
+ * Contiene información del equipo recibido, problema reportado, estado del
+ * proceso, fecha de recepción y el usuario responsable.
  *
  * @author Baque Diego
  */
 public class RecepcionEntrega {
 
+    /**
+     * Estados posibles de la recepción o entrega.
+     */
     public enum Estado {
 
         RECIBIDO("Recibido"),
@@ -18,6 +24,11 @@ public class RecepcionEntrega {
 
         private final String descripcion;
 
+        /**
+         * Constructor del estado con su descripción.
+         *
+         * @param descripcion texto legible del estado
+         */
         Estado(String descripcion) {
             this.descripcion = descripcion;
         }
@@ -35,12 +46,29 @@ public class RecepcionEntrega {
     private EquipoMovil equipoMovil;
     private Usuario usuario;
 
+    /**
+     * Constructor por defecto.
+     *
+     * Inicializa la recepción con la fecha actual y estado RECIBIDO.
+     */
     public RecepcionEntrega() {
         this.fechaRecepcion = LocalDateTime.now();
         this.estado = Estado.RECIBIDO;
     }
 
-    public RecepcionEntrega(int id, LocalDateTime fechaRecepcion, String problemaReportado, Estado estado, EquipoMovil equipoMovil, Usuario usuario) {
+    /**
+     * Constructor completo.
+     *
+     * @param id identificador de la recepción
+     * @param fechaRecepcion fecha en la que se registró
+     * @param problemaReportado problema descrito por el cliente
+     * @param estado estado actual de la recepción
+     * @param equipoMovil equipo asociado
+     * @param usuario usuario que registra la recepción
+     */
+    public RecepcionEntrega(int id, LocalDateTime fechaRecepcion, String problemaReportado,
+            Estado estado, EquipoMovil equipoMovil, Usuario usuario) {
+
         this.id = id;
         this.fechaRecepcion = fechaRecepcion;
         this.problemaReportado = problemaReportado;
@@ -49,6 +77,13 @@ public class RecepcionEntrega {
         this.usuario = usuario;
     }
 
+    /**
+     * Constructor para nueva recepción.
+     *
+     * @param problemaReportado problema del equipo
+     * @param equipoMovil equipo asociado
+     * @param usuario usuario responsable
+     */
     public RecepcionEntrega(String problemaReportado, EquipoMovil equipoMovil, Usuario usuario) {
         this.fechaRecepcion = LocalDateTime.now();
         this.problemaReportado = problemaReportado;
@@ -112,6 +147,7 @@ public class RecepcionEntrega {
 
         if (equipoMovil != null) {
             equipo = equipoMovil.getMarca() + " " + equipoMovil.getModelo();
+
             if (equipoMovil.getCliente() != null) {
                 cliente = equipoMovil.getCliente().getNombre();
             }

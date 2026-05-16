@@ -10,26 +10,48 @@ import util.ResultadoOperacion;
 /**
  * Controlador de la entidad EquipoMovil.
  *
+ * Encargado de aplicar reglas de negocio antes de interactuar con la base de
+ * datos. Valida datos, evita eliminaciones inválidas y coordina con otras
+ * entidades como Recepción.
+ *
  * @author Gelves Jonathan
  */
 public class EquipoMovilController {
 
     private final EquipoMovilDAO dao = new EquipoMovilDAO();
     private final RecepcionEntregaDAO recepcionDao = new RecepcionEntregaDAO();
+
     private static final Pattern SOLO_NUMEROS = Pattern.compile("\\d+");
     private static final Pattern IMEI_PATTERN = Pattern.compile("\\d{15}");
 
+    /**
+     * Obtiene la lista de equipos móviles registrados.
+     *
+     * @return lista de equipos móviles
+     */
     public List<EquipoMovil> listarEquipos() {
         return dao.listar();
     }
 
+    /**
+     * Obtiene un equipo móvil por su ID.
+     *
+     * @param id identificador del equipo
+     * @return equipo encontrado o null si no existe
+     */
     public EquipoMovil obtenerEquipo(int id) {
         return dao.obtenerPorId(id);
     }
 
+    /**
+     * Guarda un nuevo equipo móvil en la base de datos.
+     *
+     * @param e objeto equipo móvil a registrar
+     * @return ResultadoOperacion con estado de éxito o error
+     */
     public ResultadoOperacion guardarEquipo(EquipoMovil e) {
-        String error = validar(e);
 
+        String error = validar(e);
         if (error != null) {
             return ResultadoOperacion.error(error);
         }
@@ -41,9 +63,15 @@ public class EquipoMovilController {
                 : ResultadoOperacion.error("No se pudo guardar el equipo móvil");
     }
 
+    /**
+     * Actualiza un equipo móvil existente.
+     *
+     * @param e objeto con datos actualizados
+     * @return ResultadoOperacion con estado de la operación
+     */
     public ResultadoOperacion actualizarEquipo(EquipoMovil e) {
-        String error = validar(e);
 
+        String error = validar(e);
         if (error != null) {
             return ResultadoOperacion.error(error);
         }
@@ -55,6 +83,12 @@ public class EquipoMovilController {
                 : ResultadoOperacion.error("No se pudo actualizar el equipo móvil");
     }
 
+    /**
+     * Elimina un equipo móvil si no tiene recepciones asociadas.
+     *
+     * @param id identificador del equipo
+     * @return resultado de la operación
+     */
     public ResultadoOperacion eliminarEquipo(int id) {
         EquipoMovil e = dao.obtenerPorId(id);
 
@@ -63,7 +97,9 @@ public class EquipoMovilController {
         }
 
         if (recepcionDao.existePorEquipo(e.getId())) {
-            return ResultadoOperacion.error("No se puede eliminar el equipo porque tiene recepciones registradas");
+            return ResultadoOperacion.error(
+                    "No se puede eliminar el equipo porque tiene recepciones registradas"
+            );
         }
 
         boolean ok = dao.eliminar(id);
@@ -73,10 +109,22 @@ public class EquipoMovilController {
                 : ResultadoOperacion.error("No se pudo eliminar el equipo móvil");
     }
 
+    /**
+     * Filtra equipos por marca, modelo o IMEI.
+     *
+     * @param texto texto de búsqueda
+     * @return lista de coincidencias
+     */
     public List<EquipoMovil> filtrarEquipos(String texto) {
         return dao.filtrar(texto);
     }
 
+    /**
+     * Valida un objeto EquipoMovil antes de guardarlo o actualizarlo.
+     *
+     * @param e equipo móvil a validar
+     * @return mensaje de error o null si es válido
+     */
     public static String validar(EquipoMovil e) {
 
         if (e == null) {
@@ -84,37 +132,31 @@ public class EquipoMovilController {
         }
 
         String error = validarMarca(e.getMarca());
-
         if (error != null) {
             return error;
         }
 
         error = validarModelo(e.getModelo());
-
         if (error != null) {
             return error;
         }
 
         error = validarImei(e.getImei());
-
         if (error != null) {
             return error;
         }
 
         error = validarTipo(e.getTipo());
-
         if (error != null) {
             return error;
         }
 
         error = validarDescripcionDanio(e.getDescripcionDanio());
-
         if (error != null) {
             return error;
         }
 
         error = validarCliente(e);
-
         if (error != null) {
             return error;
         }
@@ -124,6 +166,9 @@ public class EquipoMovilController {
 
     /**
      * Valida la marca del equipo móvil.
+     *
+     * @param marca nombre de la marca
+     * @return error o null si es válida
      */
     private static String validarMarca(String marca) {
 
@@ -146,6 +191,9 @@ public class EquipoMovilController {
 
     /**
      * Valida el modelo del equipo móvil.
+     *
+     * @param modelo nombre del modelo
+     * @return error o null si es válido
      */
     private static String validarModelo(String modelo) {
 
@@ -168,6 +216,9 @@ public class EquipoMovilController {
 
     /**
      * Valida el IMEI del equipo móvil.
+     *
+     * @param imei código IMEI
+     * @return error o null si es válido
      */
     private static String validarImei(String imei) {
 
@@ -190,6 +241,9 @@ public class EquipoMovilController {
 
     /**
      * Valida el tipo del equipo móvil.
+     *
+     * @param tipo tipo del equipo
+     * @return error o null si es válido
      */
     private static String validarTipo(String tipo) {
 
@@ -211,7 +265,10 @@ public class EquipoMovilController {
     }
 
     /**
-     * Valida la descripción del daño del equipo móvil.
+     * Valida la descripción del daño.
+     *
+     * @param desc descripción del daño
+     * @return error o null si es válida
      */
     private static String validarDescripcionDanio(String desc) {
 
@@ -233,7 +290,10 @@ public class EquipoMovilController {
     }
 
     /**
-     * Valida el cliente del equipo móvil.
+     * Valida que el equipo tenga cliente asignado.
+     *
+     * @param e equipo móvil
+     * @return error o null si es válido
      */
     private static String validarCliente(EquipoMovil e) {
 

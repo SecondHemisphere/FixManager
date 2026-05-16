@@ -6,10 +6,17 @@ import java.util.Objects;
 /**
  * Representa una factura generada a partir de una reparación.
  *
+ * Contiene información del costo total, fecha de emisión, estado de pago,
+ * método de pago, observaciones y relaciones con la reparación y el usuario que
+ * la genera.
+ *
  * @author Mendoza Sebastian
  */
 public class Factura {
 
+    /**
+     * Estados posibles de una factura.
+     */
     public enum Estado {
 
         PENDIENTE("Pendiente"),
@@ -17,6 +24,11 @@ public class Factura {
 
         private final String descripcion;
 
+        /**
+         * Constructor del estado de la factura.
+         *
+         * @param descripcion texto legible del estado
+         */
         Estado(String descripcion) {
             this.descripcion = descripcion;
         }
@@ -27,6 +39,9 @@ public class Factura {
         }
     }
 
+    /**
+     * Métodos de pago disponibles.
+     */
     public enum MetodoPago {
 
         EFECTIVO("Efectivo"),
@@ -35,6 +50,11 @@ public class Factura {
 
         private final String descripcion;
 
+        /**
+         * Constructor del método de pago.
+         *
+         * @param descripcion texto legible del método de pago
+         */
         MetodoPago(String descripcion) {
             this.descripcion = descripcion;
         }
@@ -54,12 +74,30 @@ public class Factura {
     private Reparacion reparacion;
     private Usuario usuario;
 
+    /**
+     * Constructor por defecto. Inicializa la factura con estado PENDIENTE y
+     * fecha actual.
+     */
     public Factura() {
         this.fechaEmision = LocalDateTime.now();
         this.estado = Estado.PENDIENTE;
     }
 
-    public Factura(int id, double costoTotal, LocalDateTime fechaEmision, Estado estado, String observaciones, MetodoPago metodoPago, Reparacion reparacion, Usuario usuario) {
+    /**
+     * Constructor completo.
+     *
+     * @param id identificador de la factura
+     * @param costoTotal costo total de la reparación
+     * @param fechaEmision fecha de emisión
+     * @param estado estado de la factura
+     * @param observaciones observaciones adicionales
+     * @param metodoPago método de pago utilizado
+     * @param reparacion reparación asociada
+     * @param usuario usuario que generó la factura
+     */
+    public Factura(int id, double costoTotal, LocalDateTime fechaEmision,
+            Estado estado, String observaciones,
+            MetodoPago metodoPago, Reparacion reparacion, Usuario usuario) {
         this.id = id;
         this.costoTotal = costoTotal;
         this.fechaEmision = fechaEmision;
@@ -70,7 +108,17 @@ public class Factura {
         this.usuario = usuario;
     }
 
-    public Factura(double costoTotal, String observaciones, MetodoPago metodoPago, Reparacion reparacion, Usuario usuario) {
+    /**
+     * Constructor para creación de nuevas facturas.
+     *
+     * @param costoTotal costo total
+     * @param observaciones observaciones
+     * @param metodoPago método de pago
+     * @param reparacion reparación asociada
+     * @param usuario usuario responsable
+     */
+    public Factura(double costoTotal, String observaciones,
+            MetodoPago metodoPago, Reparacion reparacion, Usuario usuario) {
         this.fechaEmision = LocalDateTime.now();
         this.estado = Estado.PENDIENTE;
         this.costoTotal = costoTotal;

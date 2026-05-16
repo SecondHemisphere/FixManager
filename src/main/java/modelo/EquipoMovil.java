@@ -3,7 +3,10 @@ package modelo;
 import java.util.Objects;
 
 /**
- * Representa un equipo móvil en el sistema.
+ * Representa un equipo móvil registrado en el sistema.
+ *
+ * Contiene información básica del dispositivo como marca, modelo, IMEI, tipo de
+ * equipo, descripción del daño reportado y el cliente propietario.
  *
  * @author Gelves Jonathan
  */
@@ -17,10 +20,25 @@ public class EquipoMovil {
     private String descripcionDanio;
     private Cliente cliente;
 
+    /**
+     * Constructor vacío.
+     */
     public EquipoMovil() {
     }
 
-    public EquipoMovil(int id, String marca, String modelo, String imei, String tipo, String descripcionDanio, Cliente cliente) {
+    /**
+     * Constructor completo con ID.
+     *
+     * @param id identificador del equipo
+     * @param marca marca del dispositivo
+     * @param modelo modelo del dispositivo
+     * @param imei código IMEI del equipo
+     * @param tipo tipo de equipo móvil
+     * @param descripcionDanio descripción del daño reportado
+     * @param cliente cliente propietario del equipo
+     */
+    public EquipoMovil(int id, String marca, String modelo, String imei,
+            String tipo, String descripcionDanio, Cliente cliente) {
         this.id = id;
         this.marca = marca;
         this.modelo = modelo;
@@ -30,7 +48,18 @@ public class EquipoMovil {
         this.cliente = cliente;
     }
 
-    public EquipoMovil(String marca, String modelo, String imei, String tipo, String descripcionDanio, Cliente cliente) {
+    /**
+     * Constructor sin ID (para registros nuevos).
+     *
+     * @param marca marca del dispositivo
+     * @param modelo modelo del dispositivo
+     * @param imei código IMEI
+     * @param tipo tipo de equipo
+     * @param descripcionDanio descripción del daño
+     * @param cliente cliente propietario
+     */
+    public EquipoMovil(String marca, String modelo, String imei,
+            String tipo, String descripcionDanio, Cliente cliente) {
         this.marca = marca;
         this.modelo = modelo;
         this.imei = imei;

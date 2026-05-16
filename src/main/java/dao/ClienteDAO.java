@@ -12,6 +12,9 @@ import modelo.Cliente;
 /**
  * DAO encargado de las operaciones CRUD de la entidad Cliente.
  *
+ * Permite realizar operaciones de consulta, inserción, actualización,
+ * eliminación y validación de datos de clientes en la base de datos.
+ *
  * @author Cagua Derek
  */
 public class ClienteDAO {
@@ -19,7 +22,7 @@ public class ClienteDAO {
     /**
      * Obtiene todos los clientes registrados en la base de datos.
      *
-     * @return lista de clientes
+     * @return lista de clientes registrados
      */
     public List<Cliente> listar() {
         List<Cliente> lista = new ArrayList<>();
@@ -45,9 +48,9 @@ public class ClienteDAO {
     }
 
     /**
-     * Busca un cliente por su ID.
+     * Busca un cliente por su identificador.
      *
-     * @param idCliente ID del cliente
+     * @param idCliente identificador del cliente
      * @return cliente encontrado o null si no existe
      */
     public Cliente obtenerPorId(int idCliente) {
@@ -77,10 +80,10 @@ public class ClienteDAO {
     }
 
     /**
-     * Guarda un nuevo cliente en la base de datos.
+     * Registra un nuevo cliente en la base de datos.
      *
-     * @param cliente objeto cliente
-     * @return true si se insertó correctamente
+     * @param cliente objeto cliente a guardar
+     * @return true si la operación fue exitosa
      */
     public boolean guardar(Cliente cliente) {
         String sql = "INSERT INTO cliente(nombre, correo, telefono, direccion) VALUES (?,?,?,?)";
@@ -100,10 +103,10 @@ public class ClienteDAO {
     }
 
     /**
-     * Actualiza los datos de un cliente existente.
+     * Actualiza la información de un cliente existente.
      *
-     * @param cliente objeto con datos actualizados
-     * @return true si se actualizó correctamente
+     * @param cliente objeto cliente con datos actualizados
+     * @return true si la actualización fue exitosa
      */
     public boolean actualizar(Cliente cliente) {
         String sql = "UPDATE cliente SET nombre=?, correo=?, telefono=?, direccion=? WHERE id=?";
@@ -124,10 +127,10 @@ public class ClienteDAO {
     }
 
     /**
-     * Elimina un cliente por su ID.
+     * Elimina un cliente de la base de datos por su identificador.
      *
-     * @param idCliente ID del cliente
-     * @return true si se eliminó correctamente
+     * @param idCliente identificador del cliente
+     * @return true si la eliminación fue exitosa
      */
     public boolean eliminar(int idCliente) {
         String sql = "DELETE FROM cliente WHERE id=?";
@@ -144,9 +147,9 @@ public class ClienteDAO {
     }
 
     /**
-     * Filtra clientes por nombre usando coincidencia parcial.
+     * Filtra clientes por coincidencia parcial en el nombre.
      *
-     * @param texto texto a buscar en el nombre
+     * @param texto texto a buscar
      * @return lista de clientes que coinciden con el filtro
      */
     public List<Cliente> filtrarPorNombre(String texto) {
@@ -177,12 +180,10 @@ public class ClienteDAO {
     }
 
     /**
-     * Verifica si existe un cliente con cierto correo en la base de datos. Si
-     * idExcluido es null, valida para INSERT. Si tiene valor, valida para
-     * UPDATE.
+     * Verifica si existe un cliente con el correo indicado.
      *
-     * @param correo correo a verificar
-     * @param idExcluido ID a excluir (puede ser null)
+     * @param correo correo a validar
+     * @param idExcluido id a excluir en caso de actualización (puede ser null)
      * @return true si el correo ya existe
      */
     public boolean existeCorreo(String correo, Integer idExcluido) {
@@ -212,12 +213,10 @@ public class ClienteDAO {
     }
 
     /**
-     * Verifica si existe un cliente con cierto teléfono en la base de datos. Si
-     * idExcluido es null, valida para INSERT. Si tiene valor, valida para
-     * UPDATE.
+     * Verifica si existe un cliente con el teléfono indicado.
      *
-     * @param telefono teléfono a verificar
-     * @param idExcluido ID a excluir (puede ser null)
+     * @param telefono teléfono a validar
+     * @param idExcluido id a excluir en caso de actualización (puede ser null)
      * @return true si el teléfono ya existe
      */
     public boolean existeTelefono(String telefono, Integer idExcluido) {
@@ -245,5 +244,4 @@ public class ClienteDAO {
             throw new RuntimeException("Error al verificar teléfono", e);
         }
     }
-
 }

@@ -13,12 +13,19 @@ import modelo.Reparacion;
 /**
  * DAO encargado de las operaciones CRUD de la entidad Reparacion.
  *
+ * Permite gestionar el registro, consulta, actualización, eliminación y
+ * filtrado de reparaciones asociadas a recepciones de equipos móviles dentro
+ * del sistema.
+ *
  * @author Pluas Kevin
  */
 public class ReparacionDAO {
 
     /**
-     * Lista todos las reparaciones.
+     * Lista todas las reparaciones registradas en el sistema.
+     *
+     * Incluye información de la recepción, cliente, equipo y usuario
+     * responsable de la reparación.
      *
      * @return lista de reparaciones
      */
@@ -78,60 +85,12 @@ public class ReparacionDAO {
     }
 
     /**
-     * Verifica si ya existe una reparación asociada a una recepción específica.
+     * Registra una nueva reparación en el sistema.
      *
-     * @param recepcionId ID de la recepción
-     * @return true si la recepción ya tiene una reparación registrada, false en
-     * caso contrario
-     */
-    public boolean existePorRecepcion(int recepcionId) {
-        String sql = "SELECT COUNT(*) FROM reparacion WHERE recepcion_id=?";
-
-        try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
-
-            pst.setInt(1, recepcionId);
-
-            try (ResultSet rs = pst.executeQuery()) {
-                return rs.next() && rs.getInt(1) > 0;
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException("Error al verificar reparación", e);
-        }
-    }
-
-    /**
-     * Verifica si la reparación tiene una factura válida asociada.
+     * Valida que la recepción y el usuario existan y evita duplicados para una
+     * misma recepción.
      *
-     * @param reparacionId ID de la reparación
-     * @return true si existe una factura válida
-     */
-    public boolean tieneFactura(int reparacionId) {
-        String sql = """
-            SELECT COUNT(*)
-            FROM factura
-            WHERE reparacion_id = ?
-              AND estado <> 'ANULADA'
-        """;
-
-        try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
-
-            pst.setInt(1, reparacionId);
-
-            try (ResultSet rs = pst.executeQuery()) {
-
-                return rs.next() && rs.getInt(1) > 0;
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException("Error al verificar factura", e);
-        }
-    }
-
-    /**
-     * Guarda una reparación en la base de datos.
-     *
-     * @param r objeto reparación
+     * @param r objeto reparación a guardar
      * @return true si se insertó correctamente
      */
     public boolean guardar(Reparacion r) {
@@ -172,7 +131,7 @@ public class ReparacionDAO {
     }
 
     /**
-     * Actualiza los datos de una reparación existente.
+     * Actualiza una reparación existente.
      *
      * @param r objeto con datos actualizados
      * @return true si se actualizó correctamente
@@ -202,10 +161,74 @@ public class ReparacionDAO {
     }
 
     /**
-     * Filtra reparaciones por nombre del cliente o estado.
+     * Elimina una reparación por su ID.
+     *
+     * @param idReparacion ID de la reparación
+     * @return true si se eliminó correctamente
+     */
+    public boolean eliminar(int idReparacion) {
+        String sql = "DELETE FROM reparacion WHERE id = ?";
+
+        try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setInt(1, idReparacion);
+
+            return pst.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al eliminar reparación", e);
+        }
+    }
+
+    /**
+     * Obtiene una reparación por su ID.
+     *
+     * @param id ID de la reparación
+     * @return objeto reparación o null si no existe
+     */
+    public Reparacion obtenerPorId(int id) {
+        String sql = """
+            SELECT *
+            FROM reparacion
+            WHERE id = ?
+        """;
+
+        try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setInt(1, id);
+
+            try (ResultSet rs = pst.executeQuery()) {
+
+                if (rs.next()) {
+
+                    Reparacion r = new Reparacion();
+
+                    r.setId(rs.getInt("id"));
+                    r.setDiagnostico(rs.getString("diagnostico"));
+                    r.setSolucion(rs.getString("solucion"));
+                    r.setCostoRepuestos(rs.getDouble("costo_repuestos"));
+                    r.setPiezasUsadas(rs.getString("piezas_usadas"));
+                    r.setEstado(Reparacion.Estado.valueOf(rs.getString("estado")));
+
+                    return r;
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al obtener reparación", e);
+        }
+
+        return null;
+    }
+
+    /**
+     * Filtra reparaciones por nombre de cliente o estado.
+     *
+     * Permite buscar coincidencias parciales en el nombre del cliente o en el
+     * estado de la reparación.
      *
      * @param texto texto a buscar
-     * @return lista de reparaciones que coinciden
+     * @return lista de reparaciones que coinciden con el filtro
      */
     public List<Reparacion> filtrar(String texto) {
 
@@ -274,63 +297,52 @@ public class ReparacionDAO {
     }
 
     /**
-     * Elimina una reparación por su ID.
+     * Verifica si ya existe una reparación asociada a una recepción.
      *
-     * @param idReparacion ID de la reparación
-     * @return true si se eliminó correctamente
+     * @param recepcionId ID de la recepción
+     * @return true si ya existe una reparación registrada
      */
-    public boolean eliminar(int idReparacion) {
-        String sql = "DELETE FROM reparacion WHERE id = ?";
+    public boolean existePorRecepcion(int recepcionId) {
+        String sql = "SELECT COUNT(*) FROM reparacion WHERE recepcion_id=?";
 
         try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
 
-            pst.setInt(1, idReparacion);
+            pst.setInt(1, recepcionId);
 
-            return pst.executeUpdate() > 0;
+            try (ResultSet rs = pst.executeQuery()) {
+                return rs.next() && rs.getInt(1) > 0;
+            }
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error al eliminar reparación", e);
+            throw new RuntimeException("Error al verificar reparación", e);
         }
     }
 
     /**
-     * Obtiene una reparación por su ID.
+     * Verifica si una reparación ya tiene una factura asociada.
      *
-     * @param id ID de la reparación
-     * @return reparación encontrada o null
+     * @param reparacionId ID de la reparación
+     * @return true si existe factura válida asociada
      */
-    public Reparacion obtenerPorId(int id) {
+    public boolean tieneFactura(int reparacionId) {
         String sql = """
-            SELECT *
-            FROM reparacion
-            WHERE id = ?
+            SELECT COUNT(*)
+            FROM factura
+            WHERE reparacion_id = ?
+              AND estado <> 'ANULADA'
         """;
 
         try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
 
-            pst.setInt(1, id);
+            pst.setInt(1, reparacionId);
 
             try (ResultSet rs = pst.executeQuery()) {
 
-                if (rs.next()) {
-
-                    Reparacion r = new Reparacion();
-
-                    r.setId(rs.getInt("id"));
-                    r.setDiagnostico(rs.getString("diagnostico"));
-                    r.setSolucion(rs.getString("solucion"));
-                    r.setCostoRepuestos(rs.getDouble("costo_repuestos"));
-                    r.setPiezasUsadas(rs.getString("piezas_usadas"));
-                    r.setEstado(Reparacion.Estado.valueOf(rs.getString("estado")));
-
-                    return r;
-                }
+                return rs.next() && rs.getInt(1) > 0;
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error al obtener reparación", e);
+            throw new RuntimeException("Error al verificar factura", e);
         }
-
-        return null;
     }
 }

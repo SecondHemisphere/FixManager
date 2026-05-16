@@ -8,21 +8,45 @@ import util.ResultadoOperacion;
 /**
  * Controlador de la entidad RecepcionEntrega.
  *
+ * Encargado de aplicar la lógica de negocio antes de interactuar con la capa
+ * DAO. Valida datos, controla estados del flujo de recepción (LISTO, ENTREGADO,
+ * etc.) y gestiona el resultado de las operaciones del sistema.
+ *
  * @author Baque Diego
  */
 public class RecepcionEntregaController {
 
     private final RecepcionEntregaDAO dao = new RecepcionEntregaDAO();
 
+    /**
+     * Obtiene la lista de todas las recepciones registradas.
+     *
+     * @return lista de recepciones
+     */
     public List<RecepcionEntrega> listarRecepciones() {
         return dao.listar();
     }
 
+    /**
+     * Obtiene una recepción por su identificador.
+     *
+     * @param id identificador de la recepción
+     * @return objeto RecepcionEntrega o null si no existe
+     */
     public RecepcionEntrega obtenerRecepcion(int id) {
         return dao.obtenerPorId(id);
     }
 
+    /**
+     * Registra una nueva recepción en el sistema.
+     *
+     * Realiza validaciones antes de persistir los datos.
+     *
+     * @param r objeto RecepcionEntrega a guardar
+     * @return resultado de la operación
+     */
     public ResultadoOperacion guardarRecepcion(RecepcionEntrega r) {
+
         String error = validar(r);
 
         if (error != null) {
@@ -36,6 +60,15 @@ public class RecepcionEntregaController {
                 : ResultadoOperacion.error("No se pudo registrar la recepción");
     }
 
+    /**
+     * Actualiza una recepción existente.
+     *
+     * No permite modificaciones si la recepción está en estado LISTO o
+     * ENTREGADO.
+     *
+     * @param r objeto con los datos actualizados
+     * @return resultado de la operación
+     */
     public ResultadoOperacion actualizarRecepcion(RecepcionEntrega r) {
 
         if (r == null || r.getId() == 0) {
@@ -69,7 +102,16 @@ public class RecepcionEntregaController {
                 : ResultadoOperacion.error("No se pudo actualizar la recepción");
     }
 
+    /**
+     * Elimina (anula) una recepción del sistema.
+     *
+     * No permite eliminar recepciones en estado LISTO o ENTREGADO.
+     *
+     * @param id identificador de la recepción
+     * @return resultado de la operación
+     */
     public ResultadoOperacion eliminarRecepcion(int id) {
+
         RecepcionEntrega r = dao.obtenerPorId(id);
 
         if (r == null) {
@@ -91,10 +133,22 @@ public class RecepcionEntregaController {
                 : ResultadoOperacion.error("No se pudo anular la recepción");
     }
 
+    /**
+     * Filtra recepciones por texto (cliente, equipo o problema).
+     *
+     * @param texto texto de búsqueda
+     * @return lista de recepciones que coinciden
+     */
     public List<RecepcionEntrega> filtrarRecepciones(String texto) {
         return dao.filtrar(texto);
     }
 
+    /**
+     * Valida una recepción antes de ser registrada o actualizada.
+     *
+     * @param r objeto RecepcionEntrega a validar
+     * @return mensaje de error o null si es válida
+     */
     public static String validar(RecepcionEntrega r) {
 
         if (r == null) {
@@ -123,7 +177,10 @@ public class RecepcionEntregaController {
     }
 
     /**
-     * Valida el equipo móvil asociado.
+     * Valida que el equipo móvil esté seleccionado.
+     *
+     * @param r objeto RecepcionEntrega
+     * @return mensaje de error o null si es válido
      */
     private static String validarEquipo(RecepcionEntrega r) {
 
@@ -135,7 +192,10 @@ public class RecepcionEntregaController {
     }
 
     /**
-     * Valida el problema reportado.
+     * Valida el problema reportado por el cliente.
+     *
+     * @param problema descripción del problema
+     * @return mensaje de error o null si es válido
      */
     private static String validarProblema(String problema) {
 
@@ -158,6 +218,9 @@ public class RecepcionEntregaController {
 
     /**
      * Valida el estado de la recepción.
+     *
+     * @param estado estado de la recepción
+     * @return mensaje de error o null si es válido
      */
     private static String validarEstado(RecepcionEntrega.Estado estado) {
 

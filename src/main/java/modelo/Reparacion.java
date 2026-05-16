@@ -5,10 +5,17 @@ import java.util.Objects;
 /**
  * Representa una reparación realizada a un equipo móvil.
  *
+ * Contiene información del diagnóstico, solución, costos, piezas utilizadas,
+ * estado de la reparación y relaciones con la recepción del equipo y el usuario
+ * responsable.
+ *
  * @author Pluas Kevin
  */
 public class Reparacion {
 
+    /**
+     * Estados posibles de una reparación.
+     */
     public enum Estado {
 
         PENDIENTE("Pendiente"),
@@ -17,6 +24,11 @@ public class Reparacion {
 
         private final String descripcion;
 
+        /**
+         * Constructor del estado con su descripción.
+         *
+         * @param descripcion texto legible del estado
+         */
         Estado(String descripcion) {
             this.descripcion = descripcion;
         }
@@ -36,11 +48,25 @@ public class Reparacion {
     private RecepcionEntrega recepcion;
     private Usuario usuario;
 
+    /**
+     * Constructor por defecto. Inicializa la reparación en estado PENDIENTE.
+     */
     public Reparacion() {
         this.estado = Estado.PENDIENTE;
     }
 
-    public Reparacion(String diagnostico, String solucion, double costoRepuestos, String piezasUsadas, RecepcionEntrega recepcion, Usuario usuario) {
+    /**
+     * Constructor para crear una reparación nueva.
+     *
+     * @param diagnostico diagnóstico del equipo
+     * @param solucion solución aplicada
+     * @param costoRepuestos costo de repuestos utilizados
+     * @param piezasUsadas lista de piezas utilizadas
+     * @param recepcion recepción del equipo
+     * @param usuario usuario responsable de la reparación
+     */
+    public Reparacion(String diagnostico, String solucion, double costoRepuestos,
+            String piezasUsadas, RecepcionEntrega recepcion, Usuario usuario) {
         this.diagnostico = diagnostico;
         this.solucion = solucion;
         this.costoRepuestos = costoRepuestos;
@@ -50,7 +76,21 @@ public class Reparacion {
         this.usuario = usuario;
     }
 
-    public Reparacion(int id, String diagnostico, String solucion, double costoRepuestos, String piezasUsadas, Estado estado, RecepcionEntrega recepcion, Usuario usuario) {
+    /**
+     * Constructor completo con ID y estado.
+     *
+     * @param id identificador de la reparación
+     * @param diagnostico diagnóstico del equipo
+     * @param solucion solución aplicada
+     * @param costoRepuestos costo de repuestos
+     * @param piezasUsadas piezas utilizadas
+     * @param estado estado actual de la reparación
+     * @param recepcion recepción asociada
+     * @param usuario usuario responsable
+     */
+    public Reparacion(int id, String diagnostico, String solucion,
+            double costoRepuestos, String piezasUsadas,
+            Estado estado, RecepcionEntrega recepcion, Usuario usuario) {
         this.id = id;
         this.diagnostico = diagnostico;
         this.solucion = solucion;
