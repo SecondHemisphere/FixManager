@@ -186,7 +186,6 @@ public class ClienteDAO {
      * @return true si el correo ya existe
      */
     public boolean existeCorreo(String correo, Integer idExcluido) {
-
         String sql;
 
         if (idExcluido == null) {
@@ -222,7 +221,6 @@ public class ClienteDAO {
      * @return true si el teléfono ya existe
      */
     public boolean existeTelefono(String telefono, Integer idExcluido) {
-
         String sql;
 
         if (idExcluido == null) {

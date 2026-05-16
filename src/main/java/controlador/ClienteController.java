@@ -18,7 +18,7 @@ public class ClienteController {
     private final EquipoMovilDAO equipoDao = new EquipoMovilDAO();
 
     private static final Pattern SOLO_NUMEROS = Pattern.compile("\\d+");
-    private static final Pattern EMAIL = Pattern.compile("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
+    private static final Pattern EMAIL = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
 
     public List<Cliente> listarClientes() {
         return dao.listar();
