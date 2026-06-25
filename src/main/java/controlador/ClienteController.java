@@ -21,6 +21,7 @@ public class ClienteController {
     private final ClienteDAO dao = new ClienteDAO();
     private final EquipoMovilDAO equipoDao = new EquipoMovilDAO();
 
+    private static final Pattern SOLO_LETRAS_ESPACIOS = Pattern.compile("^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$");
     private static final Pattern SOLO_NUMEROS = Pattern.compile("\\d+");
     private static final Pattern EMAIL = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
 
@@ -183,6 +184,10 @@ public class ClienteController {
         }
 
         nombre = nombre.trim();
+
+        if (!SOLO_LETRAS_ESPACIOS.matcher(nombre).matches()) {
+            return "El nombre debe contener solo letras y espacios";
+        }
 
         if (nombre.length() < 3) {
             return "El nombre debe tener al menos 3 caracteres";

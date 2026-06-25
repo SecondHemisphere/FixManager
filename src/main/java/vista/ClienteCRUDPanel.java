@@ -6,6 +6,7 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.table.DefaultTableModel;
+import java.util.List;
 import modelo.Cliente;
 import util.DialogUtil;
 import util.ResultadoOperacion;
@@ -75,10 +76,17 @@ public class ClienteCRUDPanel extends javax.swing.JPanel {
             return;
         }
 
+        List<Cliente> clientes = controlador.filtrarClientes(texto);
+
+        if (clientes.isEmpty()) {
+            DialogUtil.mostrarMensajeInformacion(this, "No se encontraron clientes que coincidan con el criterio de búsqueda.");
+            return;
+        }
+
         DefaultTableModel model = (DefaultTableModel) tblClientes.getModel();
         model.setRowCount(0);
 
-        for (Cliente c : controlador.filtrarClientes(texto)) {
+        for (Cliente c : clientes) {
             model.addRow(new Object[]{
                 c.getId(),
                 c.getNombre(),
