@@ -18,6 +18,7 @@ public class Usuario {
     public enum Rol {
 
         ADMIN("Administrador"),
+        RECEPCIONISTA("Recepcionista"),
         TECNICO("Técnico"),
         CAJERO("Cajero");
 

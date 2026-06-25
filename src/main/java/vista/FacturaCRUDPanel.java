@@ -4,6 +4,7 @@ import controlador.FacturaController;
 import java.awt.Color;
 import java.awt.Image;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -82,10 +83,17 @@ public class FacturaCRUDPanel extends javax.swing.JPanel {
             return;
         }
 
+        List<Factura> facturas = controlador.filtrarFacturas(texto);
+
+        if (facturas.isEmpty()) {
+            DialogUtil.mostrarMensajeInformacion(this, "No se encontraron facturas que coincidan con el criterio de búsqueda");
+            return;
+        }
+
         DefaultTableModel model = (DefaultTableModel) tblFacturas.getModel();
         model.setRowCount(0);
 
-        for (Factura f : controlador.filtrarFacturas(texto)) {
+        for (Factura f : facturas) {
 
             String cliente = (f.getReparacion() != null
                     && f.getReparacion().getRecepcion() != null

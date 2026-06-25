@@ -4,6 +4,7 @@ import controlador.RecepcionEntregaController;
 import java.awt.Color;
 import java.awt.Image;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.table.DefaultTableModel;
@@ -72,12 +73,19 @@ public class RecepcionEntregaCRUDPanel extends javax.swing.JPanel {
             return;
         }
 
+        List<RecepcionEntrega> recepciones = controlador.filtrarRecepciones(texto);
+
+        if (recepciones.isEmpty()) {
+            DialogUtil.mostrarMensajeInformacion(this, "No se encontraron recepciones que coincidan con el criterio de búsqueda");
+            return;
+        }
+
         DefaultTableModel model = (DefaultTableModel) tblRecepciones.getModel();
         model.setRowCount(0);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
-        for (RecepcionEntrega r : controlador.filtrarRecepciones(texto)) {
+        for (RecepcionEntrega r : recepciones) {
 
             String equipo = (r.getEquipoMovil() != null)
                     ? r.getEquipoMovil().getMarca() + " " + r.getEquipoMovil().getModelo()

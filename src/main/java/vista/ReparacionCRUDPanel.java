@@ -3,6 +3,7 @@ package vista;
 import controlador.ReparacionController;
 import java.awt.Color;
 import java.awt.Image;
+import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.table.DefaultTableModel;
@@ -71,10 +72,17 @@ public class ReparacionCRUDPanel extends javax.swing.JPanel {
             return;
         }
 
+        List<Reparacion> reparaciones = controlador.filtrar(texto);
+
+        if (reparaciones.isEmpty()) {
+            DialogUtil.mostrarMensajeInformacion(this, "No se encontraron reparaciones que coincidan con el criterio de búsqueda");
+            return;
+        }
+
         DefaultTableModel model = (DefaultTableModel) tblReparaciones.getModel();
         model.setRowCount(0);
 
-        for (Reparacion r : controlador.filtrar(texto)) {
+        for (Reparacion r : reparaciones) {
 
             String usuario = (r.getUsuario() != null && r.getUsuario().getNombre() != null)
                     ? r.getUsuario().getNombre()

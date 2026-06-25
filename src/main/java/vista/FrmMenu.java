@@ -117,19 +117,35 @@ public class FrmMenu extends javax.swing.JFrame {
      * autenticado.
      */
     private void configurarPermisos() {
+
         if (Sesion.getUsuarioActual() == null) {
             return;
         }
 
+        mostrarTodosLosMenus();
+
         if (Sesion.esTecnico()) {
-            menuUsuario.setVisible(false);
-            menuFactura.setVisible(false);
+            ocultarMenus(
+                    menuUsuario,
+                    menuFactura,
+                    menuCliente,
+                    menuEquipoMovil,
+                    menuRecepcionEntrega
+            );
         } else if (Sesion.esCajero()) {
-            menuUsuario.setVisible(false);
-            menuCliente.setVisible(false);
-            menuEquipoMovil.setVisible(false);
-            menuRecepcionEntrega.setVisible(false);
-            menuReparacion.setVisible(false);
+            ocultarMenus(
+                    menuUsuario,
+                    menuCliente,
+                    menuEquipoMovil,
+                    menuRecepcionEntrega,
+                    menuReparacion
+            );
+        } else if (Sesion.esRecepcionista()) {
+            ocultarMenus(
+                    menuUsuario,
+                    menuFactura,
+                    menuReparacion
+            );
         }
     }
 
@@ -171,6 +187,29 @@ public class FrmMenu extends javax.swing.JFrame {
         item.setForeground(COLOR_TEXTO);
 
         item.setMargin(new java.awt.Insets(0, 0, 0, 0));
+    }
+
+    /**
+     * Hace visibles todos los menús del sistema.
+     */
+    private void mostrarTodosLosMenus() {
+        menuUsuario.setVisible(true);
+        menuFactura.setVisible(true);
+        menuCliente.setVisible(true);
+        menuEquipoMovil.setVisible(true);
+        menuRecepcionEntrega.setVisible(true);
+        menuReparacion.setVisible(true);
+    }
+
+    /**
+     * Oculta uno o varios menús.
+     *
+     * @param menus menús a ocultar
+     */
+    private void ocultarMenus(JMenu... menus) {
+        for (JMenu menu : menus) {
+            menu.setVisible(false);
+        }
     }
 
     /**

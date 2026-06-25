@@ -3,6 +3,7 @@ package vista;
 import controlador.EquipoMovilController;
 import java.awt.Color;
 import java.awt.Image;
+import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.table.DefaultTableModel;
@@ -72,10 +73,17 @@ public class EquipoMovilCRUDPanel extends javax.swing.JPanel {
             return;
         }
 
+        List<EquipoMovil> equipos = controlador.filtrarEquipos(texto);
+
+        if (equipos.isEmpty()) {
+            DialogUtil.mostrarMensajeInformacion(this, "No se encontraron equipos móviles que coincidan con el criterio de búsqueda");
+            return;
+        }
+
         DefaultTableModel model = (DefaultTableModel) tblEquiposMoviles.getModel();
         model.setRowCount(0);
 
-        for (EquipoMovil e : controlador.filtrarEquipos(texto)) {
+        for (EquipoMovil e : equipos) {
 
             String clienteNombre = (e.getCliente() != null)
                     ? e.getCliente().getNombre()

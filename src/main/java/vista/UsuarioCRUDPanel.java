@@ -3,6 +3,7 @@ package vista;
 import controlador.UsuarioController;
 import java.awt.Color;
 import java.awt.Image;
+import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.table.DefaultTableModel;
@@ -62,10 +63,17 @@ public class UsuarioCRUDPanel extends javax.swing.JPanel {
             return;
         }
 
+        List<Usuario> usuarios = controlador.filtrarUsuarios(texto);
+
+        if (usuarios.isEmpty()) {
+            DialogUtil.mostrarMensajeInformacion(this, "No se encontraron usuarios que coincidan con el criterio de búsqueda");
+            return;
+        }
+
         DefaultTableModel model = (DefaultTableModel) tblUsuarios.getModel();
         model.setRowCount(0);
 
-        for (Usuario u : controlador.filtrarUsuarios(texto)) {
+        for (Usuario u : usuarios) {
             model.addRow(new Object[]{
                 u.getId(),
                 u.getNombre(),

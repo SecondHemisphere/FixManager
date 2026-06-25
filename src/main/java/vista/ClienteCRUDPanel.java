@@ -79,7 +79,7 @@ public class ClienteCRUDPanel extends javax.swing.JPanel {
         List<Cliente> clientes = controlador.filtrarClientes(texto);
 
         if (clientes.isEmpty()) {
-            DialogUtil.mostrarMensajeInformacion(this, "No se encontraron clientes que coincidan con el criterio de búsqueda.");
+            DialogUtil.mostrarMensajeInformacion(this, "No se encontraron clientes que coincidan con el criterio de búsqueda");
             return;
         }
 

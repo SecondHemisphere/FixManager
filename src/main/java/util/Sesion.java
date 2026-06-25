@@ -23,6 +23,16 @@ public class Sesion {
     }
 
     /**
+     * Verifica si el usuario en sesión es recepcionista.
+     *
+     * @return true si el usuario es RECEPCIONISTA, false en caso contrario
+     */
+    public static boolean esRecepcionista() {
+        return usuarioActual != null
+                && usuarioActual.getRol() == Usuario.Rol.RECEPCIONISTA;
+    }
+
+    /**
      * Verifica si el usuario en sesión es técnico.
      *
      * @return true si el usuario es TECNICO, false en caso contrario
