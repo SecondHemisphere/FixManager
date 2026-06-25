@@ -33,7 +33,7 @@ public class RecepcionEntregaDAO {
 
         String sql = """
             SELECT r.*, 
-                   e.id AS equipo_id, e.marca, e.modelo, e.imei, e.tipo, e.descripcion_danio,
+                   e.id AS equipo_id, e.marca, e.modelo, e.imei, e.tipo,
                    c.id AS cliente_id, c.nombre AS cliente_nombre,
                    u.id AS usuario_id, u.nombre AS usuario_nombre
             FROM recepcion_entrega r
@@ -55,8 +55,7 @@ public class RecepcionEntregaDAO {
                 e.setMarca(rs.getString("marca"));
                 e.setModelo(rs.getString("modelo"));
                 e.setImei(rs.getString("imei"));
-                e.setTipo(rs.getString("tipo"));
-                e.setDescripcionDanio(rs.getString("descripcion_danio"));
+                e.setTipo(EquipoMovil.TipoEquipo.valueOf(rs.getString("tipo")));
                 e.setCliente(c);
 
                 Usuario u = new Usuario();
@@ -91,7 +90,7 @@ public class RecepcionEntregaDAO {
 
         String sql = """
             SELECT r.*, 
-                   e.id AS equipo_id, e.marca, e.modelo, e.imei, e.tipo, e.descripcion_danio,
+                   e.id AS equipo_id, e.marca, e.modelo, e.imei, e.tipo,
                    c.id AS cliente_id, c.nombre AS cliente_nombre,
                    u.id AS usuario_id, u.nombre AS usuario_nombre
             FROM recepcion_entrega r
@@ -118,8 +117,7 @@ public class RecepcionEntregaDAO {
                     e.setMarca(rs.getString("marca"));
                     e.setModelo(rs.getString("modelo"));
                     e.setImei(rs.getString("imei"));
-                    e.setTipo(rs.getString("tipo"));
-                    e.setDescripcionDanio(rs.getString("descripcion_danio"));
+                    e.setTipo(EquipoMovil.TipoEquipo.valueOf(rs.getString("tipo")));
                     e.setCliente(c);
 
                     Usuario u = new Usuario();

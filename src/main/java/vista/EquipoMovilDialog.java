@@ -41,6 +41,7 @@ public class EquipoMovilDialog extends javax.swing.JDialog {
 
         this.equipo = equipo;
 
+        cargarTipos();
         cargarClientes();
 
         if (equipo != null) {
@@ -75,9 +76,15 @@ public class EquipoMovilDialog extends javax.swing.JDialog {
         txtMarca.setText(equipo.getMarca());
         txtModelo.setText(equipo.getModelo());
         txtImei.setText(equipo.getImei());
-        txtTipo.setText(equipo.getTipo());
-        txtaDescripcion.setText(equipo.getDescripcionDanio());
+        cbxTipo.setSelectedItem(equipo.getTipo());
         cbxCliente.setSelectedItem(equipo.getCliente());
+    }
+
+    /**
+     * Carga tipos de equipos móviles
+     */
+    private void cargarTipos() {
+        cbxTipo.setModel(new DefaultComboBoxModel<>(EquipoMovil.TipoEquipo.values()));
     }
 
     /**
@@ -95,8 +102,7 @@ public class EquipoMovilDialog extends javax.swing.JDialog {
             e.setMarca(txtMarca.getText().trim());
             e.setModelo(txtModelo.getText().trim());
             e.setImei(txtImei.getText().trim());
-            e.setTipo(txtTipo.getText().trim());
-            e.setDescripcionDanio(txtaDescripcion.getText().trim());
+            e.setTipo((EquipoMovil.TipoEquipo) cbxTipo.getSelectedItem());
             e.setCliente((Cliente) cbxCliente.getSelectedItem());
 
             ResultadoOperacion resultado = (equipo == null)
@@ -134,13 +140,10 @@ public class EquipoMovilDialog extends javax.swing.JDialog {
         lblImei = new javax.swing.JLabel();
         txtImei = new javax.swing.JTextField();
         lblTipo = new javax.swing.JLabel();
-        txtTipo = new javax.swing.JTextField();
-        btnGuardar = new javax.swing.JButton();
+        cbxTipo = new javax.swing.JComboBox<EquipoMovil.TipoEquipo>();
         lblCliente = new javax.swing.JLabel();
         cbxCliente = new javax.swing.JComboBox<Cliente>();
-        lblDescripcion = new javax.swing.JLabel();
-        scrDescripcion = new javax.swing.JScrollPane();
-        txtaDescripcion = new javax.swing.JTextArea();
+        btnGuardar = new javax.swing.JButton();
         imagen = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -173,7 +176,9 @@ public class EquipoMovilDialog extends javax.swing.JDialog {
         lblTipo.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblTipo.setText("Tipo *:");
 
-        txtTipo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lblCliente.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblCliente.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblCliente.setText("Cliente *:");
 
         btnGuardar.setBackground(new java.awt.Color(103, 201, 228));
         btnGuardar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -183,20 +188,6 @@ public class EquipoMovilDialog extends javax.swing.JDialog {
                 btnGuardarActionPerformed(evt);
             }
         });
-
-        lblCliente.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lblCliente.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblCliente.setText("Cliente *:");
-
-        lblDescripcion.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lblDescripcion.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblDescripcion.setText("Descripción del daño *:");
-
-        txtaDescripcion.setColumns(20);
-        txtaDescripcion.setLineWrap(true);
-        txtaDescripcion.setRows(5);
-        txtaDescripcion.setWrapStyleWord(true);
-        scrDescripcion.setViewportView(txtaDescripcion);
 
         imagen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/favicon.png"))); // NOI18N
 
@@ -212,28 +203,22 @@ public class EquipoMovilDialog extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblTitulo))
                     .addGroup(pnlFormularioLayout.createSequentialGroup()
+                        .addGap(120, 120, 120)
                         .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnlFormularioLayout.createSequentialGroup()
-                                .addGap(36, 36, 36)
-                                .addComponent(lblDescripcion))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFormularioLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblCliente, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(lblTipo, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(lblImei, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(lblModelo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lblMarca, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(lblCliente, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblTipo, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblImei, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblModelo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblMarca, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtMarca)
                             .addComponent(cbxCliente, 0, 198, Short.MAX_VALUE)
-                            .addComponent(txtTipo)
-                            .addComponent(scrDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                             .addComponent(txtModelo)
-                            .addComponent(txtImei)))
+                            .addComponent(txtImei)
+                            .addComponent(cbxTipo, 0, 198, Short.MAX_VALUE)))
                     .addGroup(pnlFormularioLayout.createSequentialGroup()
-                        .addGap(142, 142, 142)
+                        .addGap(143, 143, 143)
                         .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(60, Short.MAX_VALUE))
         );
@@ -242,7 +227,7 @@ public class EquipoMovilDialog extends javax.swing.JDialog {
             .addGroup(pnlFormularioLayout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(imagen, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)
+                    .addComponent(imagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -258,16 +243,15 @@ public class EquipoMovilDialog extends javax.swing.JDialog {
                     .addComponent(lblImei))
                 .addGap(18, 18, 18)
                 .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblTipo))
-                .addGap(15, 15, 15)
-                .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblCliente)
-                    .addComponent(cbxCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(lblTipo)
+                    .addComponent(cbxTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scrDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblDescripcion))
+                    .addGroup(pnlFormularioLayout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addComponent(lblCliente))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFormularioLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(cbxCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(27, 27, 27)
                 .addComponent(btnGuardar)
                 .addGap(15, 15, 15))
@@ -296,20 +280,17 @@ public class EquipoMovilDialog extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;
     private javax.swing.JComboBox<Cliente> cbxCliente;
+    private javax.swing.JComboBox<EquipoMovil.TipoEquipo> cbxTipo;
     private javax.swing.JLabel imagen;
     private javax.swing.JLabel lblCliente;
-    private javax.swing.JLabel lblDescripcion;
     private javax.swing.JLabel lblImei;
     private javax.swing.JLabel lblMarca;
     private javax.swing.JLabel lblModelo;
     private javax.swing.JLabel lblTipo;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JPanel pnlFormulario;
-    private javax.swing.JScrollPane scrDescripcion;
     private javax.swing.JTextField txtImei;
     private javax.swing.JTextField txtMarca;
     private javax.swing.JTextField txtModelo;
-    private javax.swing.JTextField txtTipo;
-    private javax.swing.JTextArea txtaDescripcion;
     // End of variables declaration//GEN-END:variables
 }

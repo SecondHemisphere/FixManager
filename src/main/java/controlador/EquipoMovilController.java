@@ -151,11 +151,6 @@ public class EquipoMovilController {
             return error;
         }
 
-        error = validarDescripcionDanio(e.getDescripcionDanio());
-        if (error != null) {
-            return error;
-        }
-
         error = validarCliente(e);
         if (error != null) {
             return error;
@@ -245,45 +240,10 @@ public class EquipoMovilController {
      * @param tipo tipo del equipo
      * @return error o null si es válido
      */
-    public static String validarTipo(String tipo) {
+    public static String validarTipo(EquipoMovil.TipoEquipo tipo) {
 
-        if (tipo == null || tipo.trim().isEmpty()) {
+        if (tipo == null) {
             return "El tipo es obligatorio";
-        }
-
-        tipo = tipo.trim();
-
-        if (tipo.length() < 3) {
-            return "El tipo debe tener al menos 3 caracteres";
-        }
-
-        if (tipo.length() > 30) {
-            return "El tipo no puede superar 30 caracteres";
-        }
-
-        return null;
-    }
-
-    /**
-     * Valida la descripción del daño.
-     *
-     * @param desc descripción del daño
-     * @return error o null si es válida
-     */
-    public static String validarDescripcionDanio(String desc) {
-
-        if (desc == null || desc.trim().isEmpty()) {
-            return "La descripción del daño es obligatoria";
-        }
-
-        desc = desc.trim();
-
-        if (desc.length() < 5) {
-            return "La descripción debe tener al menos 5 caracteres";
-        }
-
-        if (desc.length() > 255) {
-            return "La descripción no puede superar 255 caracteres";
         }
 
         return null;

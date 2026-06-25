@@ -50,8 +50,7 @@ public class EquipoMovilDAO {
                 e.setMarca(rs.getString("marca"));
                 e.setModelo(rs.getString("modelo"));
                 e.setImei(rs.getString("imei"));
-                e.setTipo(rs.getString("tipo"));
-                e.setDescripcionDanio(rs.getString("descripcion_danio"));
+                e.setTipo(EquipoMovil.TipoEquipo.valueOf(rs.getString("tipo")));
                 e.setCliente(c);
 
                 lista.add(e);
@@ -98,8 +97,7 @@ public class EquipoMovilDAO {
                     e.setMarca(rs.getString("marca"));
                     e.setModelo(rs.getString("modelo"));
                     e.setImei(rs.getString("imei"));
-                    e.setTipo(rs.getString("tipo"));
-                    e.setDescripcionDanio(rs.getString("descripcion_danio"));
+                    e.setTipo(EquipoMovil.TipoEquipo.valueOf(rs.getString("tipo")));
                     e.setCliente(c);
 
                     return e;
@@ -122,8 +120,8 @@ public class EquipoMovilDAO {
     public boolean guardar(EquipoMovil e) {
         String sql = """
             INSERT INTO equipo_movil
-            (marca, modelo, imei, tipo, descripcion_danio, cliente_id)
-            VALUES (?,?,?,?,?,?)
+            (marca, modelo, imei, tipo, cliente_id)
+            VALUES (?,?,?,?,?)
         """;
 
         try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
@@ -131,9 +129,8 @@ public class EquipoMovilDAO {
             pst.setString(1, e.getMarca());
             pst.setString(2, e.getModelo());
             pst.setString(3, e.getImei());
-            pst.setString(4, e.getTipo());
-            pst.setString(5, e.getDescripcionDanio());
-            pst.setInt(6, e.getCliente().getId());
+            pst.setString(4, e.getTipo().name());
+            pst.setInt(5, e.getCliente().getId());
 
             return pst.executeUpdate() > 0;
 
@@ -151,7 +148,7 @@ public class EquipoMovilDAO {
     public boolean actualizar(EquipoMovil e) {
         String sql = """
             UPDATE equipo_movil
-            SET marca=?, modelo=?, imei=?, tipo=?, descripcion_danio=?, cliente_id=?
+            SET marca=?, modelo=?, imei=?, tipo=?, cliente_id=?
             WHERE id=?
         """;
 
@@ -160,10 +157,9 @@ public class EquipoMovilDAO {
             pst.setString(1, e.getMarca());
             pst.setString(2, e.getModelo());
             pst.setString(3, e.getImei());
-            pst.setString(4, e.getTipo());
-            pst.setString(5, e.getDescripcionDanio());
-            pst.setInt(6, e.getCliente().getId());
-            pst.setInt(7, e.getId());
+            pst.setString(4, e.getTipo().name());
+            pst.setInt(5, e.getCliente().getId());
+            pst.setInt(6, e.getId());
 
             return pst.executeUpdate() > 0;
 
@@ -231,8 +227,7 @@ public class EquipoMovilDAO {
                     e.setMarca(rs.getString("marca"));
                     e.setModelo(rs.getString("modelo"));
                     e.setImei(rs.getString("imei"));
-                    e.setTipo(rs.getString("tipo"));
-                    e.setDescripcionDanio(rs.getString("descripcion_danio"));
+                    e.setTipo(EquipoMovil.TipoEquipo.valueOf(rs.getString("tipo")));
                     e.setCliente(c);
 
                     lista.add(e);

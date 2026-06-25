@@ -12,12 +12,39 @@ import java.util.Objects;
  */
 public class EquipoMovil {
 
+    /**
+     * Tipos de equipo móvil disponibles.
+     */
+    public enum TipoEquipo {
+
+        CELULAR("Celular"),
+        TABLET("Tablet"),
+        SMARTWATCH("Smartwatch"),
+        ACCESORIOS("Accesorios"),
+        OTRO("Otro");
+
+        private final String descripcion;
+
+        /**
+         * Constructor del tipo de equipo.
+         *
+         * @param descripcion texto legible del tipo de equipo
+         */
+        TipoEquipo(String descripcion) {
+            this.descripcion = descripcion;
+        }
+
+        @Override
+        public String toString() {
+            return descripcion;
+        }
+    }
+
     private int id;
     private String marca;
     private String modelo;
     private String imei;
-    private String tipo;
-    private String descripcionDanio;
+    private TipoEquipo tipo;
     private Cliente cliente;
 
     /**
@@ -34,17 +61,15 @@ public class EquipoMovil {
      * @param modelo modelo del dispositivo
      * @param imei código IMEI del equipo
      * @param tipo tipo de equipo móvil
-     * @param descripcionDanio descripción del daño reportado
      * @param cliente cliente propietario del equipo
      */
     public EquipoMovil(int id, String marca, String modelo, String imei,
-            String tipo, String descripcionDanio, Cliente cliente) {
+            TipoEquipo tipo, Cliente cliente) {
         this.id = id;
         this.marca = marca;
         this.modelo = modelo;
         this.imei = imei;
         this.tipo = tipo;
-        this.descripcionDanio = descripcionDanio;
         this.cliente = cliente;
     }
 
@@ -55,16 +80,14 @@ public class EquipoMovil {
      * @param modelo modelo del dispositivo
      * @param imei código IMEI
      * @param tipo tipo de equipo
-     * @param descripcionDanio descripción del daño
      * @param cliente cliente propietario
      */
     public EquipoMovil(String marca, String modelo, String imei,
-            String tipo, String descripcionDanio, Cliente cliente) {
+            TipoEquipo tipo, Cliente cliente) {
         this.marca = marca;
         this.modelo = modelo;
         this.imei = imei;
         this.tipo = tipo;
-        this.descripcionDanio = descripcionDanio;
         this.cliente = cliente;
     }
 
@@ -100,20 +123,12 @@ public class EquipoMovil {
         this.imei = imei;
     }
 
-    public String getTipo() {
+    public TipoEquipo getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(TipoEquipo tipo) {
         this.tipo = tipo;
-    }
-
-    public String getDescripcionDanio() {
-        return descripcionDanio;
-    }
-
-    public void setDescripcionDanio(String descripcionDanio) {
-        this.descripcionDanio = descripcionDanio;
     }
 
     public Cliente getCliente() {

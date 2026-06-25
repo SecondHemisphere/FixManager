@@ -91,6 +91,7 @@ public class EquipoMovilCRUDPanel extends javax.swing.JPanel {
 
             model.addRow(new Object[]{
                 e.getId(),
+                e.getCliente().getNombre(),
                 e.getMarca(),
                 e.getModelo(),
                 e.getImei(),
@@ -117,17 +118,17 @@ public class EquipoMovilCRUDPanel extends javax.swing.JPanel {
     private void cargarTabla() {
 
         DefaultTableModel model = new DefaultTableModel(
-                new String[]{"ID", "Marca", "Modelo", "IMEI", "Tipo", "Cliente"}, 0
+                new String[]{"ID", "Cliente", "Marca", "Modelo", "IMEI", "Tipo"}, 0
         );
 
         for (EquipoMovil e : controlador.listarEquipos()) {
             model.addRow(new Object[]{
                 e.getId(),
+                e.getCliente().getNombre(),
                 e.getMarca(),
                 e.getModelo(),
                 e.getImei(),
-                e.getTipo(),
-                e.getCliente().getNombre()
+                e.getTipo()
             });
         }
 
