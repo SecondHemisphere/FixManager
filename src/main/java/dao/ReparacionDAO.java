@@ -68,7 +68,7 @@ public class ReparacionDAO {
                 r.setId(rs.getInt("id"));
                 r.setDiagnostico(rs.getString("diagnostico"));
                 r.setSolucion(rs.getString("solucion"));
-                r.setCostoRepuestos(rs.getDouble("costo_repuestos"));
+                r.setCostoRepuestos(rs.getString("costo_repuestos"));
                 r.setPiezasUsadas(rs.getString("piezas_usadas"));
                 r.setEstado(Reparacion.Estado.valueOf(rs.getString("estado")));
                 r.setRecepcion(re);
@@ -82,6 +82,72 @@ public class ReparacionDAO {
         }
 
         return lista;
+    }
+
+    /**
+     * Obtiene una reparación específica por su ID.
+     *
+     * @param id identificador de la reparación
+     * @return objeto Reparacion si existe, caso contrario null
+     */
+    public Reparacion obtenerPorId(int id) {
+
+        String sql = """
+            SELECT r.*,
+                   re.id AS recepcion_id,
+                   c.nombre AS cliente,
+                   e.marca, e.modelo,
+                   u.nombre AS usuario
+            FROM reparacion r
+            INNER JOIN recepcion_entrega re ON r.recepcion_id = re.id
+            INNER JOIN equipo_movil e ON re.equipo_id = e.id
+            INNER JOIN cliente c ON e.cliente_id = c.id
+            INNER JOIN usuario u ON r.usuario_id = u.id
+            WHERE r.id = ?
+        """;
+
+        try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setInt(1, id);
+
+            try (ResultSet rs = pst.executeQuery()) {
+
+                if (rs.next()) {
+
+                    modelo.Cliente c = new modelo.Cliente();
+                    c.setNombre(rs.getString("cliente"));
+
+                    modelo.EquipoMovil e = new modelo.EquipoMovil();
+                    e.setMarca(rs.getString("marca"));
+                    e.setModelo(rs.getString("modelo"));
+                    e.setCliente(c);
+
+                    modelo.Usuario u = new modelo.Usuario();
+                    u.setNombre(rs.getString("usuario"));
+
+                    RecepcionEntrega re = new RecepcionEntrega();
+                    re.setId(rs.getInt("recepcion_id"));
+                    re.setEquipoMovil(e);
+
+                    Reparacion r = new Reparacion();
+                    r.setId(rs.getInt("id"));
+                    r.setDiagnostico(rs.getString("diagnostico"));
+                    r.setSolucion(rs.getString("solucion"));
+                    r.setCostoRepuestos(rs.getString("costo_repuestos"));
+                    r.setPiezasUsadas(rs.getString("piezas_usadas"));
+                    r.setEstado(Reparacion.Estado.valueOf(rs.getString("estado")));
+                    r.setRecepcion(re);
+                    r.setUsuario(u);
+
+                    return r;
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al obtener reparación", e);
+        }
+
+        return null;
     }
 
     /**
@@ -117,7 +183,7 @@ public class ReparacionDAO {
 
             pst.setString(1, r.getDiagnostico());
             pst.setString(2, r.getSolucion());
-            pst.setDouble(3, r.getCostoRepuestos());
+            pst.setString(3, r.getCostoRepuestos());
             pst.setString(4, r.getPiezasUsadas());
             pst.setString(5, r.getEstado().name());
             pst.setInt(6, r.getRecepcion().getId());
@@ -147,7 +213,7 @@ public class ReparacionDAO {
 
             pst.setString(1, r.getDiagnostico());
             pst.setString(2, r.getSolucion());
-            pst.setDouble(3, r.getCostoRepuestos());
+            pst.setString(3, r.getCostoRepuestos());
             pst.setString(4, r.getPiezasUsadas());
             pst.setString(5, r.getEstado().name());
             pst.setInt(6, r.getUsuario().getId());
@@ -178,47 +244,6 @@ public class ReparacionDAO {
         } catch (SQLException e) {
             throw new RuntimeException("Error al eliminar reparación", e);
         }
-    }
-
-    /**
-     * Obtiene una reparación por su ID.
-     *
-     * @param id ID de la reparación
-     * @return objeto reparación o null si no existe
-     */
-    public Reparacion obtenerPorId(int id) {
-        String sql = """
-            SELECT *
-            FROM reparacion
-            WHERE id = ?
-        """;
-
-        try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
-
-            pst.setInt(1, id);
-
-            try (ResultSet rs = pst.executeQuery()) {
-
-                if (rs.next()) {
-
-                    Reparacion r = new Reparacion();
-
-                    r.setId(rs.getInt("id"));
-                    r.setDiagnostico(rs.getString("diagnostico"));
-                    r.setSolucion(rs.getString("solucion"));
-                    r.setCostoRepuestos(rs.getDouble("costo_repuestos"));
-                    r.setPiezasUsadas(rs.getString("piezas_usadas"));
-                    r.setEstado(Reparacion.Estado.valueOf(rs.getString("estado")));
-
-                    return r;
-                }
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException("Error al obtener reparación", e);
-        }
-
-        return null;
     }
 
     /**
@@ -279,7 +304,7 @@ public class ReparacionDAO {
                     r.setId(rs.getInt("id"));
                     r.setDiagnostico(rs.getString("diagnostico"));
                     r.setSolucion(rs.getString("solucion"));
-                    r.setCostoRepuestos(rs.getDouble("costo_repuestos"));
+                    r.setCostoRepuestos(rs.getString("costo_repuestos"));
                     r.setPiezasUsadas(rs.getString("piezas_usadas"));
                     r.setEstado(Reparacion.Estado.valueOf(rs.getString("estado")));
                     r.setRecepcion(re);

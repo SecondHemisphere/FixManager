@@ -40,6 +40,23 @@ public class RecepcionEntregaCRUDPanel extends javax.swing.JPanel {
         pnlScroll.setOpaque(false);
         pnlScroll.getViewport().setOpaque(false);
 
+        tblRecepciones = new javax.swing.JTable() {
+            @Override
+            public String getToolTipText(java.awt.event.MouseEvent e) {
+                int row = rowAtPoint(e.getPoint());
+                int column = columnAtPoint(e.getPoint());
+
+                if (row > -1 && column > -1) {
+                    Object value = getValueAt(row, column);
+                    return value != null ? value.toString() : null;
+                }
+
+                return super.getToolTipText(e);
+            }
+        };
+
+        pnlScroll.setViewportView(tblRecepciones);
+
         cargarTabla();
 
         JLabel fondo = new JLabel();
@@ -150,7 +167,6 @@ public class RecepcionEntregaCRUDPanel extends javax.swing.JPanel {
         tblRecepciones.setModel(model);
         tblRecepciones.setDefaultEditor(Object.class, null);
         tblRecepciones.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-
         configurarEstilosTabla();
     }
 

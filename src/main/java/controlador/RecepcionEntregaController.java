@@ -167,12 +167,6 @@ public class RecepcionEntregaController {
             return error;
         }
 
-        error = validarEstado(r.getEstado());
-
-        if (error != null) {
-            return error;
-        }
-
         return null;
     }
 
@@ -206,26 +200,11 @@ public class RecepcionEntregaController {
         problema = problema.trim();
 
         if (problema.length() < 5) {
-            return "El problema debe tener al menos 5 caracteres";
+            return "El problema reportado debe tener al menos 5 caracteres";
         }
 
         if (problema.length() > 255) {
-            return "El problema no puede superar 255 caracteres";
-        }
-
-        return null;
-    }
-
-    /**
-     * Valida el estado de la recepción.
-     *
-     * @param estado estado de la recepción
-     * @return mensaje de error o null si es válido
-     */
-    public static String validarEstado(RecepcionEntrega.Estado estado) {
-
-        if (estado == null) {
-            return "El estado es obligatorio";
+            return "El problema reportado no puede superar 255 caracteres";
         }
 
         return null;

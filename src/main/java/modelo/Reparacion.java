@@ -42,8 +42,8 @@ public class Reparacion {
     private int id;
     private String diagnostico;
     private String solucion;
-    private double costoRepuestos;
     private String piezasUsadas;
+    private String costoRepuestos;
     private Estado estado;
     private RecepcionEntrega recepcion;
     private Usuario usuario;
@@ -60,13 +60,13 @@ public class Reparacion {
      *
      * @param diagnostico diagnóstico del equipo
      * @param solucion solución aplicada
-     * @param costoRepuestos costo de repuestos utilizados
      * @param piezasUsadas lista de piezas utilizadas
+     * @param costoRepuestos costo de repuestos utilizados
      * @param recepcion recepción del equipo
      * @param usuario usuario responsable de la reparación
      */
-    public Reparacion(String diagnostico, String solucion, double costoRepuestos,
-            String piezasUsadas, RecepcionEntrega recepcion, Usuario usuario) {
+    public Reparacion(String diagnostico, String solucion, String piezasUsadas,
+            String costoRepuestos, RecepcionEntrega recepcion, Usuario usuario) {
         this.diagnostico = diagnostico;
         this.solucion = solucion;
         this.costoRepuestos = costoRepuestos;
@@ -82,14 +82,14 @@ public class Reparacion {
      * @param id identificador de la reparación
      * @param diagnostico diagnóstico del equipo
      * @param solucion solución aplicada
-     * @param costoRepuestos costo de repuestos
      * @param piezasUsadas piezas utilizadas
+     * @param costoRepuestos costo de repuestos
      * @param estado estado actual de la reparación
      * @param recepcion recepción asociada
      * @param usuario usuario responsable
      */
     public Reparacion(int id, String diagnostico, String solucion,
-            double costoRepuestos, String piezasUsadas,
+            String piezasUsadas, String costoRepuestos,
             Estado estado, RecepcionEntrega recepcion, Usuario usuario) {
         this.id = id;
         this.diagnostico = diagnostico;
@@ -125,20 +125,20 @@ public class Reparacion {
         this.solucion = solucion;
     }
 
-    public double getCostoRepuestos() {
-        return costoRepuestos;
-    }
-
-    public void setCostoRepuestos(double costoRepuestos) {
-        this.costoRepuestos = costoRepuestos;
-    }
-
     public String getPiezasUsadas() {
         return piezasUsadas;
     }
 
     public void setPiezasUsadas(String piezasUsadas) {
         this.piezasUsadas = piezasUsadas;
+    }
+
+    public String getCostoRepuestos() {
+        return costoRepuestos;
+    }
+
+    public void setCostoRepuestos(String costoRepuestos) {
+        this.costoRepuestos = costoRepuestos;
     }
 
     public Estado getEstado() {

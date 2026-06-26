@@ -3,6 +3,7 @@ package vista;
 import controlador.ReparacionController;
 import controlador.RecepcionEntregaController;
 import java.awt.Color;
+import java.time.format.DateTimeFormatter;
 import javax.swing.DefaultComboBoxModel;
 import modelo.Reparacion;
 import modelo.RecepcionEntrega;
@@ -50,6 +51,53 @@ public class ReparacionDialog extends javax.swing.JDialog {
             btnGuardar.setText("Guardar");
             btnGuardar.setBackground(new Color(103, 201, 228));
         }
+
+        cbxRecepcion.setRenderer(new javax.swing.DefaultListCellRenderer() {
+
+            @Override
+            public java.awt.Component getListCellRendererComponent(
+                    javax.swing.JList<?> list, Object value, int index,
+                    boolean isSelected, boolean cellHasFocus) {
+
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+
+                if (value instanceof RecepcionEntrega r) {
+
+                    int numOrden = r.getId();
+
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                    String fecha = r.getFechaRecepcion().format(formatter);
+
+                    String marca = r.getEquipoMovil().getMarca();
+                    String modelo = r.getEquipoMovil().getModelo();
+                    String nomCliente = r.getEquipoMovil().getCliente().getNombre();
+
+                    String textoCompleto = "#" + numOrden + " | " + fecha
+                            + " | " + marca + " " + modelo
+                            + " | " + nomCliente;
+
+                    String celular = marca + " " + modelo;
+                    if (celular.length() > 15) {
+                        celular = celular.substring(0, 15) + "...";
+                    }
+
+                    if (nomCliente.length() > 15) {
+                        nomCliente = nomCliente.substring(0, 15) + "...";
+                    }
+
+                    String textoVisual = "#" + numOrden + " | " + fecha
+                            + " | " + celular
+                            + " | " + nomCliente;
+
+                    setText("<html><table><tr><td width='240' style='white-space:nowrap; overflow:hidden;'>"
+                            + textoVisual + "</td></tr></table></html>");
+
+                    setToolTipText(textoCompleto);
+                }
+
+                return this;
+            }
+        });
     }
 
     /**
@@ -58,10 +106,17 @@ public class ReparacionDialog extends javax.swing.JDialog {
     private void cargarRecepciones() {
         DefaultComboBoxModel<RecepcionEntrega> model = new DefaultComboBoxModel<>();
 
-        for (RecepcionEntrega r : recepcionController.listarRecepciones()) {
-            if (r.getEstado() == RecepcionEntrega.Estado.RECIBIDO) {
-                model.addElement(r);
+        if (reparacion == null) {
+            cbxRecepcion.setEnabled(true);
+
+            for (RecepcionEntrega r : recepcionController.listarRecepciones()) {
+                if (r.getEstado() == RecepcionEntrega.Estado.RECIBIDO && controller.obtenerReparacion(r.getId()) == null) {
+                    model.addElement(r);
+                }
             }
+        } else {
+            cbxRecepcion.setEnabled(false);
+            model.addElement(reparacion.getRecepcion());
         }
 
         cbxRecepcion.setModel(model);
@@ -102,16 +157,9 @@ public class ReparacionDialog extends javax.swing.JDialog {
             r.setDiagnostico(txtaDiagnostico.getText().trim());
             r.setSolucion(txtaSolucion.getText().trim());
             r.setPiezasUsadas(txtaPiezas.getText().trim());
+            r.setCostoRepuestos(txtCosto.getText().trim());
             r.setEstado((Reparacion.Estado) cbxEstado.getSelectedItem());
             r.setUsuario(Sesion.getUsuarioActual());
-
-            try {
-                r.setCostoRepuestos(Double.parseDouble(txtCosto.getText().trim()));
-            } catch (NumberFormatException e) {
-                DialogUtil.mostrarMensajeAdvertencia(this, "El costo debe ser numérico");
-                txtCosto.requestFocus();
-                return;
-            }
 
             ResultadoOperacion resultado;
 
@@ -161,6 +209,7 @@ public class ReparacionDialog extends javax.swing.JDialog {
         lblEstado = new javax.swing.JLabel();
         cbxEstado = new javax.swing.JComboBox<Reparacion.Estado>();
         btnGuardar = new javax.swing.JButton();
+        imagen = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -223,44 +272,54 @@ public class ReparacionDialog extends javax.swing.JDialog {
             }
         });
 
+        imagen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/favicon.png"))); // NOI18N
+
         javax.swing.GroupLayout pnlFormularioLayout = new javax.swing.GroupLayout(pnlFormulario);
         pnlFormulario.setLayout(pnlFormularioLayout);
         pnlFormularioLayout.setHorizontalGroup(
             pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlFormularioLayout.createSequentialGroup()
-                .addContainerGap(90, Short.MAX_VALUE)
+                .addGap(40, 40, 40)
                 .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFormularioLayout.createSequentialGroup()
-                        .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblEstado, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblDiagnostico, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblSolucion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblPiezas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblCosto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblRecepcion, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(scrPiezas)
-                            .addComponent(cbxRecepcion, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(scrDiagnostico)
-                            .addComponent(cbxEstado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(scrSolucion)
-                            .addComponent(txtCosto))
-                        .addGap(91, 91, 91))
+                        .addComponent(imagen)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(238, 238, 238))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFormularioLayout.createSequentialGroup()
                         .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(181, 181, 181))))
-            .addGroup(pnlFormularioLayout.createSequentialGroup()
-                .addGap(187, 187, 187)
-                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(181, 181, 181))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFormularioLayout.createSequentialGroup()
+                        .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lblEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblCosto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblPiezas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblSolucion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblDiagnostico, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblRecepcion, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cbxEstado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtCosto)
+                            .addComponent(scrPiezas)
+                            .addComponent(cbxRecepcion, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(scrDiagnostico)
+                            .addComponent(scrSolucion))
+                        .addGap(25, 25, 25))))
         );
         pnlFormularioLayout.setVerticalGroup(
             pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlFormularioLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlFormularioLayout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addComponent(lblTitulo)
+                        .addGap(25, 25, 25))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFormularioLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(imagen)
+                        .addGap(18, 18, 18)))
                 .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbxRecepcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblRecepcion))
@@ -270,14 +329,10 @@ public class ReparacionDialog extends javax.swing.JDialog {
                     .addComponent(lblDiagnostico, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlFormularioLayout.createSequentialGroup()
-                        .addComponent(scrSolucion, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFormularioLayout.createSequentialGroup()
-                        .addComponent(lblSolucion)
-                        .addGap(37, 37, 37)))
+                    .addComponent(scrSolucion, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblSolucion))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblPiezas)
                     .addGroup(pnlFormularioLayout.createSequentialGroup()
                         .addComponent(scrPiezas, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -287,19 +342,18 @@ public class ReparacionDialog extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cbxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblEstado))))
-                .addGap(18, 18, 18)
-                .addComponent(btnGuardar)
-                .addContainerGap(10, Short.MAX_VALUE))
+                            .addComponent(lblEstado))
+                        .addGap(25, 25, 25)
+                        .addComponent(btnGuardar))
+                    .addComponent(lblPiezas))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(pnlFormulario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(pnlFormulario, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -319,6 +373,7 @@ public class ReparacionDialog extends javax.swing.JDialog {
     private javax.swing.JButton btnGuardar;
     private javax.swing.JComboBox<Reparacion.Estado> cbxEstado;
     private javax.swing.JComboBox<RecepcionEntrega> cbxRecepcion;
+    private javax.swing.JLabel imagen;
     private javax.swing.JLabel lblCosto;
     private javax.swing.JLabel lblDiagnostico;
     private javax.swing.JLabel lblEstado;

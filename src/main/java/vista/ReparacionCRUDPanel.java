@@ -186,11 +186,7 @@ public class ReparacionCRUDPanel extends javax.swing.JPanel {
             return;
         }
 
-        Reparacion r = controlador.listar()
-                .stream()
-                .filter(x -> x.getId() == idReparacion)
-                .findFirst()
-                .orElse(null);
+        Reparacion r = controlador.obtenerReparacion(idReparacion);
 
         ReparacionDialog d = new ReparacionDialog(null, true, r);
         d.setLocationRelativeTo(this);

@@ -1,6 +1,7 @@
 package modelo;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 /**
@@ -142,18 +143,11 @@ public class RecepcionEntrega {
 
     @Override
     public String toString() {
-        String cliente = "N/A";
-        String equipo = "Equipo";
-
-        if (equipoMovil != null) {
-            equipo = equipoMovil.getMarca() + " " + equipoMovil.getModelo();
-
-            if (equipoMovil.getCliente() != null) {
-                cliente = equipoMovil.getCliente().getNombre();
-            }
-        }
-
-        return String.format("#%d | %s | %s", id, cliente, equipo);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        String fecha = fechaRecepcion.format(formatter);
+        String equipo = equipoMovil.getMarca() + " " + equipoMovil.getModelo();
+        String nomCliente = equipoMovil.getCliente().getNombre();
+        return fecha + " " + equipo + " - " + nomCliente;
     }
 
     @Override

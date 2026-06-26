@@ -1,6 +1,8 @@
 package controlador;
 
 import dao.ReparacionDAO;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import modelo.Reparacion;
 import util.ResultadoOperacion;
@@ -25,6 +27,16 @@ public class ReparacionController {
      */
     public List<Reparacion> listar() {
         return dao.listar();
+    }
+
+    /**
+     * Obtiene una reparación por su ID.
+     *
+     * @param id identificador de la reparación
+     * @return reparación encontrada o null si no existe
+     */
+    public Reparacion obtenerReparacion(int id) {
+        return dao.obtenerPorId(id);
     }
 
     /**
@@ -149,12 +161,12 @@ public class ReparacionController {
             return error;
         }
 
-        error = validarCosto(r.getCostoRepuestos());
+        error = validarPiezas(r.getPiezasUsadas());
         if (error != null) {
             return error;
         }
 
-        error = validarPiezas(r.getPiezasUsadas());
+        error = validarCosto(r.getCostoRepuestos());
         if (error != null) {
             return error;
         }
@@ -233,21 +245,6 @@ public class ReparacionController {
     }
 
     /**
-     * Valida el costo de repuestos.
-     *
-     * @param costo valor del costo
-     * @return mensaje de error si es inválido
-     */
-    public static String validarCosto(double costo) {
-
-        if (costo < 0) {
-            return "El costo debe ser un valor positivo";
-        }
-
-        return null;
-    }
-
-    /**
      * Valida las piezas usadas.
      *
      * @param piezas texto de piezas utilizadas
@@ -267,6 +264,37 @@ public class ReparacionController {
 
         if (piezas.length() > 255) {
             return "Las piezas usadas no pueden superar 255 caracteres";
+        }
+
+        return null;
+    }
+
+    /**
+     * Valida el costo de repuestos.
+     *
+     * @param costo valor del costo de repuestos
+     * @return mensaje de error si es inválido
+     */
+    public static String validarCosto(String costo) {
+
+        if (costo == null || costo.trim().isEmpty()) {
+            return "El costo de repuestos es obligatorio";
+        }
+
+        BigDecimal valor;
+
+        try {
+            valor = new BigDecimal(costo).setScale(2, RoundingMode.HALF_UP);
+        } catch (NumberFormatException e) {
+            return "El costo de repuestos debe ser un número válido (hasta 2 decimales)";
+        }
+
+        if (valor.compareTo(BigDecimal.ZERO) < 0) {
+            return "El costo de repuestos no puede ser negativo";
+        }
+
+        if (valor.compareTo(new BigDecimal("2000.00")) > 0) {
+            return "El costo de repuestos máximo permitido es $2000.00";
         }
 
         return null;

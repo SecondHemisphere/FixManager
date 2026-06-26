@@ -23,10 +23,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-              <Component id="pnlFormulario" min="-2" max="-2" attributes="0"/>
-          </Group>
+          <Component id="pnlFormulario" alignment="1" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -50,47 +47,59 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
-                  <EmptySpace pref="90" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="lblEstado" alignment="1" min="-2" pref="90" max="-2" attributes="0"/>
-                              <Component id="lblDiagnostico" alignment="1" min="-2" pref="106" max="-2" attributes="0"/>
-                              <Component id="lblSolucion" alignment="1" min="-2" pref="106" max="-2" attributes="0"/>
-                              <Component id="lblPiezas" alignment="1" min="-2" pref="119" max="-2" attributes="0"/>
-                              <Component id="lblCosto" alignment="1" min="-2" pref="90" max="-2" attributes="0"/>
-                              <Component id="lblRecepcion" alignment="1" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="scrPiezas" max="32767" attributes="0"/>
-                              <Component id="cbxRecepcion" max="32767" attributes="0"/>
-                              <Component id="scrDiagnostico" max="32767" attributes="0"/>
-                              <Component id="cbxEstado" alignment="0" max="32767" attributes="0"/>
-                              <Component id="scrSolucion" max="32767" attributes="0"/>
-                              <Component id="txtCosto" alignment="0" max="32767" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="91" max="-2" attributes="0"/>
+                          <Component id="imagen" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="lblTitulo" min="-2" pref="169" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="238" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
                           <Component id="btnGuardar" min="-2" pref="160" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="181" max="-2" attributes="0"/>
                       </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="103" alignment="1" groupAlignment="0" attributes="0">
+                                  <Component id="lblEstado" min="-2" pref="90" max="-2" attributes="0"/>
+                                  <Component id="lblCosto" alignment="1" min="-2" pref="90" max="-2" attributes="0"/>
+                              </Group>
+                              <Component id="lblPiezas" alignment="1" min="-2" pref="119" max="-2" attributes="0"/>
+                              <Component id="lblSolucion" alignment="1" min="-2" pref="106" max="-2" attributes="0"/>
+                              <Component id="lblDiagnostico" alignment="1" min="-2" pref="106" max="-2" attributes="0"/>
+                              <Component id="lblRecepcion" alignment="1" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="cbxEstado" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtCosto" alignment="0" max="32767" attributes="0"/>
+                              <Component id="scrPiezas" alignment="0" max="32767" attributes="0"/>
+                              <Component id="cbxRecepcion" min="-2" pref="370" max="-2" attributes="0"/>
+                              <Component id="scrDiagnostico" alignment="0" max="32767" attributes="0"/>
+                              <Component id="scrSolucion" alignment="0" max="32767" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
-              </Group>
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="187" max="-2" attributes="0"/>
-                  <Component id="lblTitulo" min="-2" pref="169" max="-2" attributes="0"/>
-                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="lblTitulo" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+                          <Component id="lblTitulo" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="imagen" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="cbxRecepcion" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lblRecepcion" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -102,18 +111,12 @@
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
-                          <Component id="scrSolucion" min="-2" pref="51" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="1" attributes="0">
-                          <Component id="lblSolucion" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="scrSolucion" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
+                      <Component id="lblSolucion" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="lblPiezas" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Group type="102" alignment="0" attributes="0">
+                      <Group type="102" attributes="0">
                           <Component id="scrPiezas" min="-2" pref="50" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -125,11 +128,12 @@
                               <Component id="cbxEstado" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="lblEstado" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
+                          <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+                          <Component id="btnGuardar" min="-2" max="-2" attributes="0"/>
                       </Group>
+                      <Component id="lblPiezas" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="btnGuardar" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="10" max="32767" attributes="0"/>
+                  <EmptySpace pref="20" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -281,6 +285,13 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGuardarActionPerformed"/>
           </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="imagen">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/img/favicon.png"/>
+            </Property>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>
