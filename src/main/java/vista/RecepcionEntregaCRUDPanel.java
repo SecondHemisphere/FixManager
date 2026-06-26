@@ -66,9 +66,7 @@ public class RecepcionEntregaCRUDPanel extends javax.swing.JPanel {
      * @param texto texto ingresado en el buscador
      */
     private void buscar(String texto) {
-
-        if ((texto.trim().isEmpty())
-                || texto.equals("Buscar recepción por cliente o equipo...")) {
+        if ((texto.trim().isEmpty()) || texto.equals("Buscar recepción por cliente o equipo...")) {
             cargarTabla();
             return;
         }
@@ -76,7 +74,7 @@ public class RecepcionEntregaCRUDPanel extends javax.swing.JPanel {
         List<RecepcionEntrega> recepciones = controlador.filtrarRecepciones(texto);
 
         if (recepciones.isEmpty()) {
-            DialogUtil.mostrarMensajeInformacion(this, "No se encontraron recepciones que coincidan con el criterio de búsqueda");
+            DialogUtil.mostrarMensajeInformacion(this, "No se encontraron recepciones que coincidan con el criterio de búsqueda.");
             return;
         }
 
@@ -86,33 +84,17 @@ public class RecepcionEntregaCRUDPanel extends javax.swing.JPanel {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
         for (RecepcionEntrega r : recepciones) {
-
-            String equipo = (r.getEquipoMovil() != null)
-                    ? r.getEquipoMovil().getMarca() + " " + r.getEquipoMovil().getModelo()
-                    : "Sin equipo";
-
-            String cliente = (r.getEquipoMovil() != null && r.getEquipoMovil().getCliente() != null)
-                    ? r.getEquipoMovil().getCliente().getNombre()
-                    : "Sin cliente";
-
-            String fecha = (r.getFechaRecepcion() != null)
-                    ? r.getFechaRecepcion().format(formatter)
-                    : "";
-
-            String usuario = (r.getUsuario() != null && r.getUsuario().getNombre() != null)
-                    ? r.getUsuario().getNombre()
-                    : "Sin usuario";
+            String equipo = (r.getEquipoMovil() != null) ? r.getEquipoMovil().getMarca() + " " + r.getEquipoMovil().getModelo() : "Sin equipo";
+            String cliente = (r.getEquipoMovil() != null && r.getEquipoMovil().getCliente() != null) ? r.getEquipoMovil().getCliente().getNombre() : "Sin cliente";
+            String fecha = (r.getFechaRecepcion() != null) ? r.getFechaRecepcion().format(formatter) : "";
+            String usuario = (r.getUsuario() != null && r.getUsuario().getNombre() != null) ? r.getUsuario().getNombre() : "Sin usuario";
 
             model.addRow(new Object[]{
-                r.getId(),
-                fecha,
-                cliente,
-                equipo,
-                r.getProblemaReportado(),
-                r.getEstado(),
-                usuario
+                r.getId(), fecha, cliente, equipo, r.getProblemaReportado(), r.getEstado(), usuario
             });
         }
+
+        configurarEstilosTabla();
     }
 
     /**
@@ -131,7 +113,7 @@ public class RecepcionEntregaCRUDPanel extends javax.swing.JPanel {
      */
     private void cargarTabla() {
         DefaultTableModel model = new DefaultTableModel(
-                new String[]{"ID", "Fecha", "Cliente", "Equipo", "Problema", "Estado", "Modificado Por"}, 0
+                new String[]{"N° Orden", "Fecha", "Cliente", "Equipo", "Problema", "Estado", "Atendido Por"}, 0
         );
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
@@ -168,6 +150,66 @@ public class RecepcionEntregaCRUDPanel extends javax.swing.JPanel {
         tblRecepciones.setModel(model);
         tblRecepciones.setDefaultEditor(Object.class, null);
         tblRecepciones.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+
+        configurarEstilosTabla();
+    }
+
+    /**
+     * Configura los anchos de las columnas y aplica los colores según el
+     * estado.
+     */
+    private void configurarEstilosTabla() {
+        tblRecepciones.getColumnModel().getColumn(0).setPreferredWidth(60);
+        tblRecepciones.getColumnModel().getColumn(1).setPreferredWidth(110);
+        tblRecepciones.getColumnModel().getColumn(2).setPreferredWidth(150);
+        tblRecepciones.getColumnModel().getColumn(3).setPreferredWidth(130);
+        tblRecepciones.getColumnModel().getColumn(4).setPreferredWidth(220);
+        tblRecepciones.getColumnModel().getColumn(5).setPreferredWidth(95);
+        tblRecepciones.getColumnModel().getColumn(6).setPreferredWidth(110);
+
+        tblRecepciones.getColumnModel().getColumn(5).setCellRenderer(new javax.swing.table.DefaultTableCellRenderer() {
+            @Override
+            public java.awt.Component getTableCellRendererComponent(javax.swing.JTable table, Object value,
+                    boolean isSelected, boolean hasFocus, int row, int column) {
+
+                javax.swing.JComponent label = (javax.swing.JComponent) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+                ((javax.swing.JLabel) label).setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+                label.setFont(label.getFont().deriveFont(java.awt.Font.BOLD));
+                label.setOpaque(true);
+
+                if (value != null) {
+                    String estado = value.toString().trim().toUpperCase();
+
+                    if (!isSelected) {
+                        switch (estado) {
+                            case "RECIBIDO" -> {
+                                label.setBackground(new Color(255, 243, 205));
+                                label.setForeground(new Color(133, 100, 4));
+                            }
+                            case "LISTO" -> {
+                                label.setBackground(new Color(209, 236, 241));
+                                label.setForeground(new Color(12, 84, 96));
+                            }
+                            case "ENTREGADO" -> {
+                                label.setBackground(new Color(212, 239, 223));
+                                label.setForeground(new Color(21, 101, 47));
+                            }
+                            default -> {
+                                label.setBackground(table.getBackground());
+                                label.setForeground(table.getForeground());
+                            }
+                        }
+                    } else {
+                        label.setBackground(table.getSelectionBackground());
+                        label.setForeground(table.getSelectionForeground());
+                    }
+                }
+
+                label.repaint();
+                return label;
+            }
+        });
     }
 
     /**

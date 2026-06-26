@@ -3,6 +3,7 @@ package vista;
 import controlador.ClienteController;
 import controlador.EquipoMovilController;
 import java.awt.Color;
+import java.awt.Dimension;
 import javax.swing.DefaultComboBoxModel;
 import modelo.Cliente;
 import modelo.EquipoMovil;
@@ -54,6 +55,65 @@ public class EquipoMovilDialog extends javax.swing.JDialog {
             btnGuardar.setText("Guardar");
             btnGuardar.setBackground(new Color(103, 201, 228));
         }
+
+        cbxCliente.setRenderer(new javax.swing.DefaultListCellRenderer() {
+            @Override
+            public java.awt.Component getListCellRendererComponent(
+                    javax.swing.JList<?> list, Object value, int index,
+                    boolean isSelected, boolean cellHasFocus) {
+
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+
+                if (value instanceof Cliente c) {
+                    String nombreCompleto = (c.getNombre() != null) ? c.getNombre().trim() : "";
+
+                    setToolTipText(nombreCompleto);
+
+                    String nombreFormateado = nombreCompleto;
+                    if (nombreFormateado.length() > 25) {
+                        nombreFormateado = nombreFormateado.substring(0, 22) + "...";
+                    }
+
+                    setText("<html><table><tr><td width='180' style='overflow:hidden; white-space:nowrap;'>"
+                            + nombreFormateado + "</td></tr></table></html>");
+                }
+
+                if (index == -1 && value != null) {
+                    cbxCliente.setToolTipText(value.toString());
+                }
+
+                return this;
+            }
+        });
+
+        cbxTipo.setRenderer(new javax.swing.DefaultListCellRenderer() {
+            @Override
+            public java.awt.Component getListCellRendererComponent(
+                    javax.swing.JList<?> list, Object value, int index,
+                    boolean isSelected, boolean cellHasFocus) {
+
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+
+                if (value instanceof EquipoMovil.TipoEquipo tipo) {
+                    String tipoTexto = tipo.toString();
+
+                    setToolTipText(tipoTexto);
+
+                    setText("<html><table><tr><td width='180' style='overflow:hidden; white-space:nowrap;'>"
+                            + tipoTexto + "</td></tr></table></html>");
+                }
+
+                if (index == -1 && value != null) {
+                    cbxTipo.setToolTipText(value.toString());
+                }
+
+                return this;
+            }
+        });
+
+        txtMarca.setPreferredSize(new Dimension(198, 22));
+        txtModelo.setPreferredSize(new Dimension(198, 22));
+        txtImei.setPreferredSize(new Dimension(198, 22));
     }
 
     /**
@@ -254,7 +314,7 @@ public class EquipoMovilDialog extends javax.swing.JDialog {
                         .addComponent(cbxCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(27, 27, 27)
                 .addComponent(btnGuardar)
-                .addGap(15, 15, 15))
+                .addGap(40, 40, 40))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

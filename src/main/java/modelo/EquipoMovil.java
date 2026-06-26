@@ -141,11 +141,9 @@ public class EquipoMovil {
 
     @Override
     public String toString() {
-        String imeiResumido = (imei != null && imei.length() > 4)
-                ? imei.substring(imei.length() - 4)
-                : "S/N";
-
-        return String.format("%s %s (IMEI: ...%s)", marca, modelo, imeiResumido);
+        String celular = this.marca + " " + this.modelo;
+        String nomCliente = (this.cliente != null) ? this.cliente.getNombre() : "Sin Cliente";
+        return celular + " (" + nomCliente + ")";
     }
 
     @Override

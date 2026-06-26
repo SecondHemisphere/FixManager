@@ -40,6 +40,21 @@ public class EquipoMovilCRUDPanel extends javax.swing.JPanel {
         pnlScroll.setOpaque(false);
         pnlScroll.getViewport().setOpaque(false);
 
+        tblEquiposMoviles = new javax.swing.JTable() {
+            @Override
+            public String getToolTipText(java.awt.event.MouseEvent e) {
+                int row = rowAtPoint(e.getPoint());
+                int column = columnAtPoint(e.getPoint());
+                if (row > -1 && column > -1) {
+                    Object value = getValueAt(row, column);
+                    return value != null ? value.toString() : null;
+                }
+                return super.getToolTipText(e);
+            }
+        };
+
+        pnlScroll.setViewportView(tblEquiposMoviles);
+
         cargarTabla();
 
         JLabel fondo = new JLabel();
@@ -84,21 +99,17 @@ public class EquipoMovilCRUDPanel extends javax.swing.JPanel {
         model.setRowCount(0);
 
         for (EquipoMovil e : equipos) {
-
-            String clienteNombre = (e.getCliente() != null)
-                    ? e.getCliente().getNombre()
-                    : "Sin cliente";
-
             model.addRow(new Object[]{
                 e.getId(),
-                e.getCliente().getNombre(),
+                (e.getCliente() != null) ? e.getCliente().getNombre() : "Sin cliente",
                 e.getMarca(),
                 e.getModelo(),
                 e.getImei(),
-                e.getTipo(),
-                clienteNombre
+                e.getTipo()
             });
         }
+
+        configurarEstilosTabla();
     }
 
     /**
@@ -116,7 +127,6 @@ public class EquipoMovilCRUDPanel extends javax.swing.JPanel {
      * Carga todos los registros en la tabla.
      */
     private void cargarTabla() {
-
         DefaultTableModel model = new DefaultTableModel(
                 new String[]{"ID", "Cliente", "Marca", "Modelo", "IMEI", "Tipo"}, 0
         );
@@ -124,7 +134,7 @@ public class EquipoMovilCRUDPanel extends javax.swing.JPanel {
         for (EquipoMovil e : controlador.listarEquipos()) {
             model.addRow(new Object[]{
                 e.getId(),
-                e.getCliente().getNombre(),
+                (e.getCliente() != null) ? e.getCliente().getNombre() : "Sin cliente",
                 e.getMarca(),
                 e.getModelo(),
                 e.getImei(),
@@ -136,6 +146,29 @@ public class EquipoMovilCRUDPanel extends javax.swing.JPanel {
         tblEquiposMoviles.setDefaultEditor(Object.class, null);
         tblEquiposMoviles.setRowSelectionAllowed(true);
         tblEquiposMoviles.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+
+        configurarEstilosTabla();
+    }
+
+    /**
+     * Configura los anchos de las columnas de la tabla.
+     */
+    private void configurarEstilosTabla() {
+        tblEquiposMoviles.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+
+        tblEquiposMoviles.getColumnModel().getColumn(0).setPreferredWidth(45);
+        tblEquiposMoviles.getColumnModel().getColumn(1).setPreferredWidth(260);
+        tblEquiposMoviles.getColumnModel().getColumn(2).setPreferredWidth(125);
+        tblEquiposMoviles.getColumnModel().getColumn(3).setPreferredWidth(125);
+        tblEquiposMoviles.getColumnModel().getColumn(4).setPreferredWidth(160);
+        tblEquiposMoviles.getColumnModel().getColumn(5).setPreferredWidth(120);
+
+        tblEquiposMoviles.getColumnModel().getColumn(0).setMinWidth(40);
+        tblEquiposMoviles.getColumnModel().getColumn(1).setMinWidth(180);
+        tblEquiposMoviles.getColumnModel().getColumn(2).setMinWidth(100);
+        tblEquiposMoviles.getColumnModel().getColumn(3).setMinWidth(100);
+        tblEquiposMoviles.getColumnModel().getColumn(4).setMinWidth(130);
+        tblEquiposMoviles.getColumnModel().getColumn(5).setMinWidth(100);
     }
 
     /**

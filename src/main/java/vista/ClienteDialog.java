@@ -2,6 +2,7 @@ package vista;
 
 import controlador.ClienteController;
 import java.awt.Color;
+import java.awt.Dimension;
 import modelo.Cliente;
 import util.DialogUtil;
 import util.ResultadoOperacion;
@@ -42,6 +43,10 @@ public class ClienteDialog extends javax.swing.JDialog {
             btnGuardar.setText("Guardar");
             btnGuardar.setBackground(new Color(103, 201, 228));
         }
+
+        txtNombre.setPreferredSize(new Dimension(198, 22));
+        txtCorreo.setPreferredSize(new Dimension(198, 22));
+        txtTelefono.setPreferredSize(new Dimension(198, 22));
     }
 
     /**

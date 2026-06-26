@@ -41,6 +41,20 @@ public class ClienteCRUDPanel extends javax.swing.JPanel {
         pnlScroll.setOpaque(false);
         pnlScroll.getViewport().setOpaque(false);
 
+        tblClientes = new javax.swing.JTable() {
+            @Override
+            public String getToolTipText(java.awt.event.MouseEvent e) {
+                int row = rowAtPoint(e.getPoint());
+                int column = columnAtPoint(e.getPoint());
+                if (row > -1 && column > -1) {
+                    Object value = getValueAt(row, column);
+                    return value != null ? value.toString() : null;
+                }
+                return super.getToolTipText(e);
+            }
+        };
+
+        pnlScroll.setViewportView(tblClientes);
         cargarTabla();
 
         JLabel fondo = new JLabel();
@@ -95,6 +109,8 @@ public class ClienteCRUDPanel extends javax.swing.JPanel {
                 c.getDireccion()
             });
         }
+
+        configurarEstilosTabla();
     }
 
     /**
@@ -112,7 +128,6 @@ public class ClienteCRUDPanel extends javax.swing.JPanel {
      * Carga todos los registros en la tabla.
      */
     private void cargarTabla() {
-
         DefaultTableModel model = new DefaultTableModel(
                 new String[]{"ID", "Nombre", "Correo", "Teléfono", "Dirección"}, 0
         );
@@ -131,6 +146,26 @@ public class ClienteCRUDPanel extends javax.swing.JPanel {
         tblClientes.setDefaultEditor(Object.class, null);
         tblClientes.setRowSelectionAllowed(true);
         tblClientes.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        configurarEstilosTabla();
+    }
+
+    /**
+     * Configura los anchos de las columnas de la tabla de forma proporcional.
+     */
+    private void configurarEstilosTabla() {
+        tblClientes.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+
+        tblClientes.getColumnModel().getColumn(0).setPreferredWidth(45);
+        tblClientes.getColumnModel().getColumn(1).setPreferredWidth(170);
+        tblClientes.getColumnModel().getColumn(2).setPreferredWidth(180);
+        tblClientes.getColumnModel().getColumn(3).setPreferredWidth(115);
+        tblClientes.getColumnModel().getColumn(4).setPreferredWidth(340);
+
+        tblClientes.getColumnModel().getColumn(0).setMinWidth(40);
+        tblClientes.getColumnModel().getColumn(1).setMinWidth(120);
+        tblClientes.getColumnModel().getColumn(2).setMinWidth(130);
+        tblClientes.getColumnModel().getColumn(3).setMinWidth(100);
+        tblClientes.getColumnModel().getColumn(4).setMinWidth(200);
     }
 
     /**
