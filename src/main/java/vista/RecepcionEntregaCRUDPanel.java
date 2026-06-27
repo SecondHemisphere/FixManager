@@ -130,7 +130,7 @@ public class RecepcionEntregaCRUDPanel extends javax.swing.JPanel {
      */
     private void cargarTabla() {
         DefaultTableModel model = new DefaultTableModel(
-                new String[]{"N° Orden", "Fecha", "Cliente", "Equipo", "Problema", "Estado", "Atendido Por"}, 0
+                new String[]{"N° Orden", "Fecha", "Cliente", "Equipo", "Problema", "Estado", "Recepcionista"}, 0
         );
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");

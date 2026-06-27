@@ -39,6 +39,23 @@ public class ReparacionCRUDPanel extends javax.swing.JPanel {
         pnlScroll.setOpaque(false);
         pnlScroll.getViewport().setOpaque(false);
 
+        tblReparaciones = new javax.swing.JTable() {
+            @Override
+            public String getToolTipText(java.awt.event.MouseEvent e) {
+                int row = rowAtPoint(e.getPoint());
+                int column = columnAtPoint(e.getPoint());
+
+                if (row > -1 && column > -1) {
+                    Object value = getValueAt(row, column);
+                    return value != null ? value.toString() : null;
+                }
+
+                return super.getToolTipText(e);
+            }
+        };
+
+        pnlScroll.setViewportView(tblReparaciones);
+
         cargarTabla();
 
         JLabel fondo = new JLabel();
@@ -83,20 +100,14 @@ public class ReparacionCRUDPanel extends javax.swing.JPanel {
         model.setRowCount(0);
 
         for (Reparacion r : reparaciones) {
-
-            String usuario = (r.getUsuario() != null && r.getUsuario().getNombre() != null)
-                    ? r.getUsuario().getNombre()
-                    : "Sin usuario";
-
             model.addRow(new Object[]{
                 r.getId(),
                 obtenerCliente(r),
                 obtenerEquipo(r),
                 r.getDiagnostico(),
-                r.getPiezasUsadas(),
                 r.getCostoRepuestos(),
                 r.getEstado(),
-                usuario
+                r.getUsuario().getNombre()
             });
         }
     }
@@ -150,29 +161,99 @@ public class ReparacionCRUDPanel extends javax.swing.JPanel {
     private void cargarTabla() {
 
         DefaultTableModel model = new DefaultTableModel(
-                new String[]{"ID", "Cliente", "Equipo", "Diagnóstico", "Piezas", "Costo", "Estado", "Modificado Por"}, 0
+                new String[]{"N° Orden", "Cliente", "Equipo", "Diagnóstico", "Costo", "Estado", "Técnico"}, 0
         );
 
         for (Reparacion r : controlador.listar()) {
-
-            String usuario = (r.getUsuario() != null && r.getUsuario().getNombre() != null)
-                    ? r.getUsuario().getNombre()
-                    : "Sin usuario";
-
             model.addRow(new Object[]{
                 r.getId(),
                 obtenerCliente(r),
                 obtenerEquipo(r),
                 r.getDiagnostico(),
-                r.getPiezasUsadas(),
                 r.getCostoRepuestos(),
                 r.getEstado(),
-                usuario
+                r.getUsuario().getNombre()
             });
         }
 
         tblReparaciones.setModel(model);
         tblReparaciones.setDefaultEditor(Object.class, null);
+        configurarEstilosTabla();
+    }
+
+    /**
+     * Configura los anchos de las columnas y aplica los colores según el
+     * estado.
+     */
+    private void configurarEstilosTabla() {
+        tblReparaciones.getColumnModel().getColumn(0).setPreferredWidth(70);
+        tblReparaciones.getColumnModel().getColumn(1).setPreferredWidth(150);
+        tblReparaciones.getColumnModel().getColumn(2).setPreferredWidth(150);
+        tblReparaciones.getColumnModel().getColumn(3).setPreferredWidth(260);
+        tblReparaciones.getColumnModel().getColumn(4).setPreferredWidth(80);
+        tblReparaciones.getColumnModel().getColumn(5).setPreferredWidth(100);
+        tblReparaciones.getColumnModel().getColumn(6).setPreferredWidth(120);
+
+        tblReparaciones.getColumnModel().getColumn(5).setCellRenderer(
+                new javax.swing.table.DefaultTableCellRenderer() {
+
+            @Override
+            public java.awt.Component getTableCellRendererComponent(
+                    javax.swing.JTable table,
+                    Object value,
+                    boolean isSelected,
+                    boolean hasFocus,
+                    int row,
+                    int column) {
+
+                javax.swing.JComponent label
+                        = (javax.swing.JComponent) super.getTableCellRendererComponent(
+                                table, value, isSelected, hasFocus, row, column);
+
+                ((javax.swing.JLabel) label).setHorizontalAlignment(
+                        javax.swing.SwingConstants.CENTER);
+
+                label.setFont(label.getFont().deriveFont(java.awt.Font.BOLD));
+                label.setOpaque(true);
+
+                if (value != null) {
+
+                    String estado = value.toString().trim().toUpperCase();
+
+                    if (!isSelected) {
+
+                        switch (estado) {
+
+                            case "PENDIENTE" -> {
+                                label.setBackground(new Color(255, 243, 205));
+                                label.setForeground(new Color(133, 100, 4));
+                            }
+
+                            case "EN PROCESO" -> {
+                                label.setBackground(new Color(209, 236, 241));
+                                label.setForeground(new Color(12, 84, 96));
+                            }
+
+                            case "FINALIZADO" -> {
+                                label.setBackground(new Color(212, 239, 223));
+                                label.setForeground(new Color(21, 101, 47));
+                            }
+
+                            default -> {
+                                label.setBackground(table.getBackground());
+                                label.setForeground(table.getForeground());
+                            }
+                        }
+
+                    } else {
+                        label.setBackground(table.getSelectionBackground());
+                        label.setForeground(table.getSelectionForeground());
+                    }
+                }
+
+                return label;
+            }
+        });
     }
 
     /**
