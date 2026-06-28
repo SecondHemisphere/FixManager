@@ -78,7 +78,7 @@ public class FacturaDAO {
 
                 Factura f = new Factura();
                 f.setId(rs.getInt("id"));
-                f.setCostoTotal(rs.getDouble("costo_total"));
+                f.setCostoTotal(rs.getString("costo_total"));
                 f.setFechaEmision(rs.getTimestamp("fecha_emision").toLocalDateTime());
                 f.setEstado(Factura.Estado.valueOf(rs.getString("estado")));
                 f.setObservaciones(rs.getString("observaciones"));
@@ -156,7 +156,7 @@ public class FacturaDAO {
 
                     Factura f = new Factura();
                     f.setId(rs.getInt("id"));
-                    f.setCostoTotal(rs.getDouble("costo_total"));
+                    f.setCostoTotal(rs.getString("costo_total"));
                     f.setFechaEmision(rs.getTimestamp("fecha_emision").toLocalDateTime());
                     f.setEstado(Factura.Estado.valueOf(rs.getString("estado")));
                     f.setObservaciones(rs.getString("observaciones"));
@@ -199,7 +199,7 @@ public class FacturaDAO {
 
         try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
 
-            pst.setDouble(1, f.getCostoTotal());
+            pst.setString(1, f.getCostoTotal());
             pst.setString(2, f.getEstado().name());
             pst.setString(3, f.getObservaciones());
             pst.setString(4, f.getMetodoPago() != null ? f.getMetodoPago().name() : null);
@@ -324,7 +324,7 @@ public class FacturaDAO {
 
                 Factura f = new Factura();
                 f.setId(rs.getInt("id"));
-                f.setCostoTotal(rs.getDouble("costo_total"));
+                f.setCostoTotal(rs.getString("costo_total"));
                 f.setEstado(Factura.Estado.valueOf(rs.getString("estado")));
 
                 if (rs.getString("metodo_pago") != null) {

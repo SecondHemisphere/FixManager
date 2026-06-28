@@ -105,6 +105,7 @@ public class ReparacionCRUDPanel extends javax.swing.JPanel {
                 obtenerCliente(r),
                 obtenerEquipo(r),
                 r.getDiagnostico(),
+                r.getCostoServicio(),
                 r.getCostoRepuestos(),
                 r.getEstado(),
                 r.getUsuario().getNombre()
@@ -161,7 +162,7 @@ public class ReparacionCRUDPanel extends javax.swing.JPanel {
     private void cargarTabla() {
 
         DefaultTableModel model = new DefaultTableModel(
-                new String[]{"N° Orden", "Cliente", "Equipo", "Diagnóstico", "Costo", "Estado", "Técnico"}, 0
+                new String[]{"N° Orden", "Cliente", "Equipo", "Diagnóstico", "$ Servicio", "$ Repuestos", "Estado", "Técnico"}, 0
         );
 
         for (Reparacion r : controlador.listar()) {
@@ -170,6 +171,7 @@ public class ReparacionCRUDPanel extends javax.swing.JPanel {
                 obtenerCliente(r),
                 obtenerEquipo(r),
                 r.getDiagnostico(),
+                r.getCostoServicio(),
                 r.getCostoRepuestos(),
                 r.getEstado(),
                 r.getUsuario().getNombre()
@@ -189,12 +191,13 @@ public class ReparacionCRUDPanel extends javax.swing.JPanel {
         tblReparaciones.getColumnModel().getColumn(0).setPreferredWidth(70);
         tblReparaciones.getColumnModel().getColumn(1).setPreferredWidth(150);
         tblReparaciones.getColumnModel().getColumn(2).setPreferredWidth(150);
-        tblReparaciones.getColumnModel().getColumn(3).setPreferredWidth(260);
-        tblReparaciones.getColumnModel().getColumn(4).setPreferredWidth(80);
+        tblReparaciones.getColumnModel().getColumn(3).setPreferredWidth(250);
+        tblReparaciones.getColumnModel().getColumn(4).setPreferredWidth(100);
         tblReparaciones.getColumnModel().getColumn(5).setPreferredWidth(100);
-        tblReparaciones.getColumnModel().getColumn(6).setPreferredWidth(120);
+        tblReparaciones.getColumnModel().getColumn(6).setPreferredWidth(100);
+        tblReparaciones.getColumnModel().getColumn(7).setPreferredWidth(100);
 
-        tblReparaciones.getColumnModel().getColumn(5).setCellRenderer(
+        tblReparaciones.getColumnModel().getColumn(6).setCellRenderer(
                 new javax.swing.table.DefaultTableCellRenderer() {
 
             @Override

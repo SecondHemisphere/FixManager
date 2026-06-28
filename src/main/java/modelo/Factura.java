@@ -66,7 +66,7 @@ public class Factura {
     }
 
     private int id;
-    private double costoTotal;
+    private String costoTotal;
     private LocalDateTime fechaEmision;
     private Estado estado;
     private String observaciones;
@@ -95,7 +95,7 @@ public class Factura {
      * @param reparacion reparación asociada
      * @param usuario usuario que generó la factura
      */
-    public Factura(int id, double costoTotal, LocalDateTime fechaEmision,
+    public Factura(int id, String costoTotal, LocalDateTime fechaEmision,
             Estado estado, String observaciones,
             MetodoPago metodoPago, Reparacion reparacion, Usuario usuario) {
         this.id = id;
@@ -117,7 +117,7 @@ public class Factura {
      * @param reparacion reparación asociada
      * @param usuario usuario responsable
      */
-    public Factura(double costoTotal, String observaciones,
+    public Factura(String costoTotal, String observaciones,
             MetodoPago metodoPago, Reparacion reparacion, Usuario usuario) {
         this.fechaEmision = LocalDateTime.now();
         this.estado = Estado.PENDIENTE;
@@ -136,11 +136,11 @@ public class Factura {
         this.id = id;
     }
 
-    public double getCostoTotal() {
+    public String getCostoTotal() {
         return costoTotal;
     }
 
-    public void setCostoTotal(double costoTotal) {
+    public void setCostoTotal(String costoTotal) {
         this.costoTotal = costoTotal;
     }
 

@@ -1,8 +1,6 @@
 package controlador;
 
 import dao.FacturaDAO;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.List;
 import modelo.Factura;
 import modelo.Factura.MetodoPago;
@@ -191,11 +189,6 @@ public class FacturaController {
             return error;
         }
 
-        error = validarCosto(f.getCostoTotal());
-        if (error != null) {
-            return error;
-        }
-
         error = validarObservaciones(f.getObservaciones());
         if (error != null) {
             return error;
@@ -214,33 +207,6 @@ public class FacturaController {
 
         if (f.getReparacion() == null) {
             return "Debe seleccionar una reparación";
-        }
-
-        return null;
-    }
-
-    /**
-     * Valida el costo total de la factura.
-     *
-     * @param costo valor del costo total
-     * @return mensaje de error o null si es válido
-     */
-    public static String validarCosto(double costo) {
-
-        BigDecimal valor;
-
-        try {
-            valor = new BigDecimal(costo).setScale(2, RoundingMode.HALF_UP);
-        } catch (NumberFormatException e) {
-            return "El costo total debe ser un número válido (hasta 2 decimales)";
-        }
-
-        if (valor.compareTo(BigDecimal.ZERO) < 0) {
-            return "El costo total no puede ser negativo";
-        }
-
-        if (valor.compareTo(new BigDecimal("2000.00")) > 0) {
-            return "El costo total máximo permitido es $2000.00";
         }
 
         return null;

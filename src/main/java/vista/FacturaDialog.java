@@ -3,6 +3,9 @@ package vista;
 import controlador.FacturaController;
 import controlador.ReparacionController;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import javax.swing.DefaultComboBoxModel;
 import modelo.Factura;
 import modelo.Reparacion;
@@ -52,6 +55,81 @@ public class FacturaDialog extends javax.swing.JDialog {
             btnGuardar.setText("Guardar");
             btnGuardar.setBackground(new Color(103, 201, 228));
         }
+
+        cbxReparacion.setRenderer(new javax.swing.DefaultListCellRenderer() {
+
+            @Override
+            public java.awt.Component getListCellRendererComponent(
+                    javax.swing.JList<?> list, Object value, int index,
+                    boolean isSelected, boolean cellHasFocus) {
+
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+
+                if (value instanceof Reparacion r) {
+
+                    String cliente = (r.getRecepcion() != null
+                            && r.getRecepcion().getEquipoMovil() != null
+                            && r.getRecepcion().getEquipoMovil().getCliente() != null)
+                            ? r.getRecepcion().getEquipoMovil().getCliente().getNombre()
+                            : "Sin cliente";
+
+                    String equipo = (r.getRecepcion() != null
+                            && r.getRecepcion().getEquipoMovil() != null)
+                            ? r.getRecepcion().getEquipoMovil().getMarca() + " " + r.getRecepcion().getEquipoMovil().getModelo()
+                            : "Sin equipo";
+
+                    String textoCompleto = "#" + r.getId()
+                            + " | " + cliente
+                            + " | " + equipo;
+
+                    String equipoShort = equipo.length() > 15 ? equipo.substring(0, 15) + "..." : equipo;
+                    String clienteShort = cliente.length() > 15 ? cliente.substring(0, 15) + "..." : cliente;
+
+                    String textoVisual = "#" + r.getId()
+                            + " | " + clienteShort
+                            + " | " + equipoShort;
+
+                    setText("<html><div style='width:300px; white-space:nowrap; overflow:hidden;'>"
+                            + textoVisual + "</div></html>");
+
+                    setToolTipText(textoCompleto);
+                }
+
+                return this;
+            }
+        });
+
+        txtCosto.setEditable(false);
+        txtCosto.setBackground(new Color(240, 240, 240));
+
+        cbxReparacion.addActionListener((ActionEvent e) -> {
+            cargarCosto();
+        });
+    }
+
+    /**
+     * Carga el costo final de la reparación seleccionada
+     */
+    private void cargarCosto() {
+        Reparacion r = (Reparacion) cbxReparacion.getSelectedItem();
+
+        if (r != null) {
+
+            BigDecimal total = BigDecimal.ZERO;
+
+            if (r.getCostoServicio() != null && !r.getCostoServicio().trim().isEmpty()) {
+                total = total.add(new BigDecimal(r.getCostoServicio()));
+            }
+
+            if (r.getCostoRepuestos() != null && !r.getCostoRepuestos().trim().isEmpty()) {
+                total = total.add(new BigDecimal(r.getCostoRepuestos()));
+            }
+
+            txtCosto.setText(total.setScale(2, RoundingMode.HALF_UP).toString());
+
+        } else {
+            txtCosto.setText("");
+        }
     }
 
     /**
@@ -91,7 +169,7 @@ public class FacturaDialog extends javax.swing.JDialog {
             }
 
             f.setReparacion((Reparacion) cbxReparacion.getSelectedItem());
-            f.setCostoTotal(Double.parseDouble(txtCosto.getText().trim()));
+            f.setCostoTotal(txtCosto.getText().trim());
             f.setObservaciones(txtaObservaciones.getText().trim());
             f.setUsuario(Sesion.getUsuarioActual());
 
@@ -147,6 +225,8 @@ public class FacturaDialog extends javax.swing.JDialog {
         lblReparacion.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblReparacion.setText("Reparación *:");
 
+        cbxReparacion.setPreferredSize(null);
+
         lblObservaciones.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         lblObservaciones.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblObservaciones.setText("Observaciones :");
@@ -159,7 +239,7 @@ public class FacturaDialog extends javax.swing.JDialog {
 
         lblCosto.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         lblCosto.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblCosto.setText("Costo *:");
+        lblCosto.setText("Costo Total *:");
 
         txtCosto.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
