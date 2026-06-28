@@ -261,7 +261,7 @@ public class ReparacionController {
     public static String validarPiezas(String piezas) {
 
         if (piezas == null || piezas.trim().isEmpty()) {
-            return "Debe especificar las piezas usadas";
+            return null;
         }
 
         piezas = piezas.trim();

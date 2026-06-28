@@ -249,7 +249,7 @@ public class ReparacionDialog extends javax.swing.JDialog {
 
         lblPiezas.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         lblPiezas.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblPiezas.setText("Piezas Usadas *:");
+        lblPiezas.setText("Piezas Usadas:");
 
         txtaPiezas.setColumns(20);
         txtaPiezas.setLineWrap(true);

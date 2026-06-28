@@ -223,6 +223,10 @@ public class FacturaController {
         if (obs != null) {
             obs = obs.trim();
 
+            if (obs.length() < 5) {
+                return "Las observaciones deben tener al menos 5 caracteres";
+            }
+
             if (obs.length() > 255) {
                 return "Las observaciones no pueden superar 255 caracteres";
             }
