@@ -4,6 +4,7 @@ import dao.ReparacionDAO;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
+import java.util.regex.Pattern;
 import modelo.Reparacion;
 import util.ResultadoOperacion;
 
@@ -19,6 +20,8 @@ import util.ResultadoOperacion;
 public class ReparacionController {
 
     private final ReparacionDAO dao = new ReparacionDAO();
+
+    private static final Pattern NUMERO_DECIMAL_2 = Pattern.compile("^\\d+(\\.\\d{1,2})?$");
 
     /**
      * Lista todas las reparaciones registradas.
@@ -166,7 +169,12 @@ public class ReparacionController {
             return error;
         }
 
-        error = validarCosto(r.getCostoRepuestos());
+        error = validarCostoServicio(r.getCostoServicio());
+        if (error != null) {
+            return error;
+        }
+
+        error = validarCostoRepuestos(r.getCostoRepuestos());
         if (error != null) {
             return error;
         }
@@ -270,28 +278,53 @@ public class ReparacionController {
     }
 
     /**
+     * Valida el costo de servicio.
+     *
+     * @param costo valor del costo de servicio
+     * @return mensaje de error si es inválido
+     */
+    public static String validarCostoServicio(String costo) {
+
+        if (costo == null || costo.trim().isEmpty()) {
+            return "El costo de servicio es obligatorio";
+        }
+
+        costo = costo.trim();
+
+        if (!NUMERO_DECIMAL_2.matcher(costo).matches()) {
+            return "El costo de servicio debe ser un número positivo con hasta 2 decimales";
+        }
+
+        BigDecimal valor;
+        valor = new BigDecimal(costo).setScale(2, RoundingMode.HALF_UP);
+
+        if (valor.compareTo(new BigDecimal("2000.00")) > 0) {
+            return "El costo de servicio máximo permitido es $2000.00";
+        }
+
+        return null;
+    }
+
+    /**
      * Valida el costo de repuestos.
      *
      * @param costo valor del costo de repuestos
      * @return mensaje de error si es inválido
      */
-    public static String validarCosto(String costo) {
+    public static String validarCostoRepuestos(String costo) {
 
         if (costo == null || costo.trim().isEmpty()) {
             return "El costo de repuestos es obligatorio";
         }
 
+        costo = costo.trim();
+
+        if (!NUMERO_DECIMAL_2.matcher(costo).matches()) {
+            return "El costo de repuestos debe ser un número positivo con hasta 2 decimales";
+        }
+
         BigDecimal valor;
-
-        try {
-            valor = new BigDecimal(costo).setScale(2, RoundingMode.HALF_UP);
-        } catch (NumberFormatException e) {
-            return "El costo de repuestos debe ser un número válido (hasta 2 decimales)";
-        }
-
-        if (valor.compareTo(BigDecimal.ZERO) < 0) {
-            return "El costo de repuestos no puede ser negativo";
-        }
+        valor = new BigDecimal(costo).setScale(2, RoundingMode.HALF_UP);
 
         if (valor.compareTo(new BigDecimal("2000.00")) > 0) {
             return "El costo de repuestos máximo permitido es $2000.00";

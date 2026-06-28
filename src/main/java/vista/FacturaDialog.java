@@ -5,7 +5,6 @@ import controlador.ReparacionController;
 import java.awt.Color;
 import javax.swing.DefaultComboBoxModel;
 import modelo.Factura;
-import modelo.Factura.MetodoPago;
 import modelo.Reparacion;
 import util.DialogUtil;
 import util.ResultadoOperacion;
@@ -42,7 +41,6 @@ public class FacturaDialog extends javax.swing.JDialog {
         this.factura = factura;
 
         cargarReparaciones();
-        cargarMetodos();
 
         if (factura != null) {
             lblTitulo.setText("Editar Factura");
@@ -72,20 +70,12 @@ public class FacturaDialog extends javax.swing.JDialog {
     }
 
     /**
-     * Carga métodos de pago
-     */
-    private void cargarMetodos() {
-        cbxMetodo.setModel(new DefaultComboBoxModel<>(MetodoPago.values()));
-    }
-
-    /**
      * Carga los datos de la factura en el formulario (modo edición).
      */
     private void cargarDatos() {
         cbxReparacion.setSelectedItem(factura.getReparacion());
         txtCosto.setText(String.valueOf(factura.getCostoTotal()));
         txtaObservaciones.setText(factura.getObservaciones());
-        cbxMetodo.setSelectedItem(factura.getMetodoPago());
     }
 
     /**
@@ -103,7 +93,6 @@ public class FacturaDialog extends javax.swing.JDialog {
             f.setReparacion((Reparacion) cbxReparacion.getSelectedItem());
             f.setCostoTotal(Double.parseDouble(txtCosto.getText().trim()));
             f.setObservaciones(txtaObservaciones.getText().trim());
-            f.setMetodoPago((MetodoPago) cbxMetodo.getSelectedItem());
             f.setUsuario(Sesion.getUsuarioActual());
 
             ResultadoOperacion resultado = (factura == null)
@@ -143,8 +132,6 @@ public class FacturaDialog extends javax.swing.JDialog {
         txtaObservaciones = new javax.swing.JTextArea();
         lblCosto = new javax.swing.JLabel();
         txtCosto = new javax.swing.JTextField();
-        lblMetodo = new javax.swing.JLabel();
-        cbxMetodo = new javax.swing.JComboBox<MetodoPago>();
         btnGuardar = new javax.swing.JButton();
         imagen = new javax.swing.JLabel();
 
@@ -162,7 +149,7 @@ public class FacturaDialog extends javax.swing.JDialog {
 
         lblObservaciones.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         lblObservaciones.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblObservaciones.setText("Observaciones *:");
+        lblObservaciones.setText("Observaciones :");
 
         txtaObservaciones.setColumns(20);
         txtaObservaciones.setLineWrap(true);
@@ -175,10 +162,6 @@ public class FacturaDialog extends javax.swing.JDialog {
         lblCosto.setText("Costo *:");
 
         txtCosto.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-
-        lblMetodo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lblMetodo.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblMetodo.setText("Método De Pago *:");
 
         btnGuardar.setBackground(new java.awt.Color(103, 201, 228));
         btnGuardar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -196,36 +179,28 @@ public class FacturaDialog extends javax.swing.JDialog {
         pnlFormularioLayout.setHorizontalGroup(
             pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlFormularioLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(25, 25, 25)
+                .addComponent(imagen)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(270, 270, 270))
+            .addGroup(pnlFormularioLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblObservaciones)
+                    .addComponent(lblCosto)
+                    .addComponent(lblReparacion))
                 .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlFormularioLayout.createSequentialGroup()
-                            .addGap(25, 25, 25)
-                            .addComponent(imagen)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGap(270, 270, 270))
-                        .addGroup(pnlFormularioLayout.createSequentialGroup()
-                            .addGap(0, 0, Short.MAX_VALUE)
-                            .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(pnlFormularioLayout.createSequentialGroup()
-                                    .addComponent(lblMetodo)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(cbxMetodo, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(pnlFormularioLayout.createSequentialGroup()
-                                    .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(lblObservaciones)
-                                        .addComponent(lblCosto)
-                                        .addComponent(lblReparacion))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(txtCosto)
-                                        .addComponent(cbxReparacion, 0, 198, Short.MAX_VALUE)
-                                        .addComponent(scrObservaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))))
-                            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(pnlFormularioLayout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFormularioLayout.createSequentialGroup()
-                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(161, 161, 161))))
+                        .addGap(14, 14, 14)
+                        .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cbxReparacion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtCosto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(scrObservaciones, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlFormularioLayout.setVerticalGroup(
             pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -239,19 +214,15 @@ public class FacturaDialog extends javax.swing.JDialog {
                     .addComponent(cbxReparacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblReparacion))
                 .addGap(18, 18, 18)
-                .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtCosto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblCosto))
+                .addGap(18, 18, 18)
+                .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblObservaciones, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(pnlFormularioLayout.createSequentialGroup()
-                        .addComponent(scrObservaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtCosto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblCosto))
-                        .addGap(18, 18, 18)
-                        .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cbxMetodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblMetodo)))
-                    .addComponent(lblObservaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27)
+                        .addComponent(scrObservaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)))
                 .addComponent(btnGuardar)
                 .addContainerGap(15, Short.MAX_VALUE))
         );
@@ -278,11 +249,9 @@ public class FacturaDialog extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;
-    private javax.swing.JComboBox<MetodoPago> cbxMetodo;
     private javax.swing.JComboBox<Reparacion> cbxReparacion;
     private javax.swing.JLabel imagen;
     private javax.swing.JLabel lblCosto;
-    private javax.swing.JLabel lblMetodo;
     private javax.swing.JLabel lblObservaciones;
     private javax.swing.JLabel lblReparacion;
     private javax.swing.JLabel lblTitulo;

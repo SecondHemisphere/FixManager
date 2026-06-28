@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import modelo.RecepcionEntrega;
+
 import modelo.Reparacion;
 
 /**
@@ -43,7 +44,7 @@ public class ReparacionDAO {
         INNER JOIN equipo_movil e ON re.equipo_id = e.id
         INNER JOIN cliente c ON e.cliente_id = c.id
         INNER JOIN usuario u ON r.usuario_id = u.id
-    """;
+        """;
 
         try (Connection con = Conexion.conectar(); Statement st = con.createStatement(); ResultSet rs = st.executeQuery(sql)) {
 
@@ -68,6 +69,7 @@ public class ReparacionDAO {
                 r.setId(rs.getInt("id"));
                 r.setDiagnostico(rs.getString("diagnostico"));
                 r.setSolucion(rs.getString("solucion"));
+                r.setCostoServicio(rs.getString("costo_servicio"));
                 r.setCostoRepuestos(rs.getString("costo_repuestos"));
                 r.setPiezasUsadas(rs.getString("piezas_usadas"));
                 r.setEstado(Reparacion.Estado.valueOf(rs.getString("estado")));
@@ -78,7 +80,7 @@ public class ReparacionDAO {
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error al listar reparaciones", e);
+            throw new RuntimeException(e);
         }
 
         return lista;
@@ -93,17 +95,17 @@ public class ReparacionDAO {
     public Reparacion obtenerPorId(int id) {
 
         String sql = """
-            SELECT r.*,
-                   re.id AS recepcion_id,
-                   c.nombre AS cliente,
-                   e.marca, e.modelo,
-                   u.nombre AS usuario
-            FROM reparacion r
-            INNER JOIN recepcion_entrega re ON r.recepcion_id = re.id
-            INNER JOIN equipo_movil e ON re.equipo_id = e.id
-            INNER JOIN cliente c ON e.cliente_id = c.id
-            INNER JOIN usuario u ON r.usuario_id = u.id
-            WHERE r.id = ?
+        SELECT r.*, 
+               re.id AS recepcion_id,
+               c.nombre AS cliente,
+               e.marca, e.modelo,
+               u.nombre AS usuario
+        FROM reparacion r
+        INNER JOIN recepcion_entrega re ON r.recepcion_id = re.id
+        INNER JOIN equipo_movil e ON re.equipo_id = e.id
+        INNER JOIN cliente c ON e.cliente_id = c.id
+        INNER JOIN usuario u ON r.usuario_id = u.id
+        WHERE r.id = ?
         """;
 
         try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
@@ -133,6 +135,7 @@ public class ReparacionDAO {
                     r.setId(rs.getInt("id"));
                     r.setDiagnostico(rs.getString("diagnostico"));
                     r.setSolucion(rs.getString("solucion"));
+                    r.setCostoServicio(rs.getString("costo_servicio"));
                     r.setCostoRepuestos(rs.getString("costo_repuestos"));
                     r.setPiezasUsadas(rs.getString("piezas_usadas"));
                     r.setEstado(Reparacion.Estado.valueOf(rs.getString("estado")));
@@ -144,7 +147,7 @@ public class ReparacionDAO {
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error al obtener reparación", e);
+            throw new RuntimeException(e);
         }
 
         return null;
@@ -161,38 +164,35 @@ public class ReparacionDAO {
      */
     public boolean guardar(Reparacion r) {
 
-        if (r.getRecepcion() == null) {
-            throw new RuntimeException("Recepción no puede ser null");
-        }
-
-        if (r.getUsuario() == null) {
-            throw new RuntimeException("Usuario no puede ser null");
+        if (r.getRecepcion() == null || r.getUsuario() == null) {
+            throw new RuntimeException("Datos incompletos");
         }
 
         if (existePorRecepcion(r.getRecepcion().getId())) {
-            throw new RuntimeException("Ya existe una reparación para esta recepción");
+            throw new RuntimeException("Ya existe reparación para esta recepción");
         }
 
         String sql = """
-            INSERT INTO reparacion
-            (diagnostico, solucion, costo_repuestos, piezas_usadas, estado, recepcion_id, usuario_id)
-            VALUES (?,?,?,?,?,?,?)
+        INSERT INTO reparacion
+        (diagnostico, solucion, costo_servicio, costo_repuestos, piezas_usadas, estado, recepcion_id, usuario_id)
+        VALUES (?,?,?,?,?,?,?,?)
         """;
 
         try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
 
             pst.setString(1, r.getDiagnostico());
             pst.setString(2, r.getSolucion());
-            pst.setString(3, r.getCostoRepuestos());
-            pst.setString(4, r.getPiezasUsadas());
-            pst.setString(5, r.getEstado().name());
-            pst.setInt(6, r.getRecepcion().getId());
-            pst.setInt(7, r.getUsuario().getId());
+            pst.setString(3, r.getCostoServicio());
+            pst.setString(4, r.getCostoRepuestos());
+            pst.setString(5, r.getPiezasUsadas());
+            pst.setString(6, r.getEstado().name());
+            pst.setInt(7, r.getRecepcion().getId());
+            pst.setInt(8, r.getUsuario().getId());
 
             return pst.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error al guardar reparación", e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -203,46 +203,48 @@ public class ReparacionDAO {
      * @return true si se actualizó correctamente
      */
     public boolean actualizar(Reparacion r) {
+
         String sql = """
-            UPDATE reparacion
-            SET diagnostico=?, solucion=?, costo_repuestos=?, piezas_usadas=?, estado=?, usuario_id=?
-            WHERE id=?
+        UPDATE reparacion
+        SET diagnostico=?, solucion=?, costo_servicio=?, costo_repuestos=?, piezas_usadas=?, estado=?, usuario_id=?
+        WHERE id=?
         """;
 
         try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
 
             pst.setString(1, r.getDiagnostico());
             pst.setString(2, r.getSolucion());
-            pst.setString(3, r.getCostoRepuestos());
-            pst.setString(4, r.getPiezasUsadas());
-            pst.setString(5, r.getEstado().name());
-            pst.setInt(6, r.getUsuario().getId());
-            pst.setInt(7, r.getId());
+            pst.setString(3, r.getCostoServicio());
+            pst.setString(4, r.getCostoRepuestos());
+            pst.setString(5, r.getPiezasUsadas());
+            pst.setString(6, r.getEstado().name());
+            pst.setInt(7, r.getUsuario().getId());
+            pst.setInt(8, r.getId());
 
             return pst.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error al actualizar reparación", e);
+            throw new RuntimeException(e);
         }
     }
 
     /**
      * Elimina una reparación por su ID.
      *
-     * @param idReparacion ID de la reparación
+     * @param id ID de la reparación
      * @return true si se eliminó correctamente
      */
-    public boolean eliminar(int idReparacion) {
-        String sql = "DELETE FROM reparacion WHERE id = ?";
+    public boolean eliminar(int id) {
+
+        String sql = "DELETE FROM reparacion WHERE id=?";
 
         try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
 
-            pst.setInt(1, idReparacion);
-
+            pst.setInt(1, id);
             return pst.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error al eliminar reparación", e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -272,7 +274,7 @@ public class ReparacionDAO {
         INNER JOIN usuario u ON r.usuario_id = u.id
         WHERE LOWER(c.nombre) LIKE ?
            OR LOWER(r.estado) LIKE ?
-    """;
+        """;
 
         try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
 
@@ -304,6 +306,7 @@ public class ReparacionDAO {
                     r.setId(rs.getInt("id"));
                     r.setDiagnostico(rs.getString("diagnostico"));
                     r.setSolucion(rs.getString("solucion"));
+                    r.setCostoServicio(rs.getString("costo_servicio"));
                     r.setCostoRepuestos(rs.getString("costo_repuestos"));
                     r.setPiezasUsadas(rs.getString("piezas_usadas"));
                     r.setEstado(Reparacion.Estado.valueOf(rs.getString("estado")));
@@ -315,7 +318,7 @@ public class ReparacionDAO {
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error al filtrar reparaciones", e);
+            throw new RuntimeException(e);
         }
 
         return lista;
@@ -328,6 +331,7 @@ public class ReparacionDAO {
      * @return true si ya existe una reparación registrada
      */
     public boolean existePorRecepcion(int recepcionId) {
+
         String sql = "SELECT COUNT(*) FROM reparacion WHERE recepcion_id=?";
 
         try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
@@ -339,7 +343,7 @@ public class ReparacionDAO {
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error al verificar reparación", e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -350,11 +354,12 @@ public class ReparacionDAO {
      * @return true si existe factura válida asociada
      */
     public boolean tieneFactura(int reparacionId) {
+
         String sql = """
-            SELECT COUNT(*)
-            FROM factura
-            WHERE reparacion_id = ?
-              AND estado <> 'ANULADA'
+        SELECT COUNT(*)
+        FROM factura
+        WHERE reparacion_id = ?
+          AND estado = 'PAGADA'
         """;
 
         try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
@@ -362,12 +367,11 @@ public class ReparacionDAO {
             pst.setInt(1, reparacionId);
 
             try (ResultSet rs = pst.executeQuery()) {
-
                 return rs.next() && rs.getInt(1) > 0;
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error al verificar factura", e);
+            throw new RuntimeException(e);
         }
     }
 }

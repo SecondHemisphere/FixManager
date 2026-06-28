@@ -1,6 +1,8 @@
 package controlador;
 
 import dao.FacturaDAO;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import modelo.Factura;
 import modelo.Factura.MetodoPago;
@@ -199,11 +201,6 @@ public class FacturaController {
             return error;
         }
 
-        error = validarEstado(f.getEstado());
-        if (error != null) {
-            return error;
-        }
-
         return null;
     }
 
@@ -230,8 +227,20 @@ public class FacturaController {
      */
     public static String validarCosto(double costo) {
 
-        if (costo <= 0) {
-            return "El costo total debe ser mayor a 0";
+        BigDecimal valor;
+
+        try {
+            valor = new BigDecimal(costo).setScale(2, RoundingMode.HALF_UP);
+        } catch (NumberFormatException e) {
+            return "El costo total debe ser un número válido (hasta 2 decimales)";
+        }
+
+        if (valor.compareTo(BigDecimal.ZERO) < 0) {
+            return "El costo total no puede ser negativo";
+        }
+
+        if (valor.compareTo(new BigDecimal("2000.00")) > 0) {
+            return "El costo total máximo permitido es $2000.00";
         }
 
         return null;
@@ -246,27 +255,11 @@ public class FacturaController {
     public static String validarObservaciones(String obs) {
 
         if (obs != null) {
-
             obs = obs.trim();
 
             if (obs.length() > 255) {
                 return "Las observaciones no pueden superar 255 caracteres";
             }
-        }
-
-        return null;
-    }
-
-    /**
-     * Valida el estado de la factura.
-     *
-     * @param estado estado actual de la factura
-     * @return mensaje de error o null si es válido
-     */
-    public static String validarEstado(Factura.Estado estado) {
-
-        if (estado == null) {
-            return "El estado es obligatorio";
         }
 
         return null;

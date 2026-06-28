@@ -1,5 +1,6 @@
 package modelo;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 /**
@@ -43,6 +44,7 @@ public class Reparacion {
     private String diagnostico;
     private String solucion;
     private String piezasUsadas;
+    private String costoServicio;
     private String costoRepuestos;
     private Estado estado;
     private RecepcionEntrega recepcion;
@@ -61,16 +63,21 @@ public class Reparacion {
      * @param diagnostico diagnóstico del equipo
      * @param solucion solución aplicada
      * @param piezasUsadas lista de piezas utilizadas
+     * @param costoServicio costo de la reparación, sin incluir los repuestos
      * @param costoRepuestos costo de repuestos utilizados
      * @param recepcion recepción del equipo
      * @param usuario usuario responsable de la reparación
      */
-    public Reparacion(String diagnostico, String solucion, String piezasUsadas,
-            String costoRepuestos, RecepcionEntrega recepcion, Usuario usuario) {
+    public Reparacion(String diagnostico, String solucion,
+            String piezasUsadas, String costoServicio,
+            String costoRepuestos,
+            RecepcionEntrega recepcion, Usuario usuario) {
+
         this.diagnostico = diagnostico;
         this.solucion = solucion;
-        this.costoRepuestos = costoRepuestos;
         this.piezasUsadas = piezasUsadas;
+        this.costoServicio = costoServicio;
+        this.costoRepuestos = costoRepuestos;
         this.estado = Estado.PENDIENTE;
         this.recepcion = recepcion;
         this.usuario = usuario;
@@ -83,17 +90,19 @@ public class Reparacion {
      * @param diagnostico diagnóstico del equipo
      * @param solucion solución aplicada
      * @param piezasUsadas piezas utilizadas
+     * @param costoServicio costo de la reparación, sin incluir los repuestos
      * @param costoRepuestos costo de repuestos
      * @param estado estado actual de la reparación
      * @param recepcion recepción asociada
      * @param usuario usuario responsable
      */
     public Reparacion(int id, String diagnostico, String solucion,
-            String piezasUsadas, String costoRepuestos,
+            String piezasUsadas, String costoServicio, String costoRepuestos,
             Estado estado, RecepcionEntrega recepcion, Usuario usuario) {
         this.id = id;
         this.diagnostico = diagnostico;
         this.solucion = solucion;
+        this.costoServicio = costoServicio;
         this.costoRepuestos = costoRepuestos;
         this.piezasUsadas = piezasUsadas;
         this.estado = estado;
@@ -131,6 +140,14 @@ public class Reparacion {
 
     public void setPiezasUsadas(String piezasUsadas) {
         this.piezasUsadas = piezasUsadas;
+    }
+
+    public String getCostoServicio() {
+        return costoServicio;
+    }
+
+    public void setCostoServicio(String costoServicio) {
+        this.costoServicio = costoServicio;
     }
 
     public String getCostoRepuestos() {

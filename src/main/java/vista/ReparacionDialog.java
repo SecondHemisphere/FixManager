@@ -137,7 +137,8 @@ public class ReparacionDialog extends javax.swing.JDialog {
         txtaDiagnostico.setText(reparacion.getDiagnostico());
         txtaSolucion.setText(reparacion.getSolucion());
         txtaPiezas.setText(reparacion.getPiezasUsadas());
-        txtCosto.setText(String.valueOf(reparacion.getCostoRepuestos()));
+        txtCostoServ.setText(String.valueOf(reparacion.getCostoServicio()));
+        txtCostoRep.setText(String.valueOf(reparacion.getCostoRepuestos()));
         cbxEstado.setSelectedItem(reparacion.getEstado());
     }
 
@@ -157,7 +158,8 @@ public class ReparacionDialog extends javax.swing.JDialog {
             r.setDiagnostico(txtaDiagnostico.getText().trim());
             r.setSolucion(txtaSolucion.getText().trim());
             r.setPiezasUsadas(txtaPiezas.getText().trim());
-            r.setCostoRepuestos(txtCosto.getText().trim());
+            r.setCostoServicio(txtCostoServ.getText().trim().replace(",", "."));
+            r.setCostoRepuestos(txtCostoRep.getText().trim().replace(",", "."));
             r.setEstado((Reparacion.Estado) cbxEstado.getSelectedItem());
             r.setUsuario(Sesion.getUsuarioActual());
 
@@ -204,8 +206,10 @@ public class ReparacionDialog extends javax.swing.JDialog {
         lblPiezas = new javax.swing.JLabel();
         scrPiezas = new javax.swing.JScrollPane();
         txtaPiezas = new javax.swing.JTextArea();
-        lblCosto = new javax.swing.JLabel();
-        txtCosto = new javax.swing.JTextField();
+        lblCostoServ = new javax.swing.JLabel();
+        txtCostoServ = new javax.swing.JTextField();
+        lblCostoRep = new javax.swing.JLabel();
+        txtCostoRep = new javax.swing.JTextField();
         lblEstado = new javax.swing.JLabel();
         cbxEstado = new javax.swing.JComboBox<Reparacion.Estado>();
         btnGuardar = new javax.swing.JButton();
@@ -253,11 +257,17 @@ public class ReparacionDialog extends javax.swing.JDialog {
         txtaPiezas.setWrapStyleWord(true);
         scrPiezas.setViewportView(txtaPiezas);
 
-        lblCosto.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lblCosto.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblCosto.setText("Costo *:");
+        lblCostoServ.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblCostoServ.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblCostoServ.setText("Costo Servicio *:");
 
-        txtCosto.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        txtCostoServ.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+
+        lblCostoRep.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblCostoRep.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblCostoRep.setText("Costo Repuestos *:");
+
+        txtCostoRep.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         lblEstado.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         lblEstado.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -279,7 +289,7 @@ public class ReparacionDialog extends javax.swing.JDialog {
         pnlFormularioLayout.setHorizontalGroup(
             pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlFormularioLayout.createSequentialGroup()
-                .addGap(40, 40, 40)
+                .addGap(23, 23, 23)
                 .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFormularioLayout.createSequentialGroup()
                         .addComponent(imagen)
@@ -290,22 +300,23 @@ public class ReparacionDialog extends javax.swing.JDialog {
                         .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(181, 181, 181))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFormularioLayout.createSequentialGroup()
-                        .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(lblEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblCosto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(lblPiezas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblSolucion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblDiagnostico, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblRecepcion, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblPiezas, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblSolucion, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblDiagnostico, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblRecepcion)
+                            .addComponent(lblCostoRep)
+                            .addComponent(lblCostoServ))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cbxEstado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtCosto)
+                            .addComponent(txtCostoServ)
                             .addComponent(scrPiezas)
                             .addComponent(cbxRecepcion, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(scrDiagnostico)
-                            .addComponent(scrSolucion))
+                            .addComponent(scrSolucion)
+                            .addComponent(txtCostoRep))
                         .addGap(25, 25, 25))))
         );
         pnlFormularioLayout.setVerticalGroup(
@@ -337,13 +348,17 @@ public class ReparacionDialog extends javax.swing.JDialog {
                         .addComponent(scrPiezas, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtCosto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblCosto))
+                            .addComponent(txtCostoServ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblCostoServ))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtCostoRep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblCostoRep))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(pnlFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cbxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblEstado))
-                        .addGap(25, 25, 25)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
                         .addComponent(btnGuardar))
                     .addComponent(lblPiezas))
                 .addContainerGap(20, Short.MAX_VALUE))
@@ -374,7 +389,8 @@ public class ReparacionDialog extends javax.swing.JDialog {
     private javax.swing.JComboBox<Reparacion.Estado> cbxEstado;
     private javax.swing.JComboBox<RecepcionEntrega> cbxRecepcion;
     private javax.swing.JLabel imagen;
-    private javax.swing.JLabel lblCosto;
+    private javax.swing.JLabel lblCostoRep;
+    private javax.swing.JLabel lblCostoServ;
     private javax.swing.JLabel lblDiagnostico;
     private javax.swing.JLabel lblEstado;
     private javax.swing.JLabel lblPiezas;
@@ -385,7 +401,8 @@ public class ReparacionDialog extends javax.swing.JDialog {
     private javax.swing.JScrollPane scrDiagnostico;
     private javax.swing.JScrollPane scrPiezas;
     private javax.swing.JScrollPane scrSolucion;
-    private javax.swing.JTextField txtCosto;
+    private javax.swing.JTextField txtCostoRep;
+    private javax.swing.JTextField txtCostoServ;
     private javax.swing.JTextArea txtaDiagnostico;
     private javax.swing.JTextArea txtaPiezas;
     private javax.swing.JTextArea txtaSolucion;

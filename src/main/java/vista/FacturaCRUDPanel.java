@@ -50,8 +50,24 @@ public class FacturaCRUDPanel extends javax.swing.JPanel {
         pnlScroll.setOpaque(false);
         pnlScroll.getViewport().setOpaque(false);
 
-        cargarTabla();
+        tblFacturas = new javax.swing.JTable() {
+            @Override
+            public String getToolTipText(java.awt.event.MouseEvent e) {
+                int row = rowAtPoint(e.getPoint());
+                int column = columnAtPoint(e.getPoint());
 
+                if (row > -1 && column > -1) {
+                    Object value = getValueAt(row, column);
+                    return value != null ? value.toString() : null;
+                }
+
+                return super.getToolTipText(e);
+            }
+        };
+
+        pnlScroll.setViewportView(tblFacturas);
+
+        cargarTabla();
         JLabel fondo = new JLabel();
 
         ImageIcon imagen = new ImageIcon(getClass().getResource("/img/fondo2.png"));
@@ -77,7 +93,7 @@ public class FacturaCRUDPanel extends javax.swing.JPanel {
      */
     private void buscar(String texto) {
 
-        if ((texto.trim().isEmpty())
+        if (texto.trim().isEmpty()
                 || texto.equals("Buscar factura por cliente o estado...")) {
             cargarTabla();
             return;
@@ -86,7 +102,8 @@ public class FacturaCRUDPanel extends javax.swing.JPanel {
         List<Factura> facturas = controlador.filtrarFacturas(texto);
 
         if (facturas.isEmpty()) {
-            DialogUtil.mostrarMensajeInformacion(this, "No se encontraron facturas que coincidan con el criterio de búsqueda");
+            DialogUtil.mostrarMensajeInformacion(this,
+                    "No se encontraron facturas que coincidan con el criterio de búsqueda");
             return;
         }
 
@@ -94,30 +111,23 @@ public class FacturaCRUDPanel extends javax.swing.JPanel {
         model.setRowCount(0);
 
         for (Factura f : facturas) {
+            String cliente = f.getReparacion().getRecepcion()
+                    .getEquipoMovil().getCliente().getNombre();
 
-            String cliente = (f.getReparacion() != null
-                    && f.getReparacion().getRecepcion() != null
-                    && f.getReparacion().getRecepcion().getEquipoMovil() != null
-                    && f.getReparacion().getRecepcion().getEquipoMovil().getCliente() != null)
-                    ? f.getReparacion().getRecepcion().getEquipoMovil().getCliente().getNombre()
-                    : "Sin cliente";
-
-            String usuario = (f.getUsuario() != null && f.getUsuario().getNombre() != null)
-                    ? f.getUsuario().getNombre()
-                    : "Sin usuario";
-
-            String fechaFormateada = (f.getFechaEmision() != null)
-                    ? f.getFechaEmision().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
-                    : "";
+            String equipo = f.getReparacion().getRecepcion()
+                    .getEquipoMovil().getMarca() + " "
+                    + f.getReparacion().getRecepcion()
+                            .getEquipoMovil().getModelo();
 
             model.addRow(new Object[]{
                 f.getId(),
                 cliente,
-                f.getCostoTotal(),
-                fechaFormateada,
+                equipo,
+                String.format("$ %.2f", f.getCostoTotal()),
+                f.getFechaEmision().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
+                f.getMetodoPago() != null ? f.getMetodoPago() : "-",
                 f.getEstado(),
-                f.getMetodoPago(),
-                usuario
+                f.getUsuario().getNombre()
             });
         }
     }
@@ -137,39 +147,104 @@ public class FacturaCRUDPanel extends javax.swing.JPanel {
      */
     private void cargarTabla() {
         DefaultTableModel model = new DefaultTableModel(
-                new String[]{"ID", "Cliente", "Costo", "Fecha", "Estado", "Método", "Modificado Por"}, 0
+                new String[]{"ID", "Cliente", "Equipo", "Costo", "Fecha", "Método Pago", "Estado", "Cajero"}, 0
         );
 
         for (Factura f : controlador.listarFacturas()) {
-
-            String cliente = (f.getReparacion() != null
-                    && f.getReparacion().getRecepcion() != null
-                    && f.getReparacion().getRecepcion().getEquipoMovil() != null
-                    && f.getReparacion().getRecepcion().getEquipoMovil().getCliente() != null)
-                    ? f.getReparacion().getRecepcion().getEquipoMovil().getCliente().getNombre()
-                    : "Sin cliente";
-
-            String usuario = (f.getUsuario() != null && f.getUsuario().getNombre() != null)
-                    ? f.getUsuario().getNombre()
-                    : "Sin usuario";
-
-            String fechaFormateada = (f.getFechaEmision() != null)
-                    ? f.getFechaEmision().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
-                    : "";
+            String cliente = f.getReparacion().getRecepcion().getEquipoMovil().getCliente().getNombre();
+            String equipo = f.getReparacion().getRecepcion().getEquipoMovil().getMarca() + " " + f.getReparacion().getRecepcion().getEquipoMovil().getModelo();
 
             model.addRow(new Object[]{
                 f.getId(),
                 cliente,
-                f.getCostoTotal(),
-                fechaFormateada,
+                equipo,
+                String.format("$ %.2f", f.getCostoTotal()),
+                f.getFechaEmision().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
+                f.getMetodoPago() != null ? f.getMetodoPago() : "-",
                 f.getEstado(),
-                f.getMetodoPago(),
-                usuario
+                f.getUsuario().getNombre()
             });
         }
 
         tblFacturas.setModel(model);
         tblFacturas.setDefaultEditor(Object.class, null);
+        configurarEstilosTabla();
+    }
+
+    /**
+     * Configura los anchos de las columnas y aplica los colores según el
+     * estado.
+     */
+    private void configurarEstilosTabla() {
+        tblFacturas.getColumnModel().getColumn(0).setPreferredWidth(60);
+        tblFacturas.getColumnModel().getColumn(1).setPreferredWidth(170);
+        tblFacturas.getColumnModel().getColumn(2).setPreferredWidth(170);
+        tblFacturas.getColumnModel().getColumn(3).setPreferredWidth(90);
+        tblFacturas.getColumnModel().getColumn(4).setPreferredWidth(120);
+        tblFacturas.getColumnModel().getColumn(5).setPreferredWidth(140);
+        tblFacturas.getColumnModel().getColumn(6).setPreferredWidth(110);
+        tblFacturas.getColumnModel().getColumn(7).setPreferredWidth(110);
+
+        tblFacturas.getColumnModel().getColumn(6).setCellRenderer(
+                new javax.swing.table.DefaultTableCellRenderer() {
+
+            @Override
+            public java.awt.Component getTableCellRendererComponent(
+                    javax.swing.JTable table,
+                    Object value,
+                    boolean isSelected,
+                    boolean hasFocus,
+                    int row,
+                    int column) {
+
+                javax.swing.JComponent label
+                        = (javax.swing.JComponent) super.getTableCellRendererComponent(
+                                table, value, isSelected, hasFocus, row, column);
+
+                ((javax.swing.JLabel) label).setHorizontalAlignment(
+                        javax.swing.SwingConstants.CENTER);
+
+                label.setFont(label.getFont().deriveFont(java.awt.Font.BOLD));
+                label.setOpaque(true);
+
+                if (value != null) {
+
+                    String estado = value.toString().trim().toUpperCase();
+
+                    if (!isSelected) {
+
+                        switch (estado) {
+
+                            case "PENDIENTE" -> {
+                                label.setBackground(new Color(255, 243, 205));
+                                label.setForeground(new Color(133, 100, 4));
+                            }
+
+                            case "PAGADA" -> {
+                                label.setBackground(new Color(212, 239, 223));
+                                label.setForeground(new Color(21, 101, 47));
+                            }
+
+                            case "ANULADA" -> {
+                                label.setBackground(new Color(248, 215, 218));
+                                label.setForeground(new Color(114, 28, 36));
+                            }
+
+                            default -> {
+                                label.setBackground(table.getBackground());
+                                label.setForeground(table.getForeground());
+                            }
+                        }
+
+                    } else {
+                        label.setBackground(table.getSelectionBackground());
+                        label.setForeground(table.getSelectionForeground());
+                    }
+                }
+
+                return label;
+            }
+        });
     }
 
     /**
