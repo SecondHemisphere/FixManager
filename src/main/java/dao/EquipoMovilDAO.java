@@ -242,6 +242,39 @@ public class EquipoMovilDAO {
     }
 
     /**
+     * Verifica si existe un equipo móvil con el IMEI indicado.
+     *
+     * @param imei IMEI a validar
+     * @param idExcluido id a excluir en caso de actualización (puede ser null)
+     * @return true si el IMEI ya existe
+     */
+    public boolean existeImei(String imei, Integer idExcluido) {
+        String sql;
+
+        if (idExcluido == null) {
+            sql = "SELECT 1 FROM equipo_movil WHERE imei = ? LIMIT 1";
+        } else {
+            sql = "SELECT 1 FROM equipo_movil WHERE imei = ? AND id <> ? LIMIT 1";
+        }
+
+        try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
+
+            pst.setString(1, imei);
+
+            if (idExcluido != null) {
+                pst.setInt(2, idExcluido);
+            }
+
+            try (ResultSet rs = pst.executeQuery()) {
+                return rs.next();
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al verificar IMEI", e);
+        }
+    }
+
+    /**
      * Verifica si un cliente tiene equipos móviles registrados.
      *
      * @param idCliente identificador del cliente

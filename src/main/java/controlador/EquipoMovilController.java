@@ -50,10 +50,14 @@ public class EquipoMovilController {
      * @return ResultadoOperacion con estado de éxito o error
      */
     public ResultadoOperacion guardarEquipo(EquipoMovil e) {
-
         String error = validar(e);
+
         if (error != null) {
             return ResultadoOperacion.error(error);
+        }
+
+        if (dao.existeImei(e.getImei(), e.getId())) {
+            return ResultadoOperacion.error("El IMEI ya está registrado", "IMEI");
         }
 
         boolean ok = dao.guardar(e);
@@ -70,10 +74,14 @@ public class EquipoMovilController {
      * @return ResultadoOperacion con estado de la operación
      */
     public ResultadoOperacion actualizarEquipo(EquipoMovil e) {
-
         String error = validar(e);
+
         if (error != null) {
             return ResultadoOperacion.error(error);
+        }
+
+        if (dao.existeImei(e.getImei(), e.getId())) {
+            return ResultadoOperacion.error("El IMEI ya está registrado", "IMEI");
         }
 
         boolean ok = dao.actualizar(e);
