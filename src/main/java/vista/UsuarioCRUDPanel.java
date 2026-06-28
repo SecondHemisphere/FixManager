@@ -6,6 +6,7 @@ import java.awt.Image;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import modelo.Usuario;
 import util.DialogUtil;
@@ -31,6 +32,22 @@ public class UsuarioCRUDPanel extends javax.swing.JPanel {
         ImageIcon icon = new ImageIcon(getClass().getResource("/img/buscar.png"));
         Image img = icon.getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH);
         btnBuscar.setIcon(new ImageIcon(img));
+
+        tblUsuarios = new JTable() {
+            @Override
+            public String getToolTipText(java.awt.event.MouseEvent e) {
+                int row = rowAtPoint(e.getPoint());
+                int column = columnAtPoint(e.getPoint());
+
+                if (row > -1 && column > -1) {
+                    Object value = getValueAt(row, column);
+                    return value != null ? value.toString() : null;
+                }
+
+                return super.getToolTipText(e);
+            }
+        };
+        pnlScroll.setViewportView(tblUsuarios);
         cargarTabla();
 
         JLabel fondo = new javax.swing.JLabel();
@@ -79,9 +96,11 @@ public class UsuarioCRUDPanel extends javax.swing.JPanel {
                 u.getNombre(),
                 u.getCorreo(),
                 u.getRol(),
-                u.isActivo() ? "Sí" : "No"
+                u.isActivo() ? "ACTIVO" : "INACTIVO"
             });
         }
+
+        configurarEstilosTabla();
     }
 
     /**
@@ -100,7 +119,7 @@ public class UsuarioCRUDPanel extends javax.swing.JPanel {
      */
     private void cargarTabla() {
         DefaultTableModel model = new DefaultTableModel(
-                new String[]{"ID", "Nombre", "Correo", "Rol", "Activo"}, 0
+                new String[]{"ID", "Nombre", "Correo", "Rol", "Estado"}, 0
         );
 
         for (Usuario u : controlador.listarUsuarios()) {
@@ -109,13 +128,62 @@ public class UsuarioCRUDPanel extends javax.swing.JPanel {
                 u.getNombre(),
                 u.getCorreo(),
                 u.getRol(),
-                u.isActivo() ? "Sí" : "No"
+                u.isActivo() ? "ACTIVO" : "INACTIVO"
             });
         }
 
         tblUsuarios.setModel(model);
         tblUsuarios.setDefaultEditor(Object.class, null);
         tblUsuarios.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        configurarEstilosTabla();
+    }
+
+    /**
+     * Configura los anchos de las columnas y aplica estilos a la tabla.
+     */
+    private void configurarEstilosTabla() {
+        tblUsuarios.getColumnModel().getColumn(0).setPreferredWidth(60);
+        tblUsuarios.getColumnModel().getColumn(1).setPreferredWidth(180);
+        tblUsuarios.getColumnModel().getColumn(2).setPreferredWidth(260);
+        tblUsuarios.getColumnModel().getColumn(3).setPreferredWidth(120);
+        tblUsuarios.getColumnModel().getColumn(4).setPreferredWidth(90);
+
+        tblUsuarios.getColumnModel().getColumn(4).setCellRenderer(
+                new javax.swing.table.DefaultTableCellRenderer() {
+
+            @Override
+            public java.awt.Component getTableCellRendererComponent(
+                    JTable table, Object value, boolean isSelected,
+                    boolean hasFocus, int row, int column) {
+
+                JLabel label = (JLabel) super.getTableCellRendererComponent(
+                        table, value, isSelected, hasFocus, row, column);
+
+                label.setHorizontalAlignment(JLabel.CENTER);
+                label.setOpaque(true);
+
+                if (!isSelected && value != null) {
+                    switch (value.toString()) {
+                        case "ACTIVO" -> {
+                            label.setBackground(new Color(212, 239, 223));
+                            label.setForeground(new Color(21, 101, 47));
+                        }
+                        case "INACTIVO" -> {
+                            label.setBackground(new Color(248, 215, 218));
+                            label.setForeground(new Color(114, 28, 36));
+                        }
+                        default -> {
+                            label.setBackground(Color.WHITE);
+                            label.setForeground(Color.BLACK);
+                        }
+                    }
+                } else {
+                    label.setBackground(table.getSelectionBackground());
+                    label.setForeground(table.getSelectionForeground());
+                }
+                return label;
+            }
+        });
     }
 
     /**

@@ -2,6 +2,7 @@ package vista;
 
 import controlador.UsuarioController;
 import java.awt.Color;
+import java.awt.Dimension;
 import javax.swing.DefaultComboBoxModel;
 import modelo.Usuario;
 import modelo.Usuario.Rol;
@@ -50,6 +51,10 @@ public class UsuarioDialog extends javax.swing.JDialog {
             chkActivo.setEnabled(false);
             txtContrasena.setEnabled(true);
         }
+
+        txtNombre.setPreferredSize(new Dimension(198, 22));
+        txtCorreo.setPreferredSize(new Dimension(198, 22));
+        txtContrasena.setPreferredSize(new Dimension(198, 22));
     }
 
     /**
@@ -232,7 +237,7 @@ public class UsuarioDialog extends javax.swing.JDialog {
                 .addComponent(chkActivo)
                 .addGap(30, 30, 30)
                 .addComponent(btnGuardar)
-                .addGap(10, 10, 10))
+                .addGap(20, 20, 20))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

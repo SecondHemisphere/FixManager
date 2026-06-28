@@ -7,6 +7,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
+import javax.swing.JTable;
 import modelo.Cliente;
 import util.DialogUtil;
 import util.ResultadoOperacion;
@@ -41,15 +42,17 @@ public class ClienteCRUDPanel extends javax.swing.JPanel {
         pnlScroll.setOpaque(false);
         pnlScroll.getViewport().setOpaque(false);
 
-        tblClientes = new javax.swing.JTable() {
+        tblClientes = new JTable() {
             @Override
             public String getToolTipText(java.awt.event.MouseEvent e) {
                 int row = rowAtPoint(e.getPoint());
                 int column = columnAtPoint(e.getPoint());
+
                 if (row > -1 && column > -1) {
                     Object value = getValueAt(row, column);
                     return value != null ? value.toString() : null;
                 }
+
                 return super.getToolTipText(e);
             }
         };
