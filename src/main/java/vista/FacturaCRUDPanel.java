@@ -147,7 +147,7 @@ public class FacturaCRUDPanel extends javax.swing.JPanel {
      */
     private void cargarTabla() {
         DefaultTableModel model = new DefaultTableModel(
-                new String[]{"ID", "Cliente", "Equipo", "Costo", "Fecha", "Método Pago", "Estado", "Cajero"}, 0
+                new String[]{"ID", "Cliente", "Equipo", "$ Total", "Fecha", "Método Pago", "Estado", "Cajero"}, 0
         );
 
         for (Factura f : controlador.listarFacturas()) {
