@@ -220,16 +220,18 @@ public class FacturaController {
      */
     public static String validarObservaciones(String obs) {
 
-        if (obs != null) {
-            obs = obs.trim();
+        if (obs == null || obs.trim().isEmpty()) {
+            return null;
+        }
 
-            if (obs.length() < 5) {
-                return "Las observaciones deben tener al menos 5 caracteres";
-            }
+        obs = obs.trim();
 
-            if (obs.length() > 255) {
-                return "Las observaciones no pueden superar 255 caracteres";
-            }
+        if (obs.length() < 5) {
+            return "Las observaciones deben tener al menos 5 caracteres";
+        }
+
+        if (obs.length() > 255) {
+            return "Las observaciones no pueden superar 255 caracteres";
         }
 
         return null;
