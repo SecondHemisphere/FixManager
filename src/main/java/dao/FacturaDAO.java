@@ -229,7 +229,7 @@ public class FacturaDAO {
         try (Connection con = Conexion.conectar(); PreparedStatement pst = con.prepareStatement(sql)) {
 
             pst.setString(1, f.getObservaciones());
-            pst.setString(2, f.getMetodoPago().name());
+            pst.setString(2, f.getMetodoPago() != null ? f.getMetodoPago().name() : null);
             pst.setString(3, f.getEstado().name());
             pst.setInt(4, f.getUsuario().getId());
             pst.setInt(5, f.getId());

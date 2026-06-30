@@ -138,8 +138,14 @@ public class FacturaDialog extends javax.swing.JDialog {
     private void cargarReparaciones() {
         DefaultComboBoxModel<Reparacion> model = new DefaultComboBoxModel<>();
 
-        for (Reparacion r : reparacionController.listar()) {
-            model.addElement(r);
+        if (factura == null) {
+            cbxReparacion.setEnabled(true);
+            for (Reparacion r : reparacionController.listar()) {
+                model.addElement(r);
+            }
+        } else {
+            cbxReparacion.setEnabled(false);
+            model.addElement(factura.getReparacion());
         }
 
         cbxReparacion.setModel(model);
