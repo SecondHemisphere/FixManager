@@ -14,7 +14,7 @@ import util.ResultadoOperacion;
 import util.Sesion;
 
 /**
- * Diálogo para crear o editar facturas.
+ * Diálogo para crear facturas.
  *
  * @author Mendoza Sebastian
  */
@@ -22,7 +22,6 @@ public class FacturaDialog extends javax.swing.JDialog {
 
     private final FacturaController controller;
     private final ReparacionController reparacionController;
-    private Factura factura = null;
 
     /**
      * Inicializa los componentes gráficos, carga las reparaciones disponibles y
@@ -33,28 +32,19 @@ public class FacturaDialog extends javax.swing.JDialog {
      *
      * @param parent ventana padre
      * @param modal indica si el diálogo será modal
-     * @param factura factura a editar; null para registrar
      */
-    public FacturaDialog(java.awt.Frame parent, boolean modal, Factura factura) {
+    public FacturaDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
         controller = new FacturaController();
         reparacionController = new ReparacionController();
-        this.factura = factura;
 
         cargarReparaciones();
 
-        if (factura != null) {
-            lblTitulo.setText("Editar Factura");
-            btnGuardar.setText("Actualizar");
-            btnGuardar.setBackground(new Color(102, 102, 255));
-            cargarDatos();
-        } else {
-            lblTitulo.setText("Nueva Factura");
-            btnGuardar.setText("Guardar");
-            btnGuardar.setBackground(new Color(103, 201, 228));
-        }
+        lblTitulo.setText("Nueva Factura");
+        btnGuardar.setText("Guardar");
+        btnGuardar.setBackground(new Color(103, 201, 228));
 
         cbxReparacion.setRenderer(new javax.swing.DefaultListCellRenderer() {
 
@@ -138,48 +128,27 @@ public class FacturaDialog extends javax.swing.JDialog {
     private void cargarReparaciones() {
         DefaultComboBoxModel<Reparacion> model = new DefaultComboBoxModel<>();
 
-        if (factura == null) {
-            cbxReparacion.setEnabled(true);
-            for (Reparacion r : reparacionController.listar()) {
-                model.addElement(r);
-            }
-        } else {
-            cbxReparacion.setEnabled(false);
-            model.addElement(factura.getReparacion());
+        for (Reparacion r : reparacionController.listar()) {
+            model.addElement(r);
         }
 
         cbxReparacion.setModel(model);
     }
 
     /**
-     * Carga los datos de la factura en el formulario (modo edición).
-     */
-    private void cargarDatos() {
-        cbxReparacion.setSelectedItem(factura.getReparacion());
-        txtCosto.setText(String.valueOf(factura.getCostoTotal()));
-        txtaObservaciones.setText(factura.getObservaciones());
-    }
-
-    /**
-     * Valida y guarda los datos del formulario. Si la factura es null, realiza
-     * un INSERT. Si existe, realiza un UPDATE.
+     * Valida y guarda los datos del formulario.
      */
     private void guardarDatos() {
         try {
-            Factura f = new Factura();
 
-            if (factura != null) {
-                f.setId(factura.getId());
-            }
+            Factura f = new Factura();
 
             f.setReparacion((Reparacion) cbxReparacion.getSelectedItem());
             f.setCostoTotal(txtCosto.getText().trim());
             f.setObservaciones(txtaObservaciones.getText().trim());
             f.setUsuario(Sesion.getUsuarioActual());
 
-            ResultadoOperacion resultado = (factura == null)
-                    ? controller.guardarFactura(f)
-                    : controller.actualizarFactura(f);
+            ResultadoOperacion resultado = controller.guardarFactura(f);
 
             if (!resultado.isExito()) {
                 DialogUtil.mostrarMensajeAdvertencia(this, resultado.getMensaje());
