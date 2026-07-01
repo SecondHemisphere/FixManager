@@ -20,6 +20,10 @@ public class MainApp {
      */
     public static void main(String[] args) {
         UIManager.put("Button.focus", new ColorUIResource(new java.awt.Color(0, 0, 0, 0)));
+        UIManager.put("OptionPane.okButtonText", "Aceptar");
+        UIManager.put("OptionPane.cancelButtonText", "Cancelar");
+        UIManager.put("OptionPane.yesButtonText", "Sí");
+        UIManager.put("OptionPane.noButtonText", "No");
 
         FrmLogin login = new FrmLogin();
         login.setVisible(true);

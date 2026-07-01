@@ -285,15 +285,6 @@ public class FacturaCRUDPanel extends javax.swing.JPanel {
             return;
         }
 
-        boolean confirmar = DialogUtil.mostrarDialogoConfirmacion(this, """
-                                                                            \u00bfEst\u00e1 seguro de iniciar el pago de esta factura?
-                                                           
-                                                                            Una vez pagada, la factura no podr\u00e1 ser modificada.""");
-
-        if (!confirmar) {
-            return;
-        }
-
         MetodoPago metodo = (MetodoPago) JOptionPane.showInputDialog(
                 this,
                 "Seleccione método de pago",
@@ -305,6 +296,15 @@ public class FacturaCRUDPanel extends javax.swing.JPanel {
         );
 
         if (metodo == null) {
+            return;
+        }
+
+        boolean confirmar = DialogUtil.mostrarDialogoConfirmacion(this, """
+                                                                            \u00bfEst\u00e1 seguro de iniciar el pago de esta factura?
+                                                           
+                                                                            Una vez pagada, la factura no podr\u00e1 ser modificada.""");
+
+        if (!confirmar) {
             return;
         }
 
